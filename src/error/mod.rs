@@ -1,6 +1,17 @@
 use std::panic::Location;
 
+#[macro_use]
+mod macros;
+
 type ErrorSourceDyn = Box<dyn std::error::Error + Send + Sync + 'static>;
+
+/// Application error types
+#[derive(Debug, PartialEq)]
+pub enum ErrorType {
+    InternalError,
+}
+
+map_error!(std::io::Error => InternalError);
 
 /// Application Error data
 #[derive(Debug)]
@@ -39,10 +50,4 @@ impl std::error::Error for AppError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         self.source.as_deref().map(|s| s as &dyn std::error::Error)
     }
-}
-
-/// Application error types
-#[derive(Debug, PartialEq)]
-pub enum ErrorType {
-    InternalError,
 }
