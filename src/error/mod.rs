@@ -11,8 +11,6 @@ pub enum ErrorType {
     InternalError,
 }
 
-map_error!(std::io::Error => InternalError);
-
 /// Application Error data
 #[derive(Debug)]
 pub struct AppError {
@@ -51,3 +49,5 @@ impl std::error::Error for AppError {
         self.source.as_deref().map(|s| s as &dyn std::error::Error)
     }
 }
+
+map_error!(std::io::Error => InternalError);
