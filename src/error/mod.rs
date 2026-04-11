@@ -22,6 +22,23 @@ impl AppError {
             source,
         }
     }
+
+    /// Returns [`ErrorType`] of this [`AppError`]
+    pub fn error_type(&self) -> &ErrorType {
+        &self.error_type
+    }
+}
+
+impl std::fmt::Display for AppError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?} occured in {}", self.error_type, self.location)
+    }
+}
+
+impl std::error::Error for AppError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        self.source.as_deref().map(|s| s as &dyn std::error::Error)
+    }
 }
 
 /// Application error types
