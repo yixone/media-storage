@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use futures::TryStreamExt;
 use sha2::{Digest, Sha256};
-use tokio::io::{AsyncRead, BufReader};
+use tokio::io::AsyncRead;
 use tokio_util::io::ReaderStream;
 
 use crate::{

@@ -1,3 +1,5 @@
+use std::path::Path;
+
 /// Result of changing the file key in file host
 #[derive(Debug, Clone, Copy)]
 pub enum RenameResult {
@@ -16,4 +18,10 @@ pub enum DeleteResult {
 #[derive(Debug, Clone, PartialEq)]
 pub struct FileHostKey {
     pub inner: String,
+}
+
+impl AsRef<Path> for FileHostKey {
+    fn as_ref(&self) -> &Path {
+        Path::new(&self.inner)
+    }
 }
