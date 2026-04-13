@@ -36,8 +36,7 @@ impl Storage {
         let mut size = 0;
         let mut hasher = Sha256::new();
 
-        let buf_reader = BufReader::with_capacity(32 * 1024, &mut reader);
-        let mut reader = ReaderStream::new(buf_reader);
+        let mut reader = ReaderStream::with_capacity(&mut reader, 32 * 1024);
 
         while let Some(chunk) = reader.try_next().await? {
             size += chunk.len();
