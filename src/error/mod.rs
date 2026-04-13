@@ -10,6 +10,8 @@ type ErrorSourceDyn = Box<dyn std::error::Error + Send + Sync + 'static>;
 /// Application error types
 #[derive(Debug, PartialEq)]
 pub enum ErrorType {
+    FileTooLarge { max_size: usize, received: usize },
+
     InternalError,
 }
 

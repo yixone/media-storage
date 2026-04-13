@@ -15,5 +15,5 @@ pub enum DeleteResult {
 /// Key for a file in a file host
 #[derive(Debug, Clone, PartialEq)]
 pub struct FileHostKey {
-    inner: String,
+    pub inner: String,
 }
