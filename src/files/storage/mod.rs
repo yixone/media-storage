@@ -25,6 +25,13 @@ pub struct Storage {
 }
 
 impl Storage {
+    /// Creates a new [`Storage`]
+    pub fn new(file_host: impl FileHost) -> Self {
+        Self {
+            file_host: Arc::new(file_host),
+        }
+    }
+
     /// Writes a reader to storage and returns a [`StoragePutResult`]
     pub async fn put<R>(&self, mut reader: R) -> Result<StoragePutResult>
     where

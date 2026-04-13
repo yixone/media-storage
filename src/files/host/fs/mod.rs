@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use tokio::{
     fs::File,
@@ -25,6 +25,21 @@ pub struct FsFileHost {
     root: PathBuf,
 }
 
+impl FsFileHost {
+    /// Creates a new [`FsStorage`]
+    pub fn new<P: Into<PathBuf>>(root_dir: P) -> Self {
+        FsFileHost {
+            root: root_dir.into(),
+        }
+    }
+
+    /// Initialize the storage and create the necessary directories
+    pub fn init(&self) -> Result<()> {
+        std::fs::create_dir_all(&self.root)?;
+        Ok(())
+    }
+}
+
 impl FileHost for FsFileHost {}
 
 #[async_trait::async_trait]
@@ -32,6 +47,7 @@ impl FileHostIO for FsFileHost {
     /// Creates a new file in the file host and returns a [`FileHostWriter`] to it
     async fn new_writer(&self, key: &FileHostKey) -> Result<Box<dyn FileHostWriter>> {
         let path = self.root.join(key);
+        create_parents(&path).await?;
         let file = File::create_new(path).await?;
         let writer = BufWriter::with_capacity(32 * 1024, file);
         let writer = FsFileHostWriter { writer };
@@ -57,6 +73,7 @@ impl FileHostOps for FsFileHost {
             return Ok(RenameResult::AlreadyExists);
         }
 
+        create_parents(&dest).await?;
         tokio::fs::rename(path, dest).await?;
         Ok(RenameResult::Renamed)
     }
@@ -77,4 +94,12 @@ impl FileHostOps for FsFileHost {
             Err(e) => Err(e.into()),
         }
     }
+}
+
+/// Creates parent directories for the file
+pub async fn create_parents(path: impl AsRef<Path>) -> Result<()> {
+    if let Some(parent) = path.as_ref().parent() {
+        tokio::fs::create_dir_all(parent).await?;
+    }
+    Ok(())
 }

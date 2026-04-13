@@ -7,7 +7,12 @@ edition = "2024"
 # Async
 async-trait = "0.1.89"
 futures = "0.3.32"
-tokio = { version = "1.47.1", features = ["fs", "io-util"] }
+tokio = { version = "1.47.1", features = [
+    "fs",
+    "io-util",
+    "macros",
+    "rt-multi-thread",
+] }
 tokio-util = { version = "0.7.16", features = ["io"] }
 
 # Utils/Types
@@ -17,3 +22,6 @@ uuid = { version = "1.17.0", features = ["v4"] }
 
 # Crypto
 sha2 = "0.10.9"
+
+[dev-dependencies]
+tempfile = "3.27.0"
