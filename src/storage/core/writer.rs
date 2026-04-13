@@ -1,7 +1,7 @@
 use crate::error::Result;
 
 #[async_trait::async_trait]
-pub trait BlobWriter: Send + Sync {
+pub trait StorageWriter: Send + Sync {
     /// Writes the transferred data to a blob
     async fn write(&mut self, data: &[u8]) -> Result<()>;
 
