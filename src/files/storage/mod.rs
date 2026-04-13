@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
-use bytes::Bytes;
-use futures::{Stream, TryStreamExt};
+use futures::TryStreamExt;
 use sha2::{Digest, Sha256};
+use tokio::io::{AsyncRead, BufReader};
+use tokio_util::io::ReaderStream;
 
 use crate::{
     create_error,
@@ -24,10 +25,10 @@ pub struct Storage {
 }
 
 impl Storage {
-    /// Writes a stream to storage and returns a [`StoragePutResult`]
-    pub async fn put_stream<'a, S>(&self, mut stream: S) -> Result<StoragePutResult>
+    /// Writes a reader to storage and returns a [`StoragePutResult`]
+    pub async fn put<R>(&self, mut reader: R) -> Result<StoragePutResult>
     where
-        S: Stream<Item = Result<Bytes>> + Unpin + 'a,
+        R: AsyncRead + Unpin,
     {
         let temp = TempKey::generate().host_key();
         let mut writer = self.file_host.new_writer(&temp).await?;
@@ -35,12 +36,15 @@ impl Storage {
         let mut size = 0;
         let mut hasher = Sha256::new();
 
-        while let Some(chunk) = stream.try_next().await? {
+        let buf_reader = BufReader::with_capacity(32 * 1024, &mut reader);
+        let mut reader = ReaderStream::new(buf_reader);
+
+        while let Some(chunk) = reader.try_next().await? {
             size += chunk.len();
             hasher.update(&chunk);
 
             if size > MAX_FILE_SIZE {
-                self.file_host.delete(&temp).await?;
+                writer.abort().await?;
                 return Err(create_error!(FileTooLarge {
                     max_size: MAX_FILE_SIZE,
                     received: size
@@ -61,5 +65,11 @@ impl Storage {
         };
 
         Ok(StoragePutResult { key, size, is_new })
+    }
+
+    /// Returns the Reader to a file from the storage
+    pub async fn get(&self, key: &StorageKey) -> Result<impl AsyncRead + Send + Unpin> {
+        let reader = self.file_host.get_reader(&key.host_key()).await?;
+        Ok(reader)
     }
 }
