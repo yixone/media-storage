@@ -7,3 +7,4 @@ edition = "2024"
 # Async
 async-trait = "0.1.89"
 futures = "0.3.32"
+tokio = { version = "1.47.1", features = ["fs", "io-util"] }
