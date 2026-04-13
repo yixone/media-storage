@@ -3,6 +3,8 @@ use std::panic::Location;
 #[macro_use]
 mod macros;
 
+pub type Result<T> = std::result::Result<T, AppError>;
+
 type ErrorSourceDyn = Box<dyn std::error::Error + Send + Sync + 'static>;
 
 /// Application error types
