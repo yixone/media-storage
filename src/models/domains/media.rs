@@ -9,27 +9,27 @@ id_type! {
 #[derive(Debug, PartialEq)]
 pub struct Media {
     /// Hash-based media Id
-    id: MediaId,
+    pub id: MediaId,
 
     /// The state of media
-    state: MediaState,
+    pub state: MediaState,
 
     /// Media creation time
-    created_at: DateTime<Utc>,
+    pub created_at: DateTime<Utc>,
 
     /// Media Size In Bytes
-    size: i64,
+    pub size: i64,
 
     /// Content-Type
-    mimetype: String,
+    pub mimetype: String,
 
     /// Media Width
-    width: Option<u16>,
+    pub width: Option<u16>,
     /// Media Height
-    height: Option<u16>,
+    pub height: Option<u16>,
 
     /// Media Accent Color
-    color: Option<String>,
+    pub color: Option<String>,
 }
 
 /// Media State
