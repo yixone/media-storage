@@ -11,6 +11,9 @@ pub struct Media {
     /// Hash-based media Id
     id: MediaId,
 
+    /// The state of media
+    state: MediaState,
+
     /// Media creation time
     created_at: DateTime<Utc>,
 
@@ -27,4 +30,17 @@ pub struct Media {
 
     /// Media Accent Color
     color: Option<String>,
+}
+
+/// Media State
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum MediaState {
+    /// Media is awaiting processing
+    Pending,
+    /// The media is being processed.
+    Processing,
+    /// The media is ready to deliver
+    Ready,
+    /// Media processing failed
+    Failed,
 }
