@@ -2,6 +2,7 @@ CREATE TABLE assets (
     id          UUID            NOT NULL,
     media       VARCHAR(64)     NOT NULL,
     created_at  TIMESTAMPTZ     NOT NULL,
+    title       VARCHAR(256),
     caption     VARCHAR(1024),
     source_url  VARCHAR(512),
 

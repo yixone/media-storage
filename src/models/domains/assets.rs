@@ -11,7 +11,7 @@ id_type! {
 }
 
 /// Asset domain
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, sqlx::FromRow)]
 pub struct Asset {
     /// Asset UUID
     pub id: AssetId,
@@ -21,6 +21,9 @@ pub struct Asset {
 
     /// Asset creation time
     pub created_at: DateTime<Utc>,
+
+    /// Asset title
+    pub title: Option<String>,
 
     /// Asset caption
     pub caption: Option<String>,
@@ -59,7 +62,7 @@ pub trait AssetRepository {
 
     /// Updates [`Asset`] fields in the database
     /// according to [`AssetUpdateData`]
-    async fn update_asset(&self, id: &AssetId, data: &AssetUpdateData) -> Result<()>;
+    async fn update_asset(&self, id: &AssetId, data: &AssetUpdateData) -> Result<bool>;
 
     /// Deletes an [`Asset`] from the database by [`AssetId`]
     async fn delete_asset(&self, id: &AssetId) -> Result<()>;
