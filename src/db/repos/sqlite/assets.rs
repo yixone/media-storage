@@ -33,9 +33,9 @@ impl AssetsRepository for SqliteDb {
     async fn delete_asset(&self, id: &AssetId) -> Result<()> {
         sqlx::query(
             "
-            DELETE FROM assets
-            WHERE id = ?
-            ",
+        DELETE FROM assets
+        WHERE id = ?
+        ",
         )
         .bind(id)
         .execute(self.pool())

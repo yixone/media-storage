@@ -8,7 +8,7 @@ id_type! {
 }
 
 /// Media Domain
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, sqlx::FromRow)]
 pub struct Media {
     /// Hash-based media Id
     pub id: MediaId,
@@ -35,7 +35,8 @@ pub struct Media {
 }
 
 /// Media State
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, sqlx::Type)]
+#[sqlx(rename_all = "lowercase")]
 pub enum MediaState {
     /// Media is awaiting processing
     Pending,
@@ -68,6 +69,13 @@ pub trait MediaRepository {
     /// Inserts a [`Media`] into the database
     async fn insert_media(&self, media: &Media) -> Result<()>;
 
+    /// Deletes an [`Media`] from the database by [`MediaId`]
+    async fn delete_media(&self, id: &MediaId) -> Result<()>;
+
+    /// Updates [`Media`] fields in the database
+    /// according to [`MediaUpdateData`]
+    async fn update_media(&self, id: &MediaId, data: &MediaUpdateData) -> Result<bool>;
+
     /// Returns a [`Media`] from the database by [`MediaId`]
     async fn get_media(&self, id: &MediaId) -> Result<Option<Media>> {
         self.get_media_by_ids(&[id])
@@ -77,11 +85,4 @@ pub trait MediaRepository {
 
     /// Returns a set of [`Media`] by the list of [`MediaId`]
     async fn get_media_by_ids(&self, ids: &[&MediaId]) -> Result<Vec<Media>>;
-
-    /// Updates [`Media`] fields in the database
-    /// according to [`MediaUpdateData`]
-    async fn update_media(&self, id: &MediaId, data: &MediaUpdateData) -> Result<()>;
-
-    /// Deletes an [`Media`] from the database by [`MediaId`]
-    async fn delete_media(&self, id: &MediaId) -> Result<()>;
 }
