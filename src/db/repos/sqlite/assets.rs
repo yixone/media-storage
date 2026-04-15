@@ -29,24 +29,18 @@ impl AssetsRepository for SqliteDb {
         Ok(())
     }
 
-    /// Returns a set of [`Asset`] by the list of Ids
-    async fn get_assets_by_ids(&self, ids: &[&AssetId]) -> Result<Vec<Asset>> {
-        if ids.is_empty() {
-            return Ok(Vec::new());
-        }
-
-        let mut qb = QueryBuilder::new(
+    /// Deletes an [`Asset`] from the database by [`AssetId`]
+    async fn delete_asset(&self, id: &AssetId) -> Result<()> {
+        sqlx::query(
             "
-        SELECT * FROM assets
-        WHERE id IN
-        ",
-        );
-        qb.push_tuples(ids, |mut qb, id| {
-            qb.push_bind(id);
-        });
-
-        let list = qb.build_query_as().fetch_all(self.pool()).await?;
-        Ok(list)
+            DELETE FROM assets
+            WHERE id = ?
+            ",
+        )
+        .bind(id)
+        .execute(self.pool())
+        .await?;
+        Ok(())
     }
 
     /// Updates [`Asset`] fields in the database
@@ -75,17 +69,39 @@ impl AssetsRepository for SqliteDb {
         Ok(res.rows_affected() == 1)
     }
 
-    /// Deletes an [`Asset`] from the database by [`AssetId`]
-    async fn delete_asset(&self, id: &AssetId) -> Result<()> {
-        sqlx::query(
+    /// Returns a list of [`Asset`] with pagination
+    async fn get_assets(&self, cursor: u32, limit: u32) -> Result<Vec<Asset>> {
+        let items = sqlx::query_as(
             "
-            DELETE FROM assets
-            WHERE id = ?
+            SELECT * FROM assets
+            LIMIT ?
+            OFFSET ?
             ",
         )
-        .bind(id)
-        .execute(self.pool())
+        .bind(limit)
+        .bind(cursor)
+        .fetch_all(self.pool())
         .await?;
-        Ok(())
+        Ok(items)
+    }
+
+    /// Returns a set of [`Asset`] by the list of Ids
+    async fn get_assets_by_ids(&self, ids: &[&AssetId]) -> Result<Vec<Asset>> {
+        if ids.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        let mut qb = QueryBuilder::new(
+            "
+        SELECT * FROM assets
+        WHERE id IN
+        ",
+        );
+        qb.push_tuples(ids, |mut qb, id| {
+            qb.push_bind(id);
+        });
+
+        let list = qb.build_query_as().fetch_all(self.pool()).await?;
+        Ok(list)
     }
 }

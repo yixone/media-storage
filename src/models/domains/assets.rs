@@ -50,6 +50,16 @@ pub trait AssetsRepository {
     /// Inserts an [`Asset`] into the database
     async fn insert_asset(&self, asset: &Asset) -> Result<()>;
 
+    /// Deletes an [`Asset`] from the database by [`AssetId`]
+    async fn delete_asset(&self, id: &AssetId) -> Result<()>;
+
+    /// Updates [`Asset`] fields in the database
+    /// according to [`AssetUpdateData`]
+    async fn update_asset(&self, id: &AssetId, data: &AssetUpdateData) -> Result<bool>;
+
+    /// Returns a list of [`Asset`] with pagination
+    async fn get_assets(&self, cursor: u32, limit: u32) -> Result<Vec<Asset>>;
+
     /// Returns an [`Asset`] from the database by [`AssetId`]
     async fn get_asset(&self, id: &AssetId) -> Result<Option<Asset>> {
         self.get_assets_by_ids(&[id])
@@ -59,11 +69,4 @@ pub trait AssetsRepository {
 
     /// Returns a set of [`Asset`] by the list of Ids
     async fn get_assets_by_ids(&self, ids: &[&AssetId]) -> Result<Vec<Asset>>;
-
-    /// Updates [`Asset`] fields in the database
-    /// according to [`AssetUpdateData`]
-    async fn update_asset(&self, id: &AssetId, data: &AssetUpdateData) -> Result<bool>;
-
-    /// Deletes an [`Asset`] from the database by [`AssetId`]
-    async fn delete_asset(&self, id: &AssetId) -> Result<()>;
 }
