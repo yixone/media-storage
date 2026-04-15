@@ -1,5 +1,7 @@
 use chrono::{DateTime, Utc};
 
+use crate::{error::Result, models::types::UpdateField};
+
 id_type! {
     /// Media Id
     MediaId as String
@@ -43,4 +45,43 @@ pub enum MediaState {
     Ready,
     /// Media processing failed
     Failed,
+}
+
+/// Media Update DTO
+#[derive(Debug, Default)]
+pub struct MediaUpdateData {
+    /// New state of media
+    pub state: UpdateField<MediaState>,
+
+    /// New Media Width
+    pub width: UpdateField<Option<u16>>,
+    /// New Media Height
+    pub height: UpdateField<Option<u16>>,
+
+    /// New Media Accent Color
+    pub color: UpdateField<Option<String>>,
+}
+
+/// Trait for [`Media`] domain repository
+#[async_trait::async_trait]
+pub trait MediaRepository {
+    /// Inserts a [`Media`] into the database
+    async fn insert_media(&self, media: &Media) -> Result<()>;
+
+    /// Returns a [`Media`] from the database by [`MediaId`]
+    async fn get_media(&self, id: &MediaId) -> Result<Option<Media>> {
+        self.get_media_by_ids(&[id])
+            .await
+            .map(|m| m.into_iter().next())
+    }
+
+    /// Returns a set of [`Media`] by the list of [`MediaId`]
+    async fn get_media_by_ids(&self, ids: &[&MediaId]) -> Result<Vec<Media>>;
+
+    /// Updates [`Media`] fields in the database
+    /// according to [`MediaUpdateData`]
+    async fn update_media(&self, id: &MediaId, data: &MediaUpdateData) -> Result<()>;
+
+    /// Deletes an [`Media`] from the database by [`MediaId`]
+    async fn delete_media(&self, id: &MediaId) -> Result<()>;
 }

@@ -1,6 +1,9 @@
 use chrono::{DateTime, Utc};
 
-use crate::models::domains::MediaId;
+use crate::{
+    error::Result,
+    models::{domains::MediaId, types::UpdateField},
+};
 
 id_type! {
     /// Asset Id
@@ -24,4 +27,40 @@ pub struct Asset {
 
     /// Asset source URL
     pub source_url: Option<String>,
+}
+
+/// Asset Update DTO
+#[derive(Debug, Default)]
+pub struct AssetUpdateData {
+    /// New Asset title
+    pub title: UpdateField<Option<String>>,
+    /// New Asset caption
+    pub caption: UpdateField<Option<String>>,
+
+    /// New Asset source URL
+    pub source_url: UpdateField<Option<String>>,
+}
+
+/// Trait for [`Asset`] domain repository
+#[async_trait::async_trait]
+pub trait AssetRepository {
+    /// Inserts an [`Asset`] into the database
+    async fn insert_asset(&self, asset: &Asset) -> Result<()>;
+
+    /// Returns an [`Asset`] from the database by [`AssetId`]
+    async fn get_asset(&self, id: &AssetId) -> Result<Option<Asset>> {
+        self.get_assets_by_ids(&[id])
+            .await
+            .map(|a| a.into_iter().next())
+    }
+
+    /// Returns a set of [`Asset`] by the list of Ids
+    async fn get_assets_by_ids(&self, ids: &[&AssetId]) -> Result<Vec<Asset>>;
+
+    /// Updates [`Asset`] fields in the database
+    /// according to [`AssetUpdateData`]
+    async fn update_asset(&self, id: &AssetId, data: &AssetUpdateData) -> Result<()>;
+
+    /// Deletes an [`Asset`] from the database by [`AssetId`]
+    async fn delete_asset(&self, id: &AssetId) -> Result<()>;
 }
