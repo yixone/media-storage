@@ -33,7 +33,6 @@ impl MediaImage {
     pub fn to_stream(self, format: ImageFormat) -> Result<ImageStream> {
         let mut buf = Vec::new();
         self.inner.write_to(Cursor::new(&mut buf), format)?;
-
         let chunks = buf
             .chunks(16 * 1024)
             .map(Bytes::copy_from_slice)
@@ -58,15 +57,15 @@ impl AsyncRead for ImageStream {
             return Poll::Ready(Ok(()));
         }
 
-        let inner = match self.next.front_mut() {
+        let inner_buf = match self.next.front_mut() {
             Some(c) => c,
             None => return Poll::Ready(Ok(())),
         };
-        let len = inner.len().min(buf.remaining());
-        let to_put = inner.split_to(len);
+        let len = inner_buf.len().min(buf.remaining());
+        let to_put = inner_buf.split_to(len);
         buf.put_slice(&to_put);
 
-        if inner.is_empty() {
+        if inner_buf.is_empty() {
             self.next.pop_front();
         }
         Poll::Ready(Ok(()))
