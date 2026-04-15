@@ -54,9 +54,9 @@ impl MediaRepository for SqliteDb {
     async fn update_media(&self, id: &MediaId, data: &MediaUpdateData) -> Result<bool> {
         let mut qb = QueryBuilder::new(
             "
-            UPDATE media 
-            SET 
-            ",
+        UPDATE media 
+        SET 
+        ",
         );
         let has_changes = opt_update_query! {
             qb,

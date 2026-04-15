@@ -48,9 +48,9 @@ impl AssetsRepository for SqliteDb {
     async fn update_asset(&self, id: &AssetId, data: &AssetUpdateData) -> Result<bool> {
         let mut qb = QueryBuilder::new(
             "
-            UPDATE assets 
-            SET 
-            ",
+        UPDATE assets 
+        SET 
+        ",
         );
         let has_changes = opt_update_query! {
             qb,
@@ -73,10 +73,9 @@ impl AssetsRepository for SqliteDb {
     async fn get_assets(&self, cursor: u32, limit: u32) -> Result<Vec<Asset>> {
         let items = sqlx::query_as(
             "
-            SELECT * FROM assets
-            LIMIT ?
-            OFFSET ?
-            ",
+        SELECT * FROM assets
+        LIMIT ? OFFSET ?
+        ",
         )
         .bind(limit)
         .bind(cursor)
