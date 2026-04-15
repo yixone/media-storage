@@ -3,11 +3,11 @@ use sqlx::QueryBuilder;
 use crate::{
     db::providers::sqlite::SqliteDb,
     error::Result,
-    models::domains::{Asset, AssetId, AssetRepository, AssetUpdateData},
+    models::domains::{Asset, AssetId, AssetUpdateData, AssetsRepository},
 };
 
 #[async_trait::async_trait]
-impl AssetRepository for SqliteDb {
+impl AssetsRepository for SqliteDb {
     /// Inserts an [`Asset`] into the database
     async fn insert_asset(&self, asset: &Asset) -> Result<()> {
         sqlx::query(

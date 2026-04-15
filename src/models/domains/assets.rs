@@ -46,7 +46,7 @@ pub struct AssetUpdateData {
 
 /// Trait for [`Asset`] domain repository
 #[async_trait::async_trait]
-pub trait AssetRepository {
+pub trait AssetsRepository {
     /// Inserts an [`Asset`] into the database
     async fn insert_asset(&self, asset: &Asset) -> Result<()>;
 
