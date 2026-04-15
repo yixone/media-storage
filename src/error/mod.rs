@@ -56,3 +56,4 @@ impl std::error::Error for AppError {
 
 map_error!(std::io::Error => InternalError);
 map_error!(sqlx::Error => InternalError);
+map_error!(image::ImageError => InternalError);
