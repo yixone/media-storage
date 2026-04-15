@@ -24,5 +24,14 @@ chrono = { version = "0.4.42" }
 # Crypto
 sha2 = "0.10.9"
 
+# Database
+sqlx = { version = "0.8.5", features = [
+    "sqlite",
+    "runtime-tokio",
+    "chrono",
+    "uuid",
+] }
+
+
 [dev-dependencies]
 tempfile = "3.27.0"
