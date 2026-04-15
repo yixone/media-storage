@@ -1,20 +1,19 @@
-use std::ops::Deref;
+pub mod sqlite;
 
-/// Database Provider master-trait
+/// Database provider trait
 pub trait DatabaseProvider: Send + Sync {}
 
-/// Database providers
+/// Database providers abstraction
 #[derive(Debug, Clone)]
 pub enum Database {
-    /// SQLite database
-    Sqlite(),
+    Sqlite(sqlite::SqliteDb),
 }
 
-impl Deref for Database {
+impl std::ops::Deref for Database {
     type Target = dyn DatabaseProvider;
     fn deref(&self) -> &Self::Target {
         match self {
-            Database::Sqlite() => todo!(),
+            Database::Sqlite(db) => db,
         }
     }
 }

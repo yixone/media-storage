@@ -1,4 +1,5 @@
 #[macro_use]
 pub mod macros;
 
-pub mod provider;
+pub mod providers;
+pub mod repos;
