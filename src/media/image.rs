@@ -6,7 +6,9 @@ use std::{
 };
 
 use bytes::Bytes;
-use image::{DynamicImage, ImageFormat, ImageReader};
+use image::{
+    DynamicImage, GenericImageView, ImageFormat, ImageReader, Pixel, imageops::FilterType,
+};
 use tokio::io::{AsyncRead, AsyncReadExt, ReadBuf};
 
 use crate::error::Result;
@@ -18,7 +20,7 @@ pub struct MediaImage {
 }
 
 impl MediaImage {
-    /// Decodes an image from an [`AsyncRead`] object
+    /// Decodes an [`MediaImage`] from a Reader
     pub async fn from_reader(mut reader: impl AsyncRead + Unpin + Send) -> Result<Self> {
         // TODO: add size limit
         let mut buf = Vec::new();
@@ -29,7 +31,19 @@ impl MediaImage {
         Ok(MediaImage { inner: img })
     }
 
-    /// Encodes an [`MediaImage`] with the specified format and returns a [`ImageStream`]
+    /// Returns the accent color of an [`MediaImage`] in RGB format
+    pub fn get_accent_color(&self) -> [u8; 3] {
+        let comp = self.inner.resize(1, 1, FilterType::Gaussian);
+        let rgb = comp.get_pixel(0, 0).to_rgb();
+        rgb.0
+    }
+
+    /// Returns the size of the [`MediaImage`]
+    pub fn get_dimension(&self) -> (u32, u32) {
+        (self.inner.width(), self.inner.height())
+    }
+
+    /// Encodes an [`MediaImage`] with the specified [`ImageFormat`] and returns an [`ImageStream`]
     pub fn to_stream(self, format: ImageFormat) -> Result<ImageStream> {
         let mut buf = Vec::new();
         self.inner.write_to(Cursor::new(&mut buf), format)?;
