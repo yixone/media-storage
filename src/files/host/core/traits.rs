@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use tokio::io::AsyncRead;
 
 use crate::{
@@ -8,7 +10,7 @@ use crate::{
     },
 };
 
-pub trait FileHost: FileHostIO + FileHostOps {}
+pub trait FileHost: FileHostIO + FileHostOps + Debug {}
 
 #[async_trait::async_trait]
 pub trait FileHostIO: Send + Sync + 'static {

@@ -19,7 +19,7 @@ pub mod types;
 const MAX_FILE_SIZE: usize = 128 * 1024 * 1024;
 
 /// Content-addressable storage for files
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Storage {
     file_host: Arc<dyn FileHost>,
 }
