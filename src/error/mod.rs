@@ -1,12 +1,19 @@
 use std::panic::Location;
 
+use serde::Serialize;
+
 #[macro_use]
 mod macros;
 
 pub type Result<T> = std::result::Result<T, AppError>;
 
 /// Application error types
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Serialize)]
+#[serde(
+    tag = "error",
+    content = "details",
+    rename_all = "SCREAMING_SNAKE_CASE"
+)]
 pub enum ErrorType {
     FileTooLarge { max_size: usize, received: usize },
 
@@ -14,21 +21,19 @@ pub enum ErrorType {
 }
 
 /// Application Error data
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AppError {
     error_type: ErrorType,
-    location: String,
+    location: &'static Location<'static>,
 }
 
 impl AppError {
     /// Creates a new [`AppError`]
     #[track_caller]
     pub fn new(error_type: ErrorType) -> Self {
-        let caller = Location::caller();
-        let location = format!("{}:{}", caller.file(), caller.line());
         Self {
             error_type,
-            location,
+            location: Location::caller(),
         }
     }
 
