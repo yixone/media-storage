@@ -5,6 +5,8 @@ use serde::Serialize;
 #[macro_use]
 mod macros;
 
+pub mod actix;
+
 pub type Result<T> = std::result::Result<T, AppError>;
 
 /// Application error types
