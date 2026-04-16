@@ -4,5 +4,5 @@ pub mod v0;
 
 /// Configures server endpoints
 pub fn config(cfg: &mut web::ServiceConfig) {
-    //
+    cfg.service(web::scope("v0").configure(v0::config));
 }
