@@ -18,6 +18,7 @@ pub enum ErrorType {
     FileTooLarge { max_size: usize, received: usize },
 
     InternalError,
+    MediaError,
 }
 
 /// Application Error data
@@ -53,4 +54,4 @@ impl std::error::Error for AppError {}
 
 map_error!(std::io::Error => InternalError);
 map_error!(sqlx::Error => InternalError);
-map_error!(image::ImageError => InternalError);
+map_error!(image::ImageError => MediaError);
