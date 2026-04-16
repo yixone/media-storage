@@ -4,6 +4,11 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+# Actix
+actix-web = "4.11.0"
+actix-multipart = "0.7.2"
+actix-cors = "0.7.1"
+
 # Async
 async-trait = "0.1.89"
 futures = "0.3.32"
