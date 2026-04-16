@@ -9,7 +9,11 @@ pub type Result<T> = std::result::Result<T, AppError>;
 
 /// Application error types
 #[derive(Debug, PartialEq, Serialize)]
-#[serde(tag = "error", content = "details")]
+#[serde(
+    tag = "error",
+    content = "details",
+    rename_all = "SCREAMING_SNAKE_CASE"
+)]
 pub enum ErrorType {
     FileTooLarge { max_size: usize, received: usize },
 
