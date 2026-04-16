@@ -8,7 +8,12 @@ use crate::{
 
 /// Configures `/assets` endpoints
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("assets").service(upload_asset));
+    cfg.service(
+        web::scope("assets")
+            .service(upload_asset)
+            .service(get_asset)
+            .service(get_assets_list),
+    );
 }
 
 /// Uploads new Asset and returns it
@@ -21,14 +26,14 @@ pub async fn upload_asset(
     todo!()
 }
 
-/// Returns an Asset by ID
-#[get("/{id}")]
-pub async fn get_asset_by_id(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
-    todo!()
-}
-
 /// Returns a list of Assets with pagination
 #[get("")]
 pub async fn get_assets_list(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
+    todo!()
+}
+
+/// Returns an Asset by ID
+#[get("/{id}")]
+pub async fn get_asset(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
     todo!()
 }
