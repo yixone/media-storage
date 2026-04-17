@@ -35,7 +35,7 @@ pub struct Media {
 }
 
 /// Media State
-#[derive(Debug, Clone, Copy, PartialEq, sqlx::Type)]
+#[derive(Debug, Clone, Copy, PartialEq, sqlx::Type, serde::Serialize)]
 #[sqlx(rename_all = "lowercase")]
 pub enum MediaState {
     /// Media is awaiting processing

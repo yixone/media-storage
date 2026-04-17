@@ -4,7 +4,7 @@ macro_rules! id_type {
         $id: ident as $id_ty: ty
     ) => {
         $(#[$meta])*
-        #[derive(Debug, Clone, PartialEq, Hash, sqlx::Type)]
+        #[derive(Debug, Clone, PartialEq, Hash, sqlx::Type, serde::Serialize)]
         #[sqlx(transparent)]
         pub struct $id($id_ty);
     };
