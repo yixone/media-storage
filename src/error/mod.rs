@@ -19,6 +19,9 @@ pub type Result<T> = std::result::Result<T, AppError>;
 pub enum ErrorType {
     FileTooLarge { max_size: usize, received: usize },
 
+    MultipartError,
+
+    BrokenRelation,
     InternalError,
     MediaError,
 }
@@ -57,3 +60,5 @@ impl std::error::Error for AppError {}
 map_error!(std::io::Error => InternalError);
 map_error!(sqlx::Error => InternalError);
 map_error!(image::ImageError => MediaError);
+
+map_error!(actix_multipart::MultipartError => MultipartError);

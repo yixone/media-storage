@@ -18,6 +18,8 @@ impl ResponseError for AppError {
     fn status_code(&self) -> StatusCode {
         match self.error_type() {
             ErrorType::FileTooLarge { .. } => StatusCode::PAYLOAD_TOO_LARGE,
+            ErrorType::MultipartError => StatusCode::BAD_REQUEST,
+            ErrorType::BrokenRelation => StatusCode::INTERNAL_SERVER_ERROR,
             ErrorType::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
             ErrorType::MediaError => StatusCode::INTERNAL_SERVER_ERROR,
         }
