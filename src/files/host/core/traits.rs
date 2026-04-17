@@ -10,7 +10,7 @@ use crate::{
     },
 };
 
-pub trait FileHost: FileHostIO + FileHostOps + Debug {}
+pub trait FileHostExt: FileHostIO + FileHostOps + Debug {}
 
 #[async_trait::async_trait]
 pub trait FileHostIO: Send + Sync + 'static {

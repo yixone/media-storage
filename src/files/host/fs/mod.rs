@@ -9,7 +9,7 @@ use crate::{
     error::Result,
     files::host::{
         core::{
-            traits::{FileHost, FileHostIO, FileHostOps},
+            traits::{FileHostExt, FileHostIO, FileHostOps},
             types::{DeleteResult, FileHostKey, RenameResult},
             writer::FileHostWriter,
         },
@@ -40,7 +40,7 @@ impl FsFileHost {
     }
 }
 
-impl FileHost for FsFileHost {}
+impl FileHostExt for FsFileHost {}
 
 #[async_trait::async_trait]
 impl FileHostIO for FsFileHost {
