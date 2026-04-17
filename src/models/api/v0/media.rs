@@ -18,16 +18,16 @@ pub struct ApiMedia {
 
 impl ApiMedia {
     /// Build an [`ApiMedia`] from [`Media`] domain model
-    pub fn from_domain(d: Media) -> Self {
+    pub fn from_domain(m: Media) -> Self {
         Self {
-            id: d.id,
-            state: d.state,
-            created_at: d.created_at,
-            size: d.size,
-            mimetype: d.mimetype,
-            width: d.width,
-            height: d.height,
-            color: d.color,
+            id: m.id,
+            state: m.state,
+            created_at: m.created_at,
+            size: m.size,
+            mimetype: m.mimetype,
+            width: m.width,
+            height: m.height,
+            color: m.color,
         }
     }
 }
