@@ -1,7 +1,8 @@
-use futures::TryStreamExt;
+use bytes::Bytes;
+use futures::{Stream, TryStreamExt};
 use sha2::{Digest, Sha256};
 use tokio::io::AsyncRead;
-use tokio_util::io::ReaderStream;
+use tokio_util::io::{ReaderStream, StreamReader};
 
 use crate::{
     create_error,
@@ -26,6 +27,20 @@ impl Storage {
     /// Creates a new [`Storage`]
     pub fn new(file_host: FileHost) -> Self {
         Self { file_host }
+    }
+
+    /// Writes a Stream to storage and returns a [`StoragePutResult`]
+    pub async fn put_stream<S>(&self, mut stream: S) -> Result<StoragePutResult>
+    where
+        S: Stream<Item = Result<Bytes>> + Unpin,
+    {
+        // FIXME:
+        // We need to decide how to handle the error correctly,
+        // because we're currently mapping:
+        // Original -> AppError -> std::io::Error
+
+        self.put(StreamReader::new(stream.map_err(std::io::Error::other)))
+            .await
     }
 
     /// Writes a reader to storage and returns a [`StoragePutResult`]

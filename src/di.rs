@@ -9,6 +9,6 @@ pub struct DataContext {
     pub store: Storage,
 }
 
-/// Context for sending notifications
+/// Context for sending messages to background workers
 #[derive(Debug, Clone)]
-pub struct NotificationsContext {}
+pub struct MsgsContext {}

@@ -1,10 +1,22 @@
 use chrono::{DateTime, Utc};
 
-use crate::{error::Result, models::types::UpdateField};
+use crate::{error::Result, files::storage::types::StorageKey, models::types::UpdateField};
 
 id_type! {
     /// Media Id
     MediaId as String
+}
+
+impl From<MediaId> for StorageKey {
+    fn from(id: MediaId) -> Self {
+        StorageKey { inner: id.0 }
+    }
+}
+
+impl From<StorageKey> for MediaId {
+    fn from(id: StorageKey) -> Self {
+        MediaId(id.inner)
+    }
 }
 
 /// Media Domain
@@ -35,7 +47,7 @@ pub struct Media {
 }
 
 /// Media State
-#[derive(Debug, Clone, Copy, PartialEq, sqlx::Type)]
+#[derive(Debug, Clone, Copy, PartialEq, sqlx::Type, serde::Serialize)]
 #[sqlx(rename_all = "lowercase")]
 pub enum MediaState {
     /// Media is awaiting processing

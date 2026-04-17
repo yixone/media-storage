@@ -20,6 +20,7 @@ impl MediaRepository for SqliteDb {
             ?, ?, ?, ?, ?, 
             ?, ?, ?
         )
+        ON CONFLICT DO NOTHING
         ",
         )
         .bind(&media.id)
