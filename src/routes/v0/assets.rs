@@ -2,7 +2,7 @@ use actix_multipart::Multipart;
 use actix_web::{HttpResponse, get, post, web};
 
 use crate::{
-    di::{DataContext, NotificationsContext},
+    di::{DataContext, MsgsContext},
     error::Result,
 };
 
@@ -21,7 +21,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 pub async fn upload_asset(
     mut payload: Multipart,
     ctx: web::Data<DataContext>,
-    nt: web::Data<NotificationsContext>,
+    msgs: web::Data<MsgsContext>,
 ) -> Result<HttpResponse> {
     todo!()
 }
