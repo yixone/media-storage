@@ -28,6 +28,9 @@ impl ResponseError for AppError {
     fn error_response(&self) -> HttpResponse {
         let status = self.status_code();
         let code = status.as_u16();
+
+        tracing::error!("{self:?}");
+
         HttpResponse::build(status).json(ErrorResponse {
             code,
             error: self.error_type(),
