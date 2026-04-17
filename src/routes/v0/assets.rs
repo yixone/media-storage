@@ -31,7 +31,7 @@ struct AssetUploadingContext {
     caption: Option<String>,
 }
 
-/// Reads a [`actix_multipart::Field`] into a string or returns an error.
+/// Reads a [`actix_multipart::Field`] into a [`String`] or returns an error.
 async fn read_field_to_string(field: &mut Field) -> Result<String> {
     let mut buf = Vec::new();
     while let Some(chunk) = field.try_next().await? {
@@ -40,7 +40,7 @@ async fn read_field_to_string(field: &mut Field) -> Result<String> {
     String::from_utf8(buf).map_err(|_| create_error!(MultipartError))
 }
 
-/// Uploads new Asset and returns it
+/// Uploads new [`Asset`] and returns it
 #[post("")]
 pub async fn upload_asset(
     mut payload: Multipart,
@@ -100,15 +100,9 @@ pub async fn upload_asset(
 
                 uploading.media = Some(media);
             }
-            Some("title") => {
-                uploading.title = Some(read_field_to_string(&mut field).await?);
-            }
-            Some("source") => {
-                uploading.source = Some(read_field_to_string(&mut field).await?);
-            }
-            Some("caption") => {
-                uploading.caption = Some(read_field_to_string(&mut field).await?);
-            }
+            Some("title") => uploading.title = Some(read_field_to_string(&mut field).await?),
+            Some("source") => uploading.source = Some(read_field_to_string(&mut field).await?),
+            Some("caption") => uploading.caption = Some(read_field_to_string(&mut field).await?),
             _ => {
                 continue;
             }
