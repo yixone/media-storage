@@ -17,7 +17,7 @@ impl StorageKey {
     }
 
     /// Creates [`StorageKey`] from a [`FileHostKey`]
-    pub fn host_key(&self) -> FileHostKey {
+    pub fn to_host_key(&self) -> FileHostKey {
         FileHostKey {
             inner: format!(
                 "global/{}/{}/{}",
@@ -44,7 +44,7 @@ impl TempKey {
     }
 
     /// Creates [`TempKey`] from a [`FileHostKey`]
-    pub fn host_key(&self) -> FileHostKey {
+    pub fn to_host_key(&self) -> FileHostKey {
         FileHostKey {
             inner: format!("temp/{}", self.inner.as_simple()),
         }

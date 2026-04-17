@@ -33,7 +33,7 @@ impl Storage {
     where
         R: AsyncRead + Unpin,
     {
-        let temp = TempKey::generate().host_key();
+        let temp = TempKey::generate().to_host_key();
         let mut writer = self.file_host.new_writer(&temp).await?;
 
         let mut size = 0;
@@ -58,7 +58,7 @@ impl Storage {
         writer.finalize().await?;
 
         let key = StorageKey::from_digest(hasher.finalize().into());
-        let is_new = match self.file_host.try_rename(&temp, &key.host_key()).await? {
+        let is_new = match self.file_host.try_rename(&temp, &key.to_host_key()).await? {
             RenameResult::Renamed => true,
             RenameResult::AlreadyExists => {
                 self.file_host.delete(&temp).await?;
@@ -71,7 +71,7 @@ impl Storage {
 
     /// Returns the Reader to a file from the storage
     pub async fn get(&self, key: &StorageKey) -> Result<impl AsyncRead + Send + Unpin> {
-        let reader = self.file_host.get_reader(&key.host_key()).await?;
+        let reader = self.file_host.get_reader(&key.to_host_key()).await?;
         Ok(reader)
     }
 }
