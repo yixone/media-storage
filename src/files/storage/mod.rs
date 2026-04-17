@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use futures::TryStreamExt;
 use sha2::{Digest, Sha256};
 use tokio::io::AsyncRead;
@@ -9,7 +7,7 @@ use crate::{
     create_error,
     error::Result,
     files::{
-        host::core::{traits::FileHost, types::RenameResult},
+        host::{FileHost, core::types::RenameResult},
         storage::types::{StorageKey, StoragePutResult, TempKey},
     },
 };
@@ -21,15 +19,13 @@ const MAX_FILE_SIZE: usize = 128 * 1024 * 1024;
 /// Content-addressable storage for files
 #[derive(Debug, Clone)]
 pub struct Storage {
-    file_host: Arc<dyn FileHost>,
+    file_host: FileHost,
 }
 
 impl Storage {
     /// Creates a new [`Storage`]
-    pub fn new(file_host: impl FileHost) -> Self {
-        Self {
-            file_host: Arc::new(file_host),
-        }
+    pub fn new(file_host: FileHost) -> Self {
+        Self { file_host }
     }
 
     /// Writes a reader to storage and returns a [`StoragePutResult`]
