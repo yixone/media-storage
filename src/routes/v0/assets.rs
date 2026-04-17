@@ -51,7 +51,7 @@ pub async fn upload_asset(
     while let Some(mut field) = payload.try_next().await? {
         match field.name() {
             Some("file") => {
-                if uploading.media.is_none() {
+                if uploading.media.is_some() {
                     // For now we ignore all files except the first one
                     continue;
                 }
