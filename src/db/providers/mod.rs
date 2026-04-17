@@ -5,7 +5,7 @@ use crate::{db::providers::sqlite::SqliteDb, error::Result};
 pub mod sqlite;
 
 /// Database provider trait
-pub trait DatabaseProvider: Send + Sync {}
+pub trait DatabaseProvider: Send + Sync + MediaRepository + AssetsRepository {}
 
 /// Database providers abstraction
 #[derive(Debug, Clone)]
