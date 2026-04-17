@@ -1,6 +1,10 @@
 use std::path::Path;
 
-use crate::{db::providers::sqlite::SqliteDb, error::Result};
+use crate::{
+    db::providers::sqlite::SqliteDb,
+    error::Result,
+    models::domains::{AssetsRepository, MediaRepository},
+};
 
 pub mod sqlite;
 
