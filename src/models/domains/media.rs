@@ -7,6 +7,18 @@ id_type! {
     MediaId as String
 }
 
+impl From<MediaId> for StorageKey {
+    fn from(id: MediaId) -> Self {
+        StorageKey { inner: id.0 }
+    }
+}
+
+impl From<StorageKey> for MediaId {
+    fn from(id: StorageKey) -> Self {
+        MediaId(id.inner)
+    }
+}
+
 /// Media Domain
 #[derive(Debug, PartialEq, sqlx::FromRow)]
 pub struct Media {
