@@ -1,4 +1,5 @@
 use chrono::{DateTime, Utc};
+use uuid::Uuid;
 
 use crate::{
     error::Result,
@@ -7,7 +8,14 @@ use crate::{
 
 id_type! {
     /// Asset Id
-    AssetId as uuid::Uuid
+    AssetId as Uuid
+}
+
+impl AssetId {
+    /// Genrates new [`AssetId`]
+    pub fn generate() -> Self {
+        AssetId(Uuid::new_v4())
+    }
 }
 
 /// Asset domain
