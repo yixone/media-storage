@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use actix_multipart::{Field, Multipart};
 use actix_web::{HttpResponse, get, post, web};
 use chrono::Utc;
@@ -132,7 +134,29 @@ pub async fn upload_asset(
 /// Returns a list of Assets with pagination
 #[get("")]
 pub async fn get_assets_list(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
-    todo!()
+    // FIXME:
+    // Temporary hardcoded pagination
+    let assets = ctx.db.get_assets(0, 50).await?;
+    let ids = assets.iter().map(|a| &a.media).collect::<Vec<_>>();
+
+    let media = ctx.db.get_media_by_ids(&ids).await?;
+    let media_map = media
+        .into_iter()
+        .map(|m| (m.id.clone(), ApiMedia::from_domain(m)))
+        .collect::<HashMap<_, _>>();
+
+    let api_assets = assets
+        .into_iter()
+        .map(|a| -> Result<ApiAsset> {
+            let media = media_map
+                .get(&a.media)
+                .cloned()
+                .ok_or(create_error!(BrokenRelation))?;
+            Ok(ApiAsset::from_domain(a, media))
+        })
+        .collect::<Result<Vec<_>>>()?;
+
+    Ok(HttpResponse::Ok().json(api_assets))
 }
 
 /// Returns an Asset by ID
