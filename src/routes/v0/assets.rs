@@ -1,7 +1,10 @@
 use std::collections::HashMap;
 
 use actix_multipart::{Field, Multipart};
-use actix_web::{HttpResponse, get, post, web};
+use actix_web::{
+    HttpResponse, get, post,
+    web::{self, Path},
+};
 use chrono::Utc;
 use futures::TryStreamExt;
 
@@ -127,7 +130,6 @@ pub async fn upload_asset(
 
     let api_media = ApiMedia::from_domain(media);
     let api_asset = ApiAsset::from_domain(new_asset, api_media);
-
     Ok(HttpResponse::Created().json(api_asset))
 }
 
@@ -155,12 +157,24 @@ pub async fn get_assets_list(ctx: web::Data<DataContext>) -> Result<HttpResponse
             Ok(ApiAsset::from_domain(a, media))
         })
         .collect::<Result<Vec<_>>>()?;
-
     Ok(HttpResponse::Ok().json(api_assets))
 }
 
 /// Returns an Asset by ID
 #[get("/{id}")]
-pub async fn get_asset(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
-    todo!()
+pub async fn get_asset(id: Path<(AssetId,)>, ctx: web::Data<DataContext>) -> Result<HttpResponse> {
+    let id = id.into_inner().0;
+    let asset = ctx
+        .db
+        .get_asset(&id)
+        .await?
+        .ok_or(create_error!(NotFound))?;
+    let media = ctx
+        .db
+        .get_media(&asset.media)
+        .await?
+        .ok_or(create_error!(BrokenRelation))?;
+    let api_media = ApiMedia::from_domain(media);
+    let api_asset = ApiAsset::from_domain(asset, api_media);
+    Ok(HttpResponse::Ok().json(api_asset))
 }
