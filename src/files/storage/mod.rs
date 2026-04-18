@@ -30,7 +30,7 @@ impl Storage {
     }
 
     /// Writes a Stream to storage and returns a [`StoragePutResult`]
-    pub async fn put_stream<S>(&self, mut stream: S) -> Result<StoragePutResult>
+    pub async fn put_stream<S>(&self, stream: S) -> Result<StoragePutResult>
     where
         S: Stream<Item = Result<Bytes>> + Unpin,
     {

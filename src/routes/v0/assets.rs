@@ -136,8 +136,7 @@ pub async fn upload_asset(
 /// Returns a list of Assets with pagination
 #[get("")]
 pub async fn get_assets_list(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
-    // FIXME:
-    // Temporary hardcoded pagination
+    // FIXME: Temporary hardcoded pagination
     let assets = ctx.db.get_assets(0, 50).await?;
     let ids = assets.iter().map(|a| &a.media).collect::<Vec<_>>();
 
@@ -160,7 +159,7 @@ pub async fn get_assets_list(ctx: web::Data<DataContext>) -> Result<HttpResponse
     Ok(HttpResponse::Ok().json(api_assets))
 }
 
-/// Returns an Asset by ID
+/// Returns an [`Asset`] by [`AssetId`]
 #[get("/{id}")]
 pub async fn get_asset(id: Path<(AssetId,)>, ctx: web::Data<DataContext>) -> Result<HttpResponse> {
     let id = id.into_inner().0;
