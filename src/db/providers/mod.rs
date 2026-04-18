@@ -8,8 +8,11 @@ use crate::{
 
 pub mod sqlite;
 
-/// Database provider trait
+/// Database provider supertrait
 pub trait DatabaseProvider: Send + Sync + MediaRepository + AssetsRepository {}
+
+/// Supertrait blanket implementation
+impl<T: Send + Sync + MediaRepository + AssetsRepository> DatabaseProvider for T {}
 
 /// Database providers abstraction
 #[derive(Debug, Clone)]

@@ -47,5 +47,3 @@ impl SqliteDb {
         &self.inner
     }
 }
-
-impl super::DatabaseProvider for SqliteDb {}
