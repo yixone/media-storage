@@ -85,7 +85,7 @@ impl Storage {
     }
 
     /// Returns the Reader to a file from the storage
-    pub async fn get(&self, key: &StorageKey) -> Result<impl AsyncRead + Send + Unpin> {
+    pub async fn get(&self, key: &StorageKey) -> Result<impl AsyncRead + Send + Unpin + 'static> {
         let reader = self.file_host.get_reader(&key.to_host_key()).await?;
         Ok(reader)
     }
