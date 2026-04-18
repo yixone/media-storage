@@ -19,6 +19,7 @@ impl ResponseError for AppError {
         match self.error_type() {
             ErrorType::FileTooLarge { .. } => StatusCode::PAYLOAD_TOO_LARGE,
             ErrorType::MultipartError => StatusCode::BAD_REQUEST,
+            ErrorType::NotFound => StatusCode::NOT_FOUND,
             ErrorType::BrokenRelation => StatusCode::INTERNAL_SERVER_ERROR,
             ErrorType::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
             ErrorType::MediaError => StatusCode::INTERNAL_SERVER_ERROR,

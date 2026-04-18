@@ -21,6 +21,8 @@ pub enum ErrorType {
 
     MultipartError,
 
+    NotFound,
+
     BrokenRelation,
     InternalError,
     MediaError,

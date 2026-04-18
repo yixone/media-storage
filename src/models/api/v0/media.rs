@@ -4,7 +4,7 @@ use serde::Serialize;
 use crate::models::domains::{Media, MediaId, MediaState};
 
 /// API representation of a [`Media`] domain
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 pub struct ApiMedia {
     pub id: MediaId,
     pub state: MediaState,

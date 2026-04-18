@@ -1,5 +1,10 @@
+use std::collections::HashMap;
+
 use actix_multipart::{Field, Multipart};
-use actix_web::{HttpResponse, get, post, web};
+use actix_web::{
+    HttpResponse, get, post,
+    web::{self, Path},
+};
 use chrono::Utc;
 use futures::TryStreamExt;
 
@@ -31,7 +36,7 @@ struct AssetUploadingContext {
     caption: Option<String>,
 }
 
-/// Reads a [`actix_multipart::Field`] into a string or returns an error.
+/// Reads a [`actix_multipart::Field`] into a [`String`] or returns an error.
 async fn read_field_to_string(field: &mut Field) -> Result<String> {
     let mut buf = Vec::new();
     while let Some(chunk) = field.try_next().await? {
@@ -40,7 +45,7 @@ async fn read_field_to_string(field: &mut Field) -> Result<String> {
     String::from_utf8(buf).map_err(|_| create_error!(MultipartError))
 }
 
-/// Uploads new Asset and returns it
+/// Uploads new [`Asset`] and returns it
 #[post("")]
 pub async fn upload_asset(
     mut payload: Multipart,
@@ -100,15 +105,9 @@ pub async fn upload_asset(
 
                 uploading.media = Some(media);
             }
-            Some("title") => {
-                uploading.title = Some(read_field_to_string(&mut field).await?);
-            }
-            Some("source") => {
-                uploading.source = Some(read_field_to_string(&mut field).await?);
-            }
-            Some("caption") => {
-                uploading.caption = Some(read_field_to_string(&mut field).await?);
-            }
+            Some("title") => uploading.title = Some(read_field_to_string(&mut field).await?),
+            Some("source") => uploading.source = Some(read_field_to_string(&mut field).await?),
+            Some("caption") => uploading.caption = Some(read_field_to_string(&mut field).await?),
             _ => {
                 continue;
             }
@@ -131,18 +130,51 @@ pub async fn upload_asset(
 
     let api_media = ApiMedia::from_domain(media);
     let api_asset = ApiAsset::from_domain(new_asset, api_media);
-
     Ok(HttpResponse::Created().json(api_asset))
 }
 
 /// Returns a list of Assets with pagination
 #[get("")]
 pub async fn get_assets_list(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
-    todo!()
+    // FIXME:
+    // Temporary hardcoded pagination
+    let assets = ctx.db.get_assets(0, 50).await?;
+    let ids = assets.iter().map(|a| &a.media).collect::<Vec<_>>();
+
+    let media = ctx.db.get_media_by_ids(&ids).await?;
+    let media_map = media
+        .into_iter()
+        .map(|m| (m.id.clone(), ApiMedia::from_domain(m)))
+        .collect::<HashMap<_, _>>();
+
+    let api_assets = assets
+        .into_iter()
+        .map(|a| -> Result<ApiAsset> {
+            let media = media_map
+                .get(&a.media)
+                .cloned()
+                .ok_or(create_error!(BrokenRelation))?;
+            Ok(ApiAsset::from_domain(a, media))
+        })
+        .collect::<Result<Vec<_>>>()?;
+    Ok(HttpResponse::Ok().json(api_assets))
 }
 
 /// Returns an Asset by ID
 #[get("/{id}")]
-pub async fn get_asset(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
-    todo!()
+pub async fn get_asset(id: Path<(AssetId,)>, ctx: web::Data<DataContext>) -> Result<HttpResponse> {
+    let id = id.into_inner().0;
+    let asset = ctx
+        .db
+        .get_asset(&id)
+        .await?
+        .ok_or(create_error!(NotFound))?;
+    let media = ctx
+        .db
+        .get_media(&asset.media)
+        .await?
+        .ok_or(create_error!(BrokenRelation))?;
+    let api_media = ApiMedia::from_domain(media);
+    let api_asset = ApiAsset::from_domain(asset, api_media);
+    Ok(HttpResponse::Ok().json(api_asset))
 }
