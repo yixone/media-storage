@@ -1,4 +1,4 @@
-pub mod background;
+pub mod bg;
 pub mod db;
 pub mod di;
 pub mod error;
