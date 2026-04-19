@@ -2,4 +2,4 @@
 pub mod macros;
 
 pub mod providers;
-pub mod repos;
+pub mod repositories;
