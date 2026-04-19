@@ -1,3 +1,4 @@
+use actix_cors::Cors;
 use actix_web::{App, HttpServer, web::Data};
 use media_storage::{
     db::providers::Database,
@@ -27,9 +28,14 @@ async fn main() -> Result<()> {
     let ctx = Data::new(DataContext { db, store });
 
     // Create and launch the server
-    HttpServer::new(move || App::new().configure(routes::config).app_data(ctx.clone()))
-        .bind("0.0.0.0:8080")?
-        .run()
-        .await?;
+    HttpServer::new(move || {
+        App::new()
+            .wrap(Cors::permissive())
+            .configure(routes::config)
+            .app_data(ctx.clone())
+    })
+    .bind("0.0.0.0:8080")?
+    .run()
+    .await?;
     Ok(())
 }
