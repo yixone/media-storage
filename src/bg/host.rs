@@ -40,6 +40,14 @@ impl WorkersHost {
 
     /// Starts [`WorkersHost`] units
     pub async fn run_units(&self) {
+        if self.units.is_empty() {
+            return;
+        }
+        tracing::info!(
+            workers = self.units.len(),
+            "background_worker.running_workers"
+        );
+
         for u in &self.units {
             let cancellation = self.cancellation.clone();
             let unit = u.clone();
