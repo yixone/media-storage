@@ -52,19 +52,17 @@ pub async fn upload_asset(
     ctx: web::Data<DataContext>,
 ) -> Result<HttpResponse> {
     let mut uploading = AssetUploadingContext::default();
-
     while let Some(mut field) = payload.try_next().await? {
         match field.name() {
             Some("file") => {
                 if uploading.media.is_some() {
-                    // For now we ignore all files except the first one
                     continue;
                 }
 
-                // Set the file name as the title if it is empty
                 let disposition = field
                     .content_disposition()
                     .ok_or(create_error!(MultipartError))?;
+
                 if uploading.title.is_none() {
                     uploading.title = disposition.get_filename().map(|v| v.to_string());
                 }
@@ -74,7 +72,6 @@ pub async fn upload_asset(
                     .ok_or(create_error!(MultipartError))?
                     .to_string();
 
-                // Uploading a file to storage
                 let res = ctx.store.put_stream(field.map_err(AppError::from)).await?;
 
                 // Get Media from the database or insert a new one
@@ -90,9 +87,6 @@ pub async fn upload_asset(
                             height: None,
                             color: None,
                         };
-                        // NOTE:
-                        // When inserting, we avoid data races because the StorageKey depends on the file hash,
-                        // so even if there is an insertion conflict, we will get the same Media
                         ctx.db.insert_media(&media).await?;
                         media
                     }
@@ -113,7 +107,6 @@ pub async fn upload_asset(
             }
         }
     }
-
     let Some(media) = uploading.media else {
         return Err(create_error!(MultipartError));
     };
