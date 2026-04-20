@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use tokio_util::sync::CancellationToken;
 
-use crate::bg::api::traits::WorkerUnit;
+use crate::bg::api::traits::BaseWorker;
 
 /// Host for background workers
 #[derive(Clone)]
 pub struct WorkersHost {
     /// Workers units list
-    pub(super) units: Vec<Arc<dyn WorkerUnit>>,
+    pub(super) units: Vec<Arc<dyn BaseWorker>>,
 
     /// Workers cancellation token
     pub(super) cancellation: CancellationToken,
