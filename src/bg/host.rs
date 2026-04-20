@@ -39,30 +39,27 @@ impl WorkersHost {
     }
 
     /// Starts [`WorkersHost`] units
-    pub async fn run_units(&self) {
+    pub async fn run(&self) {
         if self.units.is_empty() {
             return;
         }
-        tracing::info!(
-            workers = self.units.len(),
-            "background_worker.running_workers"
-        );
-
         for u in &self.units {
             let cancellation = self.cancellation.clone();
             let unit = u.clone();
 
             tokio::spawn(async move {
+                tracing::info!(worker = unit.worker_name(), "worker_host.running_worker");
+
                 let rt = unit.run(cancellation).await;
                 if let Err(e) = rt {
-                    tracing::error!(error = ?e, "background_worker.runtime_error");
+                    tracing::error!(error = ?e, worker = unit.worker_name(), "worker_host.runtime_error");
                 }
             });
         }
     }
 
     /// Causes all background workers to stop
-    pub async fn stop_units(&self) {
+    pub async fn stop(self) {
         self.cancellation.cancel();
     }
 }
