@@ -1,6 +1,6 @@
 use actix_web::{App, HttpServer, web::Data};
 use media_storage::{
-    bg::host::WorkersHost,
+    bg::media::MediaWorker,
     db::providers::Database,
     di::DataContext,
     error::Result,
@@ -24,12 +24,12 @@ async fn main() -> Result<()> {
     let file_host = FileHost::fs("data/storage").await?;
     let store = Storage::new(file_host);
 
+    // Launching background workers
+    let media_worker = MediaWorker::new(db.clone(), store.clone());
+    media_worker.run().await?;
+
     // Create an application context
     let ctx = Data::new(DataContext { db, store });
-
-    // Launching background workers
-    let host = WorkersHost::new();
-    host.run().await;
 
     // Create and launch the server
     HttpServer::new(move || App::new().configure(routes::config).app_data(ctx.clone()))
