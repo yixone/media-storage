@@ -24,8 +24,6 @@
 		"noUncheckedSideEffectImports": true,
 
 		"paths": {
-			"@app/*": ["./src/*"],
-
 			"@lib/api": ["./lib/api"],
 			"@lib/api/*": ["./lib/api/*"],
 

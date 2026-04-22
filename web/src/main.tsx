@@ -1,8 +1,13 @@
-import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
-createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<h1>hello!</h1>
-	</StrictMode>
-)
+import "./index.css"
+import { HomePage } from "./pages"
+
+/**
+ * Configures application
+ */
+function Application() {
+	return <HomePage />
+}
+
+createRoot(document.getElementById("root")!).render(<Application />)
