@@ -1,11 +1,12 @@
 import React from "react";
-import { AssetApi } from "./Asset";
-import { MediaApi } from "./Media";
+
+import { ApiAssetModule } from "./modules/asset";
+import { ApiMediaModule } from "./modules/media";
 import type { ApiClient } from "./client";
 
 type ApiContextProps = {
-    assetApi: AssetApi;
-    mediaApi: MediaApi;
+    assetApi: ApiAssetModule;
+    mediaApi: ApiMediaModule;
 };
 
 export const ApiContext = React.createContext<ApiContextProps | null>(null);
@@ -13,7 +14,7 @@ export const ApiContext = React.createContext<ApiContextProps | null>(null);
 export function useApi() {
     const ctx = React.useContext(ApiContext);
     if (!ctx) {
-        throw new Error("useApi must be used within a ApiProvider");
+        throw new Error("useApi() hook must be used within an ApiProvider");
     }
 
     return ctx;
@@ -24,8 +25,8 @@ export function ApiProvider({
     children,
 }: React.ComponentProps<"div"> & { client: ApiClient }) {
     const ctxValue = {
-        assetApi: new AssetApi(client),
-        mediaApi: new MediaApi(client),
+        assetApi: new ApiAssetModule(client),
+        mediaApi: new ApiMediaModule(client),
     };
 
     return (

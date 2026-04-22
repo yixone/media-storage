@@ -31,14 +31,3 @@ export class ApiClient {
         }
     }
 }
-
-/**
- * Abstract class for API clients
- */
-export abstract class AbstractApi {
-    protected client: ApiClient;
-
-    public constructor(client: ApiClient) {
-        this.client = client;
-    }
-}

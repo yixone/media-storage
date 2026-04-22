@@ -1,5 +1,4 @@
-import { AbstractApi } from "./client";
-import type { Media } from "./Media";
+import type { Media } from "./media";
 
 /**
  * Asset model
@@ -12,8 +11,3 @@ export type Asset = {
     caption: string | null;
     source_url: string | null;
 };
-
-/**
- * Asset API client
- */
-export class AssetApi extends AbstractApi {}

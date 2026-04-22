@@ -1,5 +1,3 @@
-import { AbstractApi } from "./client";
-
 /**
  * Media State
  */
@@ -18,8 +16,3 @@ export type Media = {
     height: number | null;
     color: string | null;
 };
-
-/**
- * Media API client
- */
-export class MediaApi extends AbstractApi {}
