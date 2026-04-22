@@ -1,39 +1,17 @@
 use tokio::sync::mpsc::{Receiver, Sender, channel};
+use tracing::info;
 
 use crate::{
-    db::providers::Database, error::Result, files::storage::Storage, models::domains::MediaId,
+    create_error,
+    db::providers::Database,
+    error::Result,
+    files::storage::Storage,
+    media::image::MediaImage,
+    models::{
+        domains::{Media, MediaId, MediaState, MediaUpdateData},
+        types::UpdateField,
+    },
 };
-
-/// Background Media worker
-pub struct MediaWorker {
-    service: WorkerService,
-    queue: WorkerQueue,
-}
-
-impl MediaWorker {
-    /// Creates a new [`MediaWorker`]
-    pub fn new(db: Database, store: Storage) -> Self {
-        let (tx, rx) = channel(128);
-        let queue = WorkerQueue { rx, tx };
-
-        let service = WorkerService { db, store };
-
-        Self { service, queue }
-    }
-
-    /// Returns a [`Sender`] for sending [`MediaWorkerTask`] to the worker queue
-    pub fn sender(&self) -> Sender<MediaWorkerTask> {
-        self.queue.tx.clone()
-    }
-
-    /// The main loop of a worker waiting for signals to perform a task
-    pub async fn run(self) -> Result<()> {
-        tokio::spawn(async move {
-            let this = self;
-        });
-        Ok(())
-    }
-}
 
 /// [`MediaWorker`] Tasks
 pub enum MediaWorkerTask {
@@ -41,14 +19,113 @@ pub enum MediaWorkerTask {
     NewMedia { id: MediaId },
 }
 
-/// [`MediaWorker`] queue container
-struct WorkerQueue {
-    rx: Receiver<MediaWorkerTask>,
-    tx: Sender<MediaWorkerTask>,
+impl MediaWorkerTask {
+    /// Send a task to the specified channel
+    pub async fn send(self, sender: &Sender<MediaWorkerTask>) -> Result<()> {
+        sender.send(self).await.map_err(|e| {
+            tracing::error!(err = ?e, "media_worker.send_task_error");
+            create_error!(InternalError)
+        })
+    }
 }
 
-/// [`MediaWorker`] service
-struct WorkerService {
+/// Background Media worker
+pub struct MediaWorker {
     db: Database,
     store: Storage,
+
+    tx: Sender<MediaWorkerTask>,
+    rx: Receiver<MediaWorkerTask>,
+}
+
+impl MediaWorker {
+    /// Creates a new [`MediaWorker`]
+    pub fn new(db: Database, store: Storage) -> Self {
+        let (tx, rx) = channel(128);
+        Self { db, store, tx, rx }
+    }
+
+    /// Spawns a worker in a separate thread
+    /// and returns [`Sender`] for sending
+    /// [`MediaWorkerTask`] to the [`MediaWorker`]
+    pub async fn spawn(self) -> Sender<MediaWorkerTask> {
+        let sender = self.tx.clone();
+        tokio::spawn(async move {
+            let rt = self.run().await;
+            if let Err(e) = rt {
+                tracing::error!(err = ?e, "media_worker.service_error");
+            }
+        });
+        sender
+    }
+
+    // FIXME: This is a "placeholder" code. Rewrite it later.
+    async fn run(mut self) -> Result<()> {
+        let pending = self.db.get_pending_media(0, 50).await?;
+        for m in pending {
+            self.process_media(&m).await?;
+        }
+
+        while let Some(task) = self.rx.recv().await {
+            match task {
+                MediaWorkerTask::NewMedia { id } => {
+                    info!(id = ?id, "media_worker.new_media_task_received");
+                    let Some(media) = self.db.get_media(&id).await? else {
+                        continue;
+                    };
+                    if media.state != MediaState::Pending {
+                        continue;
+                    }
+                    self.process_media(&media).await?;
+                }
+            }
+        }
+        Ok(())
+    }
+
+    async fn update_media_state(&self, media: &Media, state: MediaState) -> Result<bool> {
+        self.db
+            .update_media(
+                &media.id,
+                &MediaUpdateData {
+                    state: UpdateField::Set(state),
+                    ..Default::default()
+                },
+            )
+            .await
+    }
+
+    async fn process_media(&self, media: &Media) -> Result<()> {
+        if !self
+            .update_media_state(media, MediaState::Processing)
+            .await?
+        {
+            return Ok(());
+        }
+        info!(media = ?media.id, "media_worker.processing_media");
+        self.process_image(media).await?;
+        Ok(())
+    }
+
+    async fn process_image(&self, img: &Media) -> Result<()> {
+        let key = img.id.clone().into();
+        let reader = self.store.get(&key).await?;
+
+        let image = MediaImage::from_reader(reader).await?;
+        let (w, h) = image.get_dimension();
+        let color = hex::encode(image.get_accent_color());
+
+        self.db
+            .update_media(
+                &img.id,
+                &MediaUpdateData {
+                    width: UpdateField::Set(Some(w as u16)),
+                    height: UpdateField::Set(Some(h as u16)),
+                    color: UpdateField::Set(Some(color)),
+                    state: UpdateField::Set(MediaState::Ready),
+                },
+            )
+            .await?;
+        Ok(())
+    }
 }
