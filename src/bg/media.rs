@@ -45,18 +45,21 @@ impl MediaWorker {
         Self { db, store, tx, rx }
     }
 
+    /// Returns [`MediaWorker`] sender
+    pub fn sender(&self) -> Sender<MediaWorkerTask> {
+        self.tx.clone()
+    }
+
     /// Spawns a worker in a separate thread
     /// and returns [`Sender`] for sending
     /// [`MediaWorkerTask`] to the [`MediaWorker`]
-    pub async fn spawn(self) -> Sender<MediaWorkerTask> {
-        let sender = self.tx.clone();
+    pub async fn spawn(self) {
         tokio::spawn(async move {
             let rt = self.run().await;
             if let Err(e) = rt {
                 tracing::error!(err = ?e, "media_worker.service_error");
             }
         });
-        sender
     }
 
     // FIXME: This is a "placeholder" code. Rewrite it later.

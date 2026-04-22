@@ -26,7 +26,8 @@ async fn main() -> Result<()> {
 
     // Launching background workers
     let media_worker = MediaWorker::new(db.clone(), store.clone());
-    let media_worker_tx = media_worker.spawn().await;
+    let media_worker_tx = media_worker.sender();
+    media_worker.spawn().await;
 
     // Create an application context
     let ctx = Data::new(DataContext { db, store });
