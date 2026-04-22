@@ -1,13 +1,13 @@
-import { createRoot } from "react-dom/client"
+import { createRoot } from "react-dom/client";
 
-import "./index.css"
-import { HomePage } from "./pages"
+import "./index.css";
+import { HomePage } from "./pages";
 
 /**
  * Configures application
  */
 function Application() {
-	return <HomePage />
+    return <HomePage />;
 }
 
-createRoot(document.getElementById("root")!).render(<Application />)
+createRoot(document.getElementById("root")!).render(<Application />);
