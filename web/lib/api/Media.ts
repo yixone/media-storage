@@ -1,7 +1,14 @@
+import { AbstractApi } from "./client";
+
 /**
- * Media API model data
+ * Media State
  */
-export type MediaItem = {
+export type MediaState = "Pending" | "Processing" | "Ready" | "Failed";
+
+/**
+ * Media model
+ */
+export type Media = {
     id: string;
     state: MediaState;
     created_at: string;
@@ -13,22 +20,6 @@ export type MediaItem = {
 };
 
 /**
- * Media State
+ * Media API client
  */
-export type MediaState = "Pending" | "Processing" | "Ready" | "Failed";
-
-/**
- * Media API model
- */
-export class Media {
-    item: MediaItem;
-
-    constructor(item: MediaItem) {
-        this.item = item;
-    }
-}
-
-/**
- * Class for interacting with the Media API
- */
-export class MediaApi {}
+export class MediaApi extends AbstractApi {}

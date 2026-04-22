@@ -1,9 +1,10 @@
+import { AbstractApi } from "./client";
 import type { Media } from "./Media";
 
 /**
- * Asset API model data
+ * Asset model
  */
-export type AssetItem = {
+export type Asset = {
     id: string;
     media: Media;
     created_at: string;
@@ -13,17 +14,6 @@ export type AssetItem = {
 };
 
 /**
- * Asset API model
+ * Asset API client
  */
-export class Asset {
-    item: AssetItem;
-
-    constructor(item: AssetItem) {
-        this.item = item;
-    }
-}
-
-/**
- * Class for interacting with the Asset API
- */
-export class AssetApi {}
+export class AssetApi extends AbstractApi {}
