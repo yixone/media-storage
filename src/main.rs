@@ -1,8 +1,8 @@
 use actix_web::{App, HttpServer, web::Data};
 use media_storage::{
-    bg::host::WorkersHost,
+    bg::media::MediaWorker,
     db::providers::Database,
-    di::DataContext,
+    di::{DataContext, MsgsContext},
     error::Result,
     files::{host::FileHost, storage::Storage},
     routes,
@@ -24,17 +24,24 @@ async fn main() -> Result<()> {
     let file_host = FileHost::fs("data/storage").await?;
     let store = Storage::new(file_host);
 
+    // Launching background workers
+    let media_worker = MediaWorker::new(db.clone(), store.clone());
+    let media_worker_tx = media_worker.sender();
+    media_worker.spawn().await;
+
     // Create an application context
     let ctx = Data::new(DataContext { db, store });
-
-    // Launching background workers
-    let host = WorkersHost::new();
-    host.run().await;
+    let msg_ctx = Data::new(MsgsContext { media_worker_tx });
 
     // Create and launch the server
-    HttpServer::new(move || App::new().configure(routes::config).app_data(ctx.clone()))
-        .bind("0.0.0.0:8080")?
-        .run()
-        .await?;
+    HttpServer::new(move || {
+        App::new()
+            .configure(routes::config)
+            .app_data(ctx.clone())
+            .app_data(msg_ctx.clone())
+    })
+    .bind("0.0.0.0:8080")?
+    .run()
+    .await?;
     Ok(())
 }
