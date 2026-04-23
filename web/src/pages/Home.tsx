@@ -1,6 +1,6 @@
 import { useApi } from "@lib/api/context";
 import type { Asset } from "@lib/api/types";
-import { GridAssetsLayout } from "@lib/ui/layouts";
+import { AssetsGridLayout } from "@lib/ui/layouts";
 import { useEffect, useState } from "react";
 
 /**
@@ -20,7 +20,7 @@ function HomePage() {
 
     return (
         <div>
-            <GridAssetsLayout assets={assets} />
+            <AssetsGridLayout assets={assets} />
         </div>
     );
 }
