@@ -59,8 +59,8 @@ function GridAssetMedia({ media }: { media: Media }) {
             box-border aspect-square
             relative
             overflow-hidden
-            rounded-[0.45rem]
-            border border-black/8
+            rounded-[0.5rem]
+            border border-border/75
             "
         >
             {!loaded && (
@@ -74,10 +74,7 @@ function GridAssetMedia({ media }: { media: Media }) {
                 />
             )}
             <img
-                className="
-                size-full
-                object-cover
-                "
+                className="size-full object-cover"
                 src={mediaApi.getMediaUrl(media.id)}
                 onLoad={() => {
                     setLoaded(true);
@@ -98,7 +95,7 @@ function GridAssetData({ title }: { title: string | null }) {
         <p
             className="
             overflow-hidden text-ellipsis
-            text-[1.125rem]
+            text-[1.125rem] text-primary
             "
         >
             {title}
