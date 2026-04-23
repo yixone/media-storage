@@ -1,18 +1,43 @@
 import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useResizeObserver } from "../observer";
+
+const COLUMN_CALC_WIDTH = 250;
+const MIN_COLUMNS_COUNT = 2;
 
 /**
  * Assets grid layout
  */
 function AssetsGridLayout({ assets }: { assets: Asset[] }) {
+    const calcColsCount = (rootWidth: number) => {
+        return Math.floor(rootWidth / COLUMN_CALC_WIDTH);
+    };
+
+    const [colsCount, setColsCount] = useState(
+        calcColsCount(window.innerWidth)
+    );
+
+    const { targetRef } = useResizeObserver((e) => {
+        const newCount = Math.max(
+            calcColsCount(e[0].contentRect.width),
+            MIN_COLUMNS_COUNT
+        );
+
+        setColsCount(newCount);
+    });
+
     return (
         <div
             className="
-            grid grid-cols-7
+            grid
             p-2 gap-2
             overflow-hidden
             "
+            ref={targetRef}
+            style={{
+                gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+            }}
         >
             {assets.map((a) => (
                 <GridAsset asset={a} key={a.id}>
