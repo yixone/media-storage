@@ -1,3 +1,4 @@
+use actix_cors::Cors;
 use actix_web::{App, HttpServer, web::Data};
 use media_storage::{
     bg::media::MediaWorker,
@@ -36,6 +37,7 @@ async fn main() -> Result<()> {
     // Create and launch the server
     HttpServer::new(move || {
         App::new()
+            .wrap(Cors::permissive())
             .configure(routes::config)
             .app_data(ctx.clone())
             .app_data(msg_ctx.clone())

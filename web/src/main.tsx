@@ -1,8 +1,22 @@
-import { StrictMode } from "react"
-import { createRoot } from "react-dom/client"
+import { createRoot } from "react-dom/client";
 
-createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<h1>hello!</h1>
-	</StrictMode>
-)
+import "@lib/ui/style.css";
+import { ApiProvider } from "@lib/api/context";
+import { ApiClient } from "@lib/api/client";
+
+import { HomePage } from "./pages";
+
+/**
+ * Configures application
+ */
+function Application() {
+    const client = new ApiClient("http://localhost:8080");
+
+    return (
+        <ApiProvider client={client}>
+            <HomePage />
+        </ApiProvider>
+    );
+}
+
+createRoot(document.getElementById("root")!).render(<Application />);
