@@ -34,7 +34,10 @@ function GridAsset({
     return (
         <div className="block">
             <a
-                className="hover:*:brightness-95 *:transition-[filter] *:duration-75"
+                className="
+                hover:*:brightness-95 *:transition-[filter] *:duration-70
+                flex flex-col gap-[0.15rem]
+                "
                 href={`/a/${asset.id}`}
             >
                 {children}
@@ -53,34 +56,34 @@ function GridAssetMedia({ media }: { media: Media }) {
     return (
         <div
             className="
-                    box-border aspect-square
-                    relative
-                    overflow-hidden
-                    border border-black/15
-                    "
+            box-border aspect-square
+            relative
+            overflow-hidden
+            rounded-[0.45rem]
+            border border-black/8
+            "
         >
             {!loaded && (
                 <div
                     className="
-                            size-full
-                            absolute
-                            "
+                    size-full
+                    absolute
+                    animate-pulse
+                    "
                     style={{ backgroundColor: `#${media.color}` }}
                 />
             )}
             <img
                 className="
-                        size-full
-                        object-cover
-                        transition-[filter] duration-75
-                        "
+                size-full
+                object-cover
+                "
                 src={mediaApi.getMediaUrl(media.id)}
                 onLoad={() => {
                     setLoaded(true);
                 }}
                 style={{
                     visibility: loaded ? "visible" : "hidden",
-                    filter: loaded ? "none" : "blur(25px)",
                 }}
             />
         </div>
@@ -91,7 +94,16 @@ function GridAssetMedia({ media }: { media: Media }) {
  * A component for displaying metadata for a grid layout asset
  */
 function GridAssetData({ title }: { title: string | null }) {
-    return <p className="overflow-hidden text-ellipsis">{title}</p>;
+    return (
+        <p
+            className="
+            overflow-hidden text-ellipsis
+            text-[1.125rem]
+            "
+        >
+            {title}
+        </p>
+    );
 }
 
 export { AssetsGridLayout };
