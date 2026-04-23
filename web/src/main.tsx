@@ -1,15 +1,16 @@
 import { createRoot } from "react-dom/client";
 
-import "./index.css";
-import { HomePage } from "./pages";
-import { ApiClient } from "@lib/api/client";
+import "@lib/ui/style.css";
 import { ApiProvider } from "@lib/api/context";
+import { ApiClient } from "@lib/api/client";
+
+import { HomePage } from "./pages";
 
 /**
  * Configures application
  */
 function Application() {
-    const client = new ApiClient("localhost:8080");
+    const client = new ApiClient("http://localhost:8080");
 
     return (
         <ApiProvider client={client}>
