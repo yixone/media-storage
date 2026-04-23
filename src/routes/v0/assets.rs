@@ -9,8 +9,9 @@ use chrono::Utc;
 use futures::TryStreamExt;
 
 use crate::{
+    bg::media::MediaWorkerTask,
     create_error,
-    di::DataContext,
+    di::{DataContext, MsgsContext},
     error::{AppError, Result},
     models::{
         api::v0::{ApiAsset, ApiMedia},
@@ -34,6 +35,7 @@ struct AssetUploadingContext {
     title: Option<String>,
     source: Option<String>,
     caption: Option<String>,
+    is_new: bool,
 }
 
 /// Reads a [`actix_multipart::Field`] into a [`String`] or returns an error.
@@ -50,21 +52,20 @@ async fn read_field_to_string(field: &mut Field) -> Result<String> {
 pub async fn upload_asset(
     mut payload: Multipart,
     ctx: web::Data<DataContext>,
+    msgs: web::Data<MsgsContext>,
 ) -> Result<HttpResponse> {
     let mut uploading = AssetUploadingContext::default();
-
     while let Some(mut field) = payload.try_next().await? {
         match field.name() {
             Some("file") => {
                 if uploading.media.is_some() {
-                    // For now we ignore all files except the first one
                     continue;
                 }
 
-                // Set the file name as the title if it is empty
                 let disposition = field
                     .content_disposition()
                     .ok_or(create_error!(MultipartError))?;
+
                 if uploading.title.is_none() {
                     uploading.title = disposition.get_filename().map(|v| v.to_string());
                 }
@@ -74,8 +75,8 @@ pub async fn upload_asset(
                     .ok_or(create_error!(MultipartError))?
                     .to_string();
 
-                // Uploading a file to storage
                 let res = ctx.store.put_stream(field.map_err(AppError::from)).await?;
+                uploading.is_new = res.is_new;
 
                 // Get Media from the database or insert a new one
                 let media = match res.is_new {
@@ -90,9 +91,6 @@ pub async fn upload_asset(
                             height: None,
                             color: None,
                         };
-                        // NOTE:
-                        // When inserting, we avoid data races because the StorageKey depends on the file hash,
-                        // so even if there is an insertion conflict, we will get the same Media
                         ctx.db.insert_media(&media).await?;
                         media
                     }
@@ -113,7 +111,6 @@ pub async fn upload_asset(
             }
         }
     }
-
     let Some(media) = uploading.media else {
         return Err(create_error!(MultipartError));
     };
@@ -127,6 +124,14 @@ pub async fn upload_asset(
         source_url: uploading.source,
     };
     ctx.db.insert_asset(&new_asset).await?;
+
+    if uploading.is_new {
+        MediaWorkerTask::NewMedia {
+            id: media.id.clone(),
+        }
+        .send(&msgs.media_worker_tx)
+        .await?;
+    };
 
     let api_media = ApiMedia::from_domain(media);
     let api_asset = ApiAsset::from_domain(new_asset, api_media);

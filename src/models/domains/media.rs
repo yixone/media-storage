@@ -97,4 +97,7 @@ pub trait MediaRepository {
 
     /// Returns a set of [`Media`] by the list of [`MediaId`]
     async fn get_media_by_ids(&self, ids: &[&MediaId]) -> Result<Vec<Media>>;
+
+    /// Returns a list of [`Media`] pending processing
+    async fn get_pending_media(&self, cursor: u32, limit: u32) -> Result<Vec<Media>>;
 }

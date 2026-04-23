@@ -3,7 +3,7 @@ use sqlx::QueryBuilder;
 use crate::{
     db::providers::sqlite::SqliteDb,
     error::Result,
-    models::domains::{Media, MediaId, MediaRepository, MediaUpdateData},
+    models::domains::{Media, MediaId, MediaRepository, MediaState, MediaUpdateData},
 };
 
 #[async_trait::async_trait]
@@ -95,5 +95,21 @@ impl MediaRepository for SqliteDb {
 
         let list = qb.build_query_as().fetch_all(self.pool()).await?;
         Ok(list)
+    }
+
+    /// Returns a list of [`Media`] pending processing
+    async fn get_pending_media(&self, cursor: u32, limit: u32) -> Result<Vec<Media>> {
+        let items = sqlx::query_as(
+            "
+        SELECT * FROM media
+        WHERE state IN ('pending')
+        LIMIT ? OFFSET ?
+        ",
+        )
+        .bind(limit)
+        .bind(cursor)
+        .fetch_all(self.pool())
+        .await?;
+        Ok(items)
     }
 }
