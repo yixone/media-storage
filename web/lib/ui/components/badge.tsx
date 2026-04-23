@@ -21,7 +21,7 @@ function Badge({
 }: React.ComponentProps<"span"> & { variant?: keyof typeof badgeVariants }) {
     return (
         <span
-            className={buildClassname([
+            className={buildClassname(
                 `
                 flex items-center justify-center gap-1 overflow-hidden
                 rounded-full
@@ -30,8 +30,8 @@ function Badge({
                 text-xs font-medium whitespace-nowrap
                 `,
                 badgeVariants[variant],
-                className,
-            ])}
+                className
+            )}
             {...props}
         />
     );
