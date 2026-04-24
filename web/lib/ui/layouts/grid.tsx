@@ -3,8 +3,9 @@ import type { Asset, Media } from "@lib/api/types";
 import { useState } from "react";
 import { useResizeObserver } from "../observer";
 import { useInspector } from "../components/inspector";
+import { buildClassname } from "../components/utils";
 
-const COLUMN_CALC_WIDTH = 450;
+const COLUMN_CALC_WIDTH = 250;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -49,18 +50,22 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
  * Container for the grid layout asset
  */
 function GridAsset({ asset }: { asset: Asset }) {
-    const { displayAsset } = useInspector();
+    const { displayAsset, selectedAsset } = useInspector();
+    const assetSelected = selectedAsset === asset;
 
     return (
         <div className="block">
             <div
-                className="
-                hover:bg-border/45 transition-[background-color] duration-125
-                rounded-md
-                flex flex-col gap-2 items-center
-                p-2
-                cursor-pointer
-                "
+                className={buildClassname(
+                    `
+                    transition-[background-color] duration-125 
+                    rounded-md
+                    flex flex-col gap-2 items-center
+                    p-2
+                    cursor-pointer
+                    `,
+                    assetSelected ? "bg-foreground/12" : "hover:bg-foreground/5"
+                )}
                 onClick={() => displayAsset(asset)}
             >
                 <GridAssetMedia media={asset.media} />
@@ -93,7 +98,6 @@ function GridAssetMedia({ media }: { media: Media }) {
                 overflow-hidden
                 border border-border/50
                 rounded-[0.5rem]
-                relative
                 "
                 style={{
                     aspectRatio,

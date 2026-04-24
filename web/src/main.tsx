@@ -5,7 +5,11 @@ import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
 import { HomePage } from "./pages";
-import { InspectorProvider } from "@lib/ui/components/inspector";
+import {
+    AssetInspector,
+    Inspector,
+    InspectorProvider,
+} from "@lib/ui/components/inspector";
 
 /**
  * Configures application
@@ -18,6 +22,9 @@ function Application() {
             <div className="flex">
                 <InspectorProvider>
                     <HomePage />
+                    <Inspector>
+                        <AssetInspector />
+                    </Inspector>
                 </InspectorProvider>
             </div>
         </ApiProvider>

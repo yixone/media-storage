@@ -1,28 +1,15 @@
 import { useApi } from "@lib/api/context";
 import type { Asset } from "@lib/api/types";
 import React, { useState } from "react";
+import { DateDisplay } from "./date";
 
 const INSPECTOR_WIDTH = "30rem";
 
 type InspectorContextProps = {
-    /**
-     * Is the inspector open?
-     */
+    toggleInspector: () => void;
     inspectorOpen: boolean;
 
-    /**
-     * Toggles the inspector state
-     */
-    toggleInspector: () => void;
-
-    /**
-     * Displays asset information in the inspector
-     */
     displayAsset: (asset?: Asset) => void;
-
-    /**
-     * The asset selected for display in the inspector
-     */
     selectedAsset?: Asset;
 };
 
@@ -52,38 +39,38 @@ function useInspector() {
  */
 function InspectorProvider({ children }: React.ComponentProps<"div">) {
     const [open, setOpen] = useState(false);
-    const [asset, setAsset] = useState<Asset | undefined>(undefined);
+    const [selectedAsset, setSelectedAsset] = useState<Asset | undefined>(
+        undefined
+    );
 
     const contextValue = React.useMemo<InspectorContextProps>(
         () => ({
-            inspectorOpen: open,
             toggleInspector: () => {
                 setOpen((s) => !s);
             },
-            displayAsset: (a) => {
-                if (!open) {
-                    setOpen(true);
-                }
+            inspectorOpen: open,
 
-                setAsset(a);
+            displayAsset: (a) => {
+                if (!open) setOpen(true);
+                setSelectedAsset(a);
             },
-            selectedAsset: asset,
+            selectedAsset,
         }),
-        [open, asset]
+        [open, selectedAsset]
     );
 
     return (
         <InspectorContext.Provider value={contextValue}>
             {children}
-
-            <Inspector />
         </InspectorContext.Provider>
     );
 }
 
-function Inspector() {
-    const { inspectorOpen, selectedAsset } = useInspector();
-    const { mediaApi } = useApi();
+/**
+ * Inspector root object
+ */
+function Inspector({ children }: React.ComponentProps<"div">) {
+    const { inspectorOpen } = useInspector();
 
     return (
         <div
@@ -91,24 +78,62 @@ function Inspector() {
                 bg-card 
                 border-l border-border
                 h-screen
-                transition-[width]
-                static
                 overflow-hidden
                 "
             style={{ width: inspectorOpen ? INSPECTOR_WIDTH : 0 }}
         >
-            {selectedAsset && (
-                <div
-                    className="
-                        flex flex-col
-                        "
-                >
-                    <img src={mediaApi.getMediaUrl(selectedAsset.media.id)} />
-                    <h2>{selectedAsset.title}</h2>
-                </div>
-            )}
+            {children}
         </div>
     );
 }
 
-export { InspectorContext, useInspector, InspectorProvider };
+/**
+ * An inspector component for displaying information about the selected asset
+ */
+function AssetInspector() {
+    const { mediaApi } = useApi();
+    const { selectedAsset } = useInspector();
+
+    if (!selectedAsset) return;
+
+    return (
+        <div
+            className="
+            flex flex-col
+            p-4
+            gap-2
+            "
+        >
+            <div
+                className="
+                    overflow-hidden
+                    border border-border/65
+                    rounded-[0.5rem]
+                    "
+            >
+                <img
+                    className="object-cover size-full"
+                    src={mediaApi.getMediaUrl(selectedAsset.media.id)}
+                />
+            </div>
+
+            <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
+                {selectedAsset.title}
+            </h2>
+            <h2 className="text-foreground/65">
+                <DateDisplay date={new Date(selectedAsset.created_at)} />
+            </h2>
+            <h2 className="text-foreground/65">
+                {(selectedAsset.media.size / 1024 / 1024).toFixed(2)} Mb
+            </h2>
+        </div>
+    );
+}
+
+export {
+    InspectorContext,
+    useInspector,
+    InspectorProvider,
+    Inspector,
+    AssetInspector,
+};
