@@ -1,0 +1,139 @@
+import { useApi } from "@lib/api/context";
+import type { Asset } from "@lib/api/types";
+import React, { useState } from "react";
+import { DateDisplay } from "./date";
+
+const INSPECTOR_WIDTH = "30rem";
+
+type InspectorContextProps = {
+    toggleInspector: () => void;
+    inspectorOpen: boolean;
+
+    displayAsset: (asset?: Asset) => void;
+    selectedAsset?: Asset;
+};
+
+/**
+ * Context for the inspector
+ */
+const InspectorContext = React.createContext<InspectorContextProps | null>(
+    null
+);
+
+/**
+ * Hook for interacting with the inspector context
+ */
+function useInspector() {
+    const ctx = React.useContext(InspectorContext);
+    if (!ctx) {
+        throw new Error(
+            "useInspector() hook must be used within an InspectorProvider"
+        );
+    }
+
+    return ctx;
+}
+
+/**
+ * Inspector for displaying information
+ */
+function InspectorProvider({ children }: React.ComponentProps<"div">) {
+    const [open, setOpen] = useState(false);
+    const [selectedAsset, setSelectedAsset] = useState<Asset | undefined>(
+        undefined
+    );
+
+    const contextValue = React.useMemo<InspectorContextProps>(
+        () => ({
+            toggleInspector: () => {
+                setOpen((s) => !s);
+            },
+            inspectorOpen: open,
+
+            displayAsset: (a) => {
+                if (!open) setOpen(true);
+                setSelectedAsset(a);
+            },
+            selectedAsset,
+        }),
+        [open, selectedAsset]
+    );
+
+    return (
+        <InspectorContext.Provider value={contextValue}>
+            {children}
+        </InspectorContext.Provider>
+    );
+}
+
+/**
+ * Inspector root object
+ */
+function Inspector({ children }: React.ComponentProps<"div">) {
+    const { inspectorOpen } = useInspector();
+
+    return (
+        <div
+            className="
+                bg-card 
+                border-l border-border
+                h-screen
+                overflow-hidden
+                "
+            style={{ width: inspectorOpen ? INSPECTOR_WIDTH : 0 }}
+        >
+            {children}
+        </div>
+    );
+}
+
+/**
+ * An inspector component for displaying information about the selected asset
+ */
+function AssetInspector() {
+    const { mediaApi } = useApi();
+    const { selectedAsset } = useInspector();
+
+    if (!selectedAsset) return;
+
+    return (
+        <div
+            className="
+            flex flex-col
+            p-4
+            gap-2
+            "
+        >
+            <div
+                className="
+                    overflow-hidden
+                    border border-border/65
+                    rounded-[0.5rem]
+                    "
+            >
+                <img
+                    className="object-cover size-full"
+                    src={mediaApi.getMediaUrl(selectedAsset.media.id)}
+                />
+            </div>
+
+            <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
+                {selectedAsset.title}
+            </h2>
+            <h2 className="text-foreground/65">
+                <DateDisplay date={new Date(selectedAsset.created_at)} />
+            </h2>
+            <h2 className="text-foreground/65">
+                {(selectedAsset.media.size / 1024 / 1024).toFixed(2)} Mb
+            </h2>
+        </div>
+    );
+}
+
+export {
+    InspectorContext,
+    useInspector,
+    InspectorProvider,
+    Inspector,
+    AssetInspector,
+};
