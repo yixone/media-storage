@@ -1,6 +1,6 @@
 import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useResizeObserver } from "../observer";
 import { useInspector } from "../components/inspector";
 import { buildClassname } from "../components/utils";
@@ -50,6 +50,7 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
  * Container for the grid layout asset
  */
 function GridAsset({ asset }: { asset: Asset }) {
+    // FIXME: Each asset item personally tracks the asset selected in the inspector
     const { displayAsset, selectedAsset } = useInspector();
     const assetSelected = selectedAsset === asset;
 

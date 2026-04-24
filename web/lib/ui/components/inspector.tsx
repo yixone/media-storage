@@ -120,10 +120,23 @@ function AssetInspector() {
             <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
                 {selectedAsset.title}
             </h2>
+            {selectedAsset.source_url && (
+                <a
+                    href={selectedAsset.source_url}
+                    className="text-foreground/65"
+                >
+                    <b>{"Source: "}</b>
+                    <i className="decoration-1 underline">
+                        {selectedAsset.source_url}
+                    </i>
+                </a>
+            )}
             <h2 className="text-foreground/65">
+                <b>{"Created: "}</b>
                 <DateDisplay date={new Date(selectedAsset.created_at)} />
             </h2>
             <h2 className="text-foreground/65">
+                <b>{"Size: "}</b>
                 {(selectedAsset.media.size / 1024 / 1024).toFixed(2)} Mb
             </h2>
         </div>
