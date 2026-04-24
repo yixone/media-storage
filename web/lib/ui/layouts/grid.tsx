@@ -2,8 +2,9 @@ import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
 import { useState } from "react";
 import { useResizeObserver } from "../observer";
+import { useInspector } from "../components/inspector";
 
-const COLUMN_CALC_WIDTH = 220;
+const COLUMN_CALC_WIDTH = 450;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -30,8 +31,7 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
     return (
         <div
             className="
-            grid gap-1
-            overflow-hidden
+            grid gap-1 overflow-hidden
             "
             ref={targetRef}
             style={{
@@ -49,20 +49,23 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
  * Container for the grid layout asset
  */
 function GridAsset({ asset }: { asset: Asset }) {
+    const { displayAsset } = useInspector();
+
     return (
         <div className="block">
-            <a
+            <div
                 className="
                 hover:bg-border/45 transition-[background-color] duration-125
                 rounded-md
                 flex flex-col gap-2 items-center
                 p-2
+                cursor-pointer
                 "
-                href={`/a/${asset.id}`}
+                onClick={() => displayAsset(asset)}
             >
                 <GridAssetMedia media={asset.media} />
                 <GridAssetData title={asset.title} />
-            </a>
+            </div>
         </div>
     );
 }

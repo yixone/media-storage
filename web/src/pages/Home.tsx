@@ -19,7 +19,14 @@ function HomePage() {
     }, []);
 
     return (
-        <div className="p-4">
+        <div
+            className="
+            p-4 
+            w-full h-screen
+            overflow-y-scroll
+            "
+            style={{ scrollbarWidth: "thin" }}
+        >
             <AssetsGridLayout assets={assets} />
         </div>
     );
