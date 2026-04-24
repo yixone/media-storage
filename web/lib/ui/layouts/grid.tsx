@@ -3,7 +3,7 @@ import type { Asset, Media } from "@lib/api/types";
 import { useState } from "react";
 import { useResizeObserver } from "../observer";
 
-const COLUMN_CALC_WIDTH = 200;
+const COLUMN_CALC_WIDTH = 220;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -55,7 +55,7 @@ function GridAsset({ asset }: { asset: Asset }) {
                 className="
                 hover:bg-border/45 transition-[background-color] duration-125
                 rounded-md
-                flex flex-col gap-[0.15rem] items-center
+                flex flex-col gap-2 items-center
                 p-2
                 "
                 href={`/a/${asset.id}`}
