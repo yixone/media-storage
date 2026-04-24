@@ -87,4 +87,7 @@
 
     /* Ring */
     --ring: #a1a1a1;
+
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
 }

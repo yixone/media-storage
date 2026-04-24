@@ -1,9 +1,9 @@
 import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useResizeObserver } from "../observer";
 
-const COLUMN_CALC_WIDTH = 250;
+const COLUMN_CALC_WIDTH = 200;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -40,10 +40,7 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
             }}
         >
             {assets.map((a) => (
-                <GridAsset asset={a} key={a.id}>
-                    <GridAssetMedia media={a.media} />
-                    <GridAssetData title={a.title} />
-                </GridAsset>
+                <GridAsset asset={a} key={a.id} />
             ))}
         </div>
     );
@@ -52,20 +49,18 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
 /**
  * Container for the grid layout asset
  */
-function GridAsset({
-    asset,
-    children,
-}: React.ComponentProps<"div"> & { asset: Asset }) {
+function GridAsset({ asset }: { asset: Asset }) {
     return (
         <div className="block">
             <a
                 className="
-                hover:*:brightness-95 *:transition-[filter] *:duration-70
-                flex flex-col gap-[0.15rem]
+                hover:*:brightness-93 *:transition-[filter] *:duration-70
+                flex flex-col gap-[0.15rem] items-center
                 "
                 href={`/a/${asset.id}`}
             >
-                {children}
+                <GridAssetMedia media={asset.media} />
+                <GridAssetData title={asset.title} />
             </a>
         </div>
     );
@@ -83,23 +78,16 @@ function GridAssetMedia({ media }: { media: Media }) {
             className="
             box-border aspect-square
             relative
-            overflow-hidden
-            rounded-[0.5rem]
-            border border-border/75
+            flex items-center justify-center
             "
         >
-            {!loaded && (
-                <div
-                    className="
-                    size-full
-                    absolute
-                    animate-pulse
-                    "
-                    style={{ backgroundColor: `#${media.color}` }}
-                />
-            )}
             <img
-                className="size-full object-cover"
+                className="
+                max-h-full max-w-full
+                overflow-hidden
+                rounded-[0.5rem]
+                border border-border/75
+                "
                 src={mediaApi.getMediaUrl(media.id)}
                 onLoad={() => {
                     setLoaded(true);
@@ -117,14 +105,17 @@ function GridAssetMedia({ media }: { media: Media }) {
  */
 function GridAssetData({ title }: { title: string | null }) {
     return (
-        <p
-            className="
+        <div className="w-[75%]">
+            <p
+                className="
             overflow-hidden text-ellipsis
+            whitespace-nowrap
             text-[1.125rem] text-primary
             "
-        >
-            {title}
-        </p>
+            >
+                {title}
+            </p>
+        </div>
     );
 }
 
