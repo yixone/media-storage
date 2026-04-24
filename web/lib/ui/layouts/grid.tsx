@@ -30,8 +30,7 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
     return (
         <div
             className="
-            grid
-            p-2 gap-2
+            grid gap-3
             overflow-hidden
             "
             ref={targetRef}
@@ -54,7 +53,7 @@ function GridAsset({ asset }: { asset: Asset }) {
         <div className="block">
             <a
                 className="
-                hover:*:brightness-93 *:transition-[filter] *:duration-70
+                hover:*:brightness-95 *:transition-[filter] *:duration-70
                 flex flex-col gap-[0.15rem] items-center
                 "
                 href={`/a/${asset.id}`}
@@ -73,29 +72,44 @@ function GridAssetMedia({ media }: { media: Media }) {
     const { mediaApi } = useApi();
     const [loaded, setLoaded] = useState(false);
 
+    const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
+
     return (
         <div
             className="
-            box-border aspect-square
-            relative
+            aspect-square
+            size-full
+            box-border
             flex items-center justify-center
             "
         >
-            <img
+            <div
                 className="
-                max-h-full max-w-full
                 overflow-hidden
+                border border-border/50
                 rounded-[0.5rem]
-                border border-border/75
+                relative
                 "
-                src={mediaApi.getMediaUrl(media.id)}
-                onLoad={() => {
-                    setLoaded(true);
-                }}
                 style={{
-                    visibility: loaded ? "visible" : "hidden",
+                    aspectRatio,
+                    width: aspectRatio >= 1 ? "100%" : undefined,
+                    height: aspectRatio <= 1 ? "100%" : undefined,
                 }}
-            />
+            >
+                <img
+                    className="
+                    object-cover size-full
+                    transition-opacity duration-125
+                    "
+                    src={mediaApi.getMediaUrl(media.id)}
+                    onLoad={() => {
+                        setLoaded(true);
+                    }}
+                    style={{
+                        opacity: loaded ? "100%" : "0%",
+                    }}
+                />
+            </div>
         </div>
     );
 }
@@ -108,10 +122,10 @@ function GridAssetData({ title }: { title: string | null }) {
         <div className="w-[75%]">
             <p
                 className="
-            overflow-hidden text-ellipsis
-            whitespace-nowrap
-            text-[1.125rem] text-primary
-            "
+                overflow-hidden text-ellipsis
+                whitespace-nowrap
+                text-[1.125rem] text-primary/80
+                "
             >
                 {title}
             </p>

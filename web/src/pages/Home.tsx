@@ -19,7 +19,7 @@ function HomePage() {
     }, []);
 
     return (
-        <div>
+        <div className="p-2 py-4">
             <AssetsGridLayout assets={assets} />
         </div>
     );
