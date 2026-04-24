@@ -30,7 +30,7 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
     return (
         <div
             className="
-            grid gap-3
+            grid gap-1
             overflow-hidden
             "
             ref={targetRef}
@@ -53,8 +53,10 @@ function GridAsset({ asset }: { asset: Asset }) {
         <div className="block">
             <a
                 className="
-                hover:*:brightness-95 *:transition-[filter] *:duration-70
+                hover:bg-border/45 transition-[background-color] duration-125
+                rounded-md
                 flex flex-col gap-[0.15rem] items-center
+                p-2
                 "
                 href={`/a/${asset.id}`}
             >
