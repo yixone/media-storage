@@ -1,24 +1,45 @@
 import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
 import { useState } from "react";
+import { useResizeObserver } from "../observer";
+
+const COLUMN_CALC_WIDTH = 220;
+const MIN_COLUMNS_COUNT = 2;
 
 /**
  * Assets grid layout
  */
 function AssetsGridLayout({ assets }: { assets: Asset[] }) {
+    const calcColsCount = (rootWidth: number) => {
+        return Math.floor(rootWidth / COLUMN_CALC_WIDTH);
+    };
+
+    const [colsCount, setColsCount] = useState(
+        calcColsCount(window.innerWidth)
+    );
+
+    const { targetRef } = useResizeObserver((e) => {
+        const newCount = Math.max(
+            calcColsCount(e[0].contentRect.width),
+            MIN_COLUMNS_COUNT
+        );
+
+        setColsCount(newCount);
+    });
+
     return (
         <div
             className="
-            grid grid-cols-7
-            p-2 gap-2
+            grid gap-1
             overflow-hidden
             "
+            ref={targetRef}
+            style={{
+                gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+            }}
         >
             {assets.map((a) => (
-                <GridAsset asset={a} key={a.id}>
-                    <GridAssetMedia media={a.media} />
-                    <GridAssetData title={a.title} />
-                </GridAsset>
+                <GridAsset asset={a} key={a.id} />
             ))}
         </div>
     );
@@ -27,20 +48,20 @@ function AssetsGridLayout({ assets }: { assets: Asset[] }) {
 /**
  * Container for the grid layout asset
  */
-function GridAsset({
-    asset,
-    children,
-}: React.ComponentProps<"div"> & { asset: Asset }) {
+function GridAsset({ asset }: { asset: Asset }) {
     return (
         <div className="block">
             <a
                 className="
-                hover:*:brightness-95 *:transition-[filter] *:duration-70
-                flex flex-col gap-[0.15rem]
+                hover:bg-border/45 transition-[background-color] duration-125
+                rounded-md
+                flex flex-col gap-2 items-center
+                p-2
                 "
                 href={`/a/${asset.id}`}
             >
-                {children}
+                <GridAssetMedia media={asset.media} />
+                <GridAssetData title={asset.title} />
             </a>
         </div>
     );
@@ -53,39 +74,44 @@ function GridAssetMedia({ media }: { media: Media }) {
     const { mediaApi } = useApi();
     const [loaded, setLoaded] = useState(false);
 
+    const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
+
     return (
         <div
             className="
-            box-border aspect-square
-            relative
-            overflow-hidden
-            rounded-[0.45rem]
-            border border-black/8
+            aspect-square
+            size-full
+            box-border
+            flex items-center justify-center
             "
         >
-            {!loaded && (
-                <div
-                    className="
-                    size-full
-                    absolute
-                    animate-pulse
-                    "
-                    style={{ backgroundColor: `#${media.color}` }}
-                />
-            )}
-            <img
+            <div
                 className="
-                size-full
-                object-cover
+                overflow-hidden
+                border border-border/50
+                rounded-[0.5rem]
+                relative
                 "
-                src={mediaApi.getMediaUrl(media.id)}
-                onLoad={() => {
-                    setLoaded(true);
-                }}
                 style={{
-                    visibility: loaded ? "visible" : "hidden",
+                    aspectRatio,
+                    width: aspectRatio >= 1 ? "100%" : undefined,
+                    height: aspectRatio <= 1 ? "100%" : undefined,
                 }}
-            />
+            >
+                <img
+                    className="
+                    object-cover size-full
+                    transition-opacity duration-125
+                    "
+                    src={mediaApi.getMediaUrl(media.id)}
+                    onLoad={() => {
+                        setLoaded(true);
+                    }}
+                    style={{
+                        opacity: loaded ? "100%" : "0%",
+                    }}
+                />
+            </div>
         </div>
     );
 }
@@ -95,14 +121,17 @@ function GridAssetMedia({ media }: { media: Media }) {
  */
 function GridAssetData({ title }: { title: string | null }) {
     return (
-        <p
-            className="
-            overflow-hidden text-ellipsis
-            text-[1.125rem]
-            "
-        >
-            {title}
-        </p>
+        <div className="w-[75%]">
+            <p
+                className="
+                overflow-hidden text-ellipsis
+                whitespace-nowrap
+                text-[1.125rem] text-primary/80
+                "
+            >
+                {title}
+            </p>
+        </div>
     );
 }
 
