@@ -4,11 +4,13 @@ import { buildClassname, type VariantProps } from "@lib/ui/utils/classname";
  * Badge style options
  */
 const badgeVariants = {
-    default: "bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-    secondary:
-        "bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-    destructive: "bg-destructive text-white [a&]:hover:bg-destructive/90",
-    ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+    variant: {
+        default: "bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
+        secondary:
+            "bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
+        destructive: "bg-destructive text-white [a&]:hover:bg-destructive/90",
+        ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+    },
 };
 
 /**
@@ -29,7 +31,7 @@ function Badge({
                 px-2 py-0.5 w-fit
                 text-xs font-medium whitespace-nowrap
                 `,
-                badgeVariants[variant],
+                badgeVariants.variant[variant],
                 className
             )}
             {...props}

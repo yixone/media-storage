@@ -6,7 +6,9 @@ import { buildClassname, type VariantProps } from "@lib/ui/utils/classname";
  * Page Layout options
  */
 const pageLayoutVariants = {
-    centered: "flex items-center justify-center",
+    variant: {
+        centered: "flex items-center justify-center",
+    },
 };
 
 /**
@@ -19,7 +21,10 @@ function PageLayout({
 }: VariantProps<typeof pageLayoutVariants> & React.ComponentProps<"div">) {
     return (
         <div
-            className={buildClassname(pageLayoutVariants[variant], className)}
+            className={buildClassname(
+                pageLayoutVariants.variant[variant],
+                className
+            )}
             {...props}
         />
     );
