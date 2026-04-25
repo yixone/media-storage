@@ -1,4 +1,4 @@
-import { buildClassname } from "./utils";
+import { buildClassname } from "@lib/ui/utils/classname";
 
 /**
  * Badge style options

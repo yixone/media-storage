@@ -1,13 +1,13 @@
-import { CenteredPage } from "@lib/ui/page";
+import { PageLayout } from "@lib/ui/components/layout/Page";
 
 /**
  * Assets uploading Page
  */
 function UploadPage() {
     return (
-        <CenteredPage>
+        <PageLayout variant="centered">
             <h1>Uploading Page</h1>
-        </CenteredPage>
+        </PageLayout>
     );
 }
 

@@ -1,7 +1,9 @@
+import { useState } from "react";
+
 import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
-import { useState } from "react";
-import { useResizeObserver } from "../observer";
+
+import { useResizeObserver } from "@lib/ui/utils/observer";
 
 const COLUMN_CALC_WIDTH = 220;
 const MIN_COLUMNS_COUNT = 2;
@@ -9,7 +11,7 @@ const MIN_COLUMNS_COUNT = 2;
 /**
  * Assets grid layout
  */
-function AssetsGridLayout({ assets }: { assets: Asset[] }) {
+function AssetsGrid({ assets }: { assets: Asset[] }) {
     const calcColsCount = (rootWidth: number) => {
         return Math.floor(rootWidth / COLUMN_CALC_WIDTH);
     };
@@ -135,4 +137,4 @@ function GridAssetData({ title }: { title: string | null }) {
     );
 }
 
-export { AssetsGridLayout };
+export { AssetsGrid };
