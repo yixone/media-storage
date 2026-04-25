@@ -103,13 +103,18 @@ function AssetInspector() {
             gap-2
             "
         >
-            <MediaHolder
-                media={selectedAsset.media}
-                className="overflow-hidden border border-border/65 rounded-[0.5rem]"
-            >
-                <MediaSkeleton />
-                <MediaContent />
-            </MediaHolder>
+            <div className="flex items-center justify-center">
+                <MediaHolder
+                    media={selectedAsset.media}
+                    className="
+                    overflow-hidden border border-border/65 rounded-[0.5rem]
+                    max-h-100 min-h-5
+                    "
+                >
+                    <MediaSkeleton />
+                    <MediaContent />
+                </MediaHolder>
+            </div>
 
             <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
                 {selectedAsset.title}
