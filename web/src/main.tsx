@@ -5,6 +5,7 @@ import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
 import { HomePage } from "./pages";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 /**
  * Configures application
@@ -14,7 +15,11 @@ function Application() {
 
     return (
         <ApiProvider client={client}>
-            <HomePage />
+            <BrowserRouter>
+                <Routes>
+                    <Route index element={<HomePage />} />
+                </Routes>
+            </BrowserRouter>
         </ApiProvider>
     );
 }
