@@ -3,7 +3,7 @@ use sqlx::QueryBuilder;
 use crate::{
     db::providers::sqlite::SqliteDb,
     error::Result,
-    models::domains::{Media, MediaId, MediaRepository, MediaState, MediaUpdateData},
+    models::domains::{Media, MediaId, MediaRepository, MediaUpdateData},
 };
 
 #[async_trait::async_trait]
