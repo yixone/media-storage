@@ -4,7 +4,7 @@ import "@lib/ui/style.css";
 import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
-import { HomePage } from "./pages";
+import { HomePage, UploadPage } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 /**
@@ -18,6 +18,8 @@ function Application() {
             <BrowserRouter>
                 <Routes>
                     <Route index element={<HomePage />} />
+
+                    <Route path="/upload" element={<UploadPage />} />
                 </Routes>
             </BrowserRouter>
         </ApiProvider>
