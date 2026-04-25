@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { buildClassname } from "@lib/ui/utils/classname";
+import { buildClassname, type VariantProps } from "@lib/ui/utils/classname";
 
 /**
  * Page Layout options
@@ -13,10 +13,10 @@ const pageLayoutVariants = {
  * Layout styles for the page
  */
 function PageLayout({
-    variant,
+    variant = "centered",
     className,
     ...props
-}: { variant: keyof typeof pageLayoutVariants } & React.ComponentProps<"div">) {
+}: VariantProps<typeof pageLayoutVariants> & React.ComponentProps<"div">) {
     return (
         <div
             className={buildClassname(pageLayoutVariants[variant], className)}

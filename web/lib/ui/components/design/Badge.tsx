@@ -1,4 +1,4 @@
-import { buildClassname } from "@lib/ui/utils/classname";
+import { buildClassname, type VariantProps } from "@lib/ui/utils/classname";
 
 /**
  * Badge style options
@@ -18,7 +18,7 @@ function Badge({
     className,
     variant = "default",
     ...props
-}: React.ComponentProps<"span"> & { variant?: keyof typeof badgeVariants }) {
+}: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants>) {
     return (
         <span
             className={buildClassname(
