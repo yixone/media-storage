@@ -1,7 +1,10 @@
 import type React from "react";
-import { buildClassname } from "../components/utils";
+import { buildClassname } from "./components/utils";
 
-function CenterLayout({ className, ...props }: React.ComponentProps<"div">) {
+/**
+ * Centered content page
+ */
+function CenteredPage({ className, ...props }: React.ComponentProps<"div">) {
     return (
         <div
             className={buildClassname(
@@ -13,4 +16,4 @@ function CenterLayout({ className, ...props }: React.ComponentProps<"div">) {
     );
 }
 
-export { CenterLayout };
+export { CenteredPage };
