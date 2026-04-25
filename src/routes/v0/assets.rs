@@ -7,10 +7,12 @@ use actix_web::{
 };
 use chrono::Utc;
 use futures::TryStreamExt;
+use serde::Deserialize;
 
 use crate::{
     bg::media::MediaWorkerTask,
     create_error,
+    db::types::pagination::Pagination,
     di::{DataContext, MsgsContext},
     error::{AppError, Result},
     models::{
@@ -138,11 +140,20 @@ pub async fn upload_asset(
     Ok(HttpResponse::Created().json(api_asset))
 }
 
+#[derive(Default, Deserialize)]
+struct GetAssetsListQuery {
+    cursor: Option<u32>,
+    limit: Option<u32>,
+}
+
 /// Returns a list of Assets with pagination
 #[get("")]
-pub async fn get_assets_list(ctx: web::Data<DataContext>) -> Result<HttpResponse> {
-    // FIXME: Temporary hardcoded pagination
-    let assets = ctx.db.get_assets(0, 50).await?;
+pub async fn get_assets_list(
+    query: web::Query<GetAssetsListQuery>,
+    ctx: web::Data<DataContext>,
+) -> Result<HttpResponse> {
+    let pagination = Pagination::new_checked(query.cursor.unwrap_or(0), query.limit.unwrap_or(50))?;
+    let assets = ctx.db.get_assets(pagination).await?;
     let ids = assets.iter().map(|a| &a.media).collect::<Vec<_>>();
 
     let media = ctx.db.get_media_by_ids(&ids).await?;

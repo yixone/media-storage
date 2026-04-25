@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use crate::{
+    db::types::pagination::Pagination,
     error::Result,
     models::{domains::MediaId, types::UpdateField},
 };
@@ -66,7 +67,7 @@ pub trait AssetsRepository {
     async fn update_asset(&self, id: &AssetId, data: &AssetUpdateData) -> Result<bool>;
 
     /// Returns a list of [`Asset`] with pagination
-    async fn get_assets(&self, cursor: u32, limit: u32) -> Result<Vec<Asset>>;
+    async fn get_assets(&self, pagination: Pagination) -> Result<Vec<Asset>>;
 
     /// Returns an [`Asset`] from the database by [`AssetId`]
     async fn get_asset(&self, id: &AssetId) -> Result<Option<Asset>> {

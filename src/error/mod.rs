@@ -23,6 +23,8 @@ pub enum ErrorType {
 
     NotFound,
 
+    PaginationError,
+
     BrokenRelation,
     InternalError,
     MediaError,
