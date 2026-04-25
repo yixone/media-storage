@@ -1,7 +1,7 @@
-import { useApi } from "@lib/api/context";
 import type { Asset } from "@lib/api/types";
 import React, { useState } from "react";
 import { DateDisplay } from "./date";
+import { MediaContent, MediaHolder, MediaSkeleton } from "./media";
 
 const INSPECTOR_WIDTH = "30rem";
 
@@ -38,7 +38,7 @@ function useInspector() {
  * Inspector for displaying information
  */
 function InspectorProvider({ children }: React.ComponentProps<"div">) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [selectedAsset, setSelectedAsset] = useState<Asset | undefined>(
         undefined
     );
@@ -91,7 +91,6 @@ function Inspector({ children }: React.ComponentProps<"div">) {
  * An inspector component for displaying information about the selected asset
  */
 function AssetInspector() {
-    const { mediaApi } = useApi();
     const { selectedAsset } = useInspector();
 
     if (!selectedAsset) return;
@@ -104,18 +103,13 @@ function AssetInspector() {
             gap-2
             "
         >
-            <div
-                className="
-                    overflow-hidden
-                    border border-border/65
-                    rounded-[0.5rem]
-                    "
+            <MediaHolder
+                media={selectedAsset.media}
+                className="overflow-hidden border border-border/65 rounded-[0.5rem]"
             >
-                <img
-                    className="object-cover size-full"
-                    src={mediaApi.getMediaUrl(selectedAsset.media.id)}
-                />
-            </div>
+                <MediaSkeleton />
+                <MediaContent />
+            </MediaHolder>
 
             <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
                 {selectedAsset.title}

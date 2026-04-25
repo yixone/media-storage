@@ -1,9 +1,9 @@
-import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useResizeObserver } from "../observer";
 import { useInspector } from "../components/inspector";
 import { buildClassname } from "../components/utils";
+import { MediaContent, MediaHolder, MediaSkeleton } from "../components/media";
 
 const COLUMN_CALC_WIDTH = 250;
 const MIN_COLUMNS_COUNT = 2;
@@ -59,17 +59,17 @@ function GridAsset({ asset }: { asset: Asset }) {
             <div
                 className={buildClassname(
                     `
-                    transition-[background-color] duration-125 
-                    rounded-md
-                    flex flex-col gap-2 items-center
-                    p-2
-                    cursor-pointer
-                    `,
-                    assetSelected ? "bg-foreground/12" : "hover:bg-foreground/5"
+                transition-[background-color] duration-125 
+                rounded-md
+                flex flex-col gap-2 items-center
+                p-2
+                cursor-pointer
+                `,
+                    assetSelected ? "bg-foreground/8" : "hover:bg-foreground/5"
                 )}
                 onClick={() => displayAsset(asset)}
             >
-                <GridAssetMedia media={asset.media} />
+                <GridAssetMedia media={asset.media} selected={assetSelected} />
                 <GridAssetData title={asset.title} />
             </div>
         </div>
@@ -79,10 +79,13 @@ function GridAsset({ asset }: { asset: Asset }) {
 /**
  * Media component for the grid layout asset
  */
-function GridAssetMedia({ media }: { media: Media }) {
-    const { mediaApi } = useApi();
-    const [loaded, setLoaded] = useState(false);
-
+function GridAssetMedia({
+    media,
+    selected,
+}: {
+    media: Media;
+    selected: boolean;
+}) {
     const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
 
     return (
@@ -94,32 +97,22 @@ function GridAssetMedia({ media }: { media: Media }) {
             flex items-center justify-center
             "
         >
-            <div
-                className="
-                overflow-hidden
-                border border-border/50
-                rounded-[0.5rem]
-                "
+            <MediaHolder
+                media={media}
+                className={buildClassname(
+                    "overflow-hidden border rounded-[0.5rem]",
+                    selected
+                        ? "outline-2 outline-foreground border-foreground"
+                        : "border-border/50"
+                )}
                 style={{
-                    aspectRatio,
                     width: aspectRatio >= 1 ? "100%" : undefined,
                     height: aspectRatio <= 1 ? "100%" : undefined,
                 }}
             >
-                <img
-                    className="
-                    object-cover size-full
-                    transition-opacity duration-125
-                    "
-                    src={mediaApi.getMediaUrl(media.id)}
-                    onLoad={() => {
-                        setLoaded(true);
-                    }}
-                    style={{
-                        opacity: loaded ? "100%" : "0%",
-                    }}
-                />
-            </div>
+                <MediaSkeleton />
+                <MediaContent />
+            </MediaHolder>
         </div>
     );
 }
