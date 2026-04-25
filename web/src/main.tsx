@@ -1,11 +1,13 @@
 import { createRoot } from "react-dom/client";
 
-import "@lib/ui/style.css";
+import { BrowserRouter, Route, Routes } from "react-router";
+
 import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
-import { HomePage, UploadPage } from "./pages";
-import { BrowserRouter, Route, Routes } from "react-router";
+import "@lib/ui/style";
+import { HomePage } from "./pages/Home";
+import { UploadPage } from "./pages/Upload";
 
 /**
  * Configures application
