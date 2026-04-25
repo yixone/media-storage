@@ -1,3 +1,4 @@
+import { Card } from "@lib/ui/components/design";
 import { PageLayout } from "@lib/ui/components/layout/Page";
 
 /**
@@ -5,8 +6,10 @@ import { PageLayout } from "@lib/ui/components/layout/Page";
  */
 function UploadPage() {
     return (
-        <PageLayout variant="centered">
-            <h1>Uploading Page</h1>
+        <PageLayout variant="centered" className="h-screen">
+            <Card className="p-4">
+                <h1>Uploading Page</h1>
+            </Card>
         </PageLayout>
     );
 }
