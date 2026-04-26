@@ -4,9 +4,7 @@ import { useNavigate } from "react-router";
 import type { CreateAssetData } from "@lib/api/types";
 import { useApi } from "@lib/api/context";
 
-import { Input } from "@lib/ui/components/design/Input";
-import { Label } from "@lib/ui/components/design/Label";
-import { Button } from "@lib/ui/components/design";
+import { Button, Input, Label } from "@lib/ui/components/design";
 
 // TODO:
 // Rewrite this bad code
@@ -54,25 +52,23 @@ function UploadPage() {
     }
 
     return (
-        <div className="flex items-start justify-center py-10 w-full">
-            <div className="gap-4 grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 w-full">
-                <UploadContainer
-                    file={file}
-                    onFileSelect={(f) => {
-                        setUploadData((prev) => ({
-                            ...prev,
-                            title: f.name,
-                        }));
-                        setFile(f);
-                    }}
-                />
-                <MetadataContainer
-                    data={uploadData}
-                    onDataChange={handleUploadDataChange}
-                    enabled={uploading ? false : file !== null}
-                    onUpload={uploadAsset}
-                />
-            </div>
+        <div className="py-6 gap-4 grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 w-full">
+            <UploadContainer
+                file={file}
+                onFileSelect={(f) => {
+                    setUploadData((prev) => ({
+                        ...prev,
+                        title: f.name,
+                    }));
+                    setFile(f);
+                }}
+            />
+            <MetadataContainer
+                data={uploadData}
+                onDataChange={handleUploadDataChange}
+                enabled={uploading ? false : file !== null}
+                onUpload={uploadAsset}
+            />
         </div>
     );
 }
@@ -113,7 +109,7 @@ function UploadContainer({
     }, []);
 
     return (
-        <div className="flex items-center justify-center md:justify-end px-2">
+        <div className="flex items-center justify-center md:justify-end">
             {file && (
                 <div className="*:max-h-100 md:*:max-h-200 *:max-w-150 rounded-md overflow-hidden border border-border/50">
                     <img

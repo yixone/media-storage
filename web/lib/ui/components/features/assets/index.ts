@@ -1,1 +1,1 @@
-export * from "./AssetsGrid";
+export * from "./assets-grid";

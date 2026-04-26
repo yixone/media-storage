@@ -23,6 +23,8 @@
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
 
+        "forceConsistentCasingInFileNames": true,
+
         "paths": {
             "@lib/api": ["./lib/api"],
             "@lib/api/*": ["./lib/api/*"],

@@ -1,14 +1,8 @@
-import { useLocation } from "react-router";
-import { useInspector } from "./Provider";
+import { useInspector } from "./providers";
 
 const INSPECTOR_WIDTH = "30rem";
 
 export function Inspector() {
-    const location = useLocation();
-
-    // FIXME: implement a better solution
-    if (location.pathname === "/upload") return;
-
     const { node } = useInspector();
 
     return (

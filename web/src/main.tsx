@@ -6,29 +6,9 @@ import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
 import "@lib/ui/style";
-import {
-    Inspector,
-    InspectorProvider,
-} from "@lib/ui/components/features/inspector";
 
-import { HomePage } from "./pages/Home";
-import { UploadPage } from "./pages/Upload";
-import { AppLayout } from "@lib/ui/components/layout/Base";
-
-function Layout() {
-    return (
-        <AppLayout>
-            <InspectorProvider>
-                <Routes>
-                    <Route index element={<HomePage />} />
-                    <Route path="/upload" element={<UploadPage />} />
-                </Routes>
-
-                <Inspector />
-            </InspectorProvider>
-        </AppLayout>
-    );
-}
+import { BrowseLayout, FrameLayout } from "@lib/ui/layouts";
+import { HomePage, UploadPage } from "./pages";
 
 /**
  * Configures application
@@ -39,7 +19,15 @@ function Application() {
     return (
         <ApiProvider client={client}>
             <BrowserRouter>
-                <Layout />
+                <Routes>
+                    <Route element={<BrowseLayout />}>
+                        <Route index element={<HomePage />} />
+                    </Route>
+
+                    <Route element={<FrameLayout />}>
+                        <Route path="/upload" element={<UploadPage />} />
+                    </Route>
+                </Routes>
             </BrowserRouter>
         </ApiProvider>
     );

@@ -4,13 +4,10 @@ import type { Asset, Media } from "@lib/api/types";
 
 import { useResizeObserver } from "@lib/ui/utils/observer";
 import { buildClassname } from "@lib/ui/utils/classname";
+import { useInspector } from "@lib/ui/layouts/browse/providers";
 
-import {
-    AssetInspector,
-    useInspector,
-} from "@lib/ui/components/features/inspector";
-
-import { MediaDisplay } from "../media/MediaDisplay";
+import { MediaDisplay } from "../media/media-display";
+import { AssetInspector } from "./asset-inspector";
 
 const COLUMN_CALC_WIDTH = 200;
 const MIN_COLUMNS_COUNT = 2;
