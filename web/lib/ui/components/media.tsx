@@ -1,8 +1,8 @@
 import { useApi } from "@lib/api/context";
 import type { Media } from "@lib/api/types";
-import { buildClassname } from "./utils";
 import { useState } from "react";
 import React from "react";
+import { buildClassname } from "../utils/classname";
 
 type MediaHolderContextProps = {
     media: Media;

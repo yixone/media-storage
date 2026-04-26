@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
+
 import { useApi } from "@lib/api/context";
 import type { Asset } from "@lib/api/types";
-import { AssetsGridLayout } from "@lib/ui/layouts";
-import { useEffect, useState } from "react";
+
+import { AssetsGrid } from "@lib/ui/components/features/assets";
+import { PageLayout } from "@lib/ui/components/layout/Page";
 
 /**
  * Application Home Page
@@ -19,16 +22,9 @@ function HomePage() {
     }, []);
 
     return (
-        <div
-            className="
-            p-4 
-            w-full h-screen
-            overflow-y-scroll
-            "
-            style={{ scrollbarWidth: "thin" }}
-        >
-            <AssetsGridLayout assets={assets} />
-        </div>
+        <PageLayout variant="centered" className="p-4">
+            <AssetsGrid assets={assets} />
+        </PageLayout>
     );
 }
 

@@ -1,9 +1,12 @@
-import type { Asset, Media } from "@lib/api/types";
 import { useState } from "react";
-import { useResizeObserver } from "../observer";
-import { useInspector } from "../components/inspector";
-import { buildClassname } from "../components/utils";
-import { MediaContent, MediaHolder, MediaSkeleton } from "../components/media";
+
+import type { Asset, Media } from "@lib/api/types";
+
+import { useResizeObserver } from "@lib/ui/utils/observer";
+import { buildClassname } from "@lib/ui/utils/classname";
+
+import { useInspector } from "../../inspector";
+import { MediaContent, MediaHolder, MediaSkeleton } from "../../media";
 
 const COLUMN_CALC_WIDTH = 250;
 const MIN_COLUMNS_COUNT = 2;
@@ -11,7 +14,7 @@ const MIN_COLUMNS_COUNT = 2;
 /**
  * Assets grid layout
  */
-function AssetsGridLayout({ assets }: { assets: Asset[] }) {
+function AssetsGrid({ assets }: { assets: Asset[] }) {
     const calcColsCount = (rootWidth: number) => {
         return Math.floor(rootWidth / COLUMN_CALC_WIDTH);
     };
@@ -128,6 +131,7 @@ function GridAssetData({ title }: { title: string | null }) {
                 overflow-hidden text-ellipsis
                 whitespace-nowrap
                 text-[1.125rem] text-primary/80
+                text-center
                 "
             >
                 {title}
@@ -136,4 +140,4 @@ function GridAssetData({ title }: { title: string | null }) {
     );
 }
 
-export { AssetsGridLayout };
+export { AssetsGrid };
