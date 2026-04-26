@@ -129,6 +129,7 @@ function GridAssetData({ title }: { title: string | null }) {
                 overflow-hidden text-ellipsis
                 whitespace-nowrap
                 text-[1.125rem] text-primary/80
+                text-center
                 "
             >
                 {title}
