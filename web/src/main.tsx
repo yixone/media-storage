@@ -6,7 +6,10 @@ import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
 import "@lib/ui/style";
-import { Inspector, InspectorProvider } from "@lib/ui/components/inspector";
+import {
+    Inspector,
+    InspectorProvider,
+} from "@lib/ui/components/features/inspector";
 
 import { HomePage } from "./pages/Home";
 import { UploadPage } from "./pages/Upload";

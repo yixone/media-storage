@@ -22,7 +22,7 @@ function HomePage() {
 
     return (
         <div
-            className="flex items-start justify-center p-4 w-full h-screen"
+            className="flex items-start justify-center p-4 w-full h-screen overflow-y-scroll"
             style={{ scrollbarWidth: "thin" }}
         >
             <AssetsGrid assets={assets} />

@@ -5,7 +5,11 @@ import type { Asset, Media } from "@lib/api/types";
 import { useResizeObserver } from "@lib/ui/utils/observer";
 import { buildClassname } from "@lib/ui/utils/classname";
 
-import { useInspector } from "../../inspector";
+import {
+    AssetInspector,
+    useInspector,
+} from "@lib/ui/components/features/inspector";
+
 import { MediaDisplay } from "../media/MediaDisplay";
 
 const COLUMN_CALC_WIDTH = 200;
@@ -58,8 +62,8 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
  */
 function GridAsset({ asset }: { asset: Asset }) {
     // FIXME: Each asset item personally tracks the asset selected in the inspector
-    const { displayAsset, selectedAsset } = useInspector();
-    const assetSelected = selectedAsset === asset;
+    const { display } = useInspector();
+    const assetSelected = false;
 
     return (
         <div className="block">
@@ -74,7 +78,7 @@ function GridAsset({ asset }: { asset: Asset }) {
                 `,
                     assetSelected ? "bg-foreground/8" : "hover:bg-foreground/5"
                 )}
-                onClick={() => displayAsset(asset)}
+                onClick={() => display(<AssetInspector asset={asset} />)}
             >
                 <GridAssetMedia media={asset.media} selected={assetSelected} />
                 <GridAssetData title={asset.title} />

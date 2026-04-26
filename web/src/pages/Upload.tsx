@@ -54,7 +54,7 @@ function UploadPage() {
     }
 
     return (
-        <div className="flex items-start justify-center py-10 w-full overflow-y-scroll">
+        <div className="flex items-start justify-center py-10 w-full">
             <div className="gap-4 grid grid-cols-1 md:grid-cols-2 grid-rows-2 md:grid-rows-1 w-full">
                 <UploadContainer
                     file={file}
