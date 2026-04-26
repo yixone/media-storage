@@ -11,8 +11,10 @@ export class ApiClient {
     /**
      * Performs a `GET` request to the API
      */
-    async get<T>(url: string): Promise<T> {
-        return this.performRequest(url);
+    async get<T>(url: string, query?: Record<string, string>): Promise<T> {
+        return this.performRequest(
+            url + "?" + (query && new URLSearchParams(query).toString())
+        );
     }
 
     /**

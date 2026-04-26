@@ -1,7 +1,7 @@
 use sqlx::QueryBuilder;
 
 use crate::{
-    db::providers::sqlite::SqliteDb,
+    db::{providers::sqlite::SqliteDb, types::pagination::Pagination},
     error::Result,
     models::domains::{Asset, AssetId, AssetUpdateData, AssetsRepository},
 };
@@ -70,15 +70,15 @@ impl AssetsRepository for SqliteDb {
     }
 
     /// Returns a list of [`Asset`] with pagination
-    async fn get_assets(&self, cursor: u32, limit: u32) -> Result<Vec<Asset>> {
+    async fn get_assets(&self, pagination: Pagination) -> Result<Vec<Asset>> {
         let items = sqlx::query_as(
             "
         SELECT * FROM assets
         LIMIT ? OFFSET ?
         ",
         )
-        .bind(limit)
-        .bind(cursor)
+        .bind(pagination.limit)
+        .bind(pagination.cursor)
         .fetch_all(self.pool())
         .await?;
         Ok(items)

@@ -6,6 +6,12 @@ import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
 import "@lib/ui/style";
+import {
+    AssetInspector,
+    Inspector,
+    InspectorProvider,
+} from "@lib/ui/components/inspector";
+
 import { HomePage } from "./pages/Home";
 import { UploadPage } from "./pages/Upload";
 
@@ -17,13 +23,20 @@ function Application() {
 
     return (
         <ApiProvider client={client}>
-            <BrowserRouter>
-                <Routes>
-                    <Route index element={<HomePage />} />
+            <InspectorProvider>
+                <div className="flex">
+                    <BrowserRouter>
+                        <Routes>
+                            <Route index element={<HomePage />} />
 
-                    <Route path="/upload" element={<UploadPage />} />
-                </Routes>
-            </BrowserRouter>
+                            <Route path="/upload" element={<UploadPage />} />
+                        </Routes>
+                    </BrowserRouter>
+                    <Inspector>
+                        <AssetInspector />
+                    </Inspector>
+                </div>
+            </InspectorProvider>
         </ApiProvider>
     );
 }

@@ -1,11 +1,14 @@
 import { useState } from "react";
 
-import { useApi } from "@lib/api/context";
 import type { Asset, Media } from "@lib/api/types";
 
 import { useResizeObserver } from "@lib/ui/utils/observer";
+import { buildClassname } from "@lib/ui/utils/classname";
 
-const COLUMN_CALC_WIDTH = 220;
+import { useInspector } from "../../inspector";
+import { MediaContent, MediaHolder, MediaSkeleton } from "../../media";
+
+const COLUMN_CALC_WIDTH = 250;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -32,8 +35,7 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
     return (
         <div
             className="
-            grid gap-1
-            overflow-hidden
+            grid gap-1 overflow-hidden
             "
             ref={targetRef}
             style={{
@@ -51,20 +53,28 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
  * Container for the grid layout asset
  */
 function GridAsset({ asset }: { asset: Asset }) {
+    // FIXME: Each asset item personally tracks the asset selected in the inspector
+    const { displayAsset, selectedAsset } = useInspector();
+    const assetSelected = selectedAsset === asset;
+
     return (
         <div className="block">
-            <a
-                className="
-                hover:bg-border/45 transition-[background-color] duration-125
+            <div
+                className={buildClassname(
+                    `
+                transition-[background-color] duration-125 
                 rounded-md
                 flex flex-col gap-2 items-center
                 p-2
-                "
-                href={`/a/${asset.id}`}
+                cursor-pointer
+                `,
+                    assetSelected ? "bg-foreground/8" : "hover:bg-foreground/5"
+                )}
+                onClick={() => displayAsset(asset)}
             >
-                <GridAssetMedia media={asset.media} />
+                <GridAssetMedia media={asset.media} selected={assetSelected} />
                 <GridAssetData title={asset.title} />
-            </a>
+            </div>
         </div>
     );
 }
@@ -72,10 +82,13 @@ function GridAsset({ asset }: { asset: Asset }) {
 /**
  * Media component for the grid layout asset
  */
-function GridAssetMedia({ media }: { media: Media }) {
-    const { mediaApi } = useApi();
-    const [loaded, setLoaded] = useState(false);
-
+function GridAssetMedia({
+    media,
+    selected,
+}: {
+    media: Media;
+    selected: boolean;
+}) {
     const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
 
     return (
@@ -87,33 +100,22 @@ function GridAssetMedia({ media }: { media: Media }) {
             flex items-center justify-center
             "
         >
-            <div
-                className="
-                overflow-hidden
-                border border-border/50
-                rounded-[0.5rem]
-                relative
-                "
+            <MediaHolder
+                media={media}
+                className={buildClassname(
+                    "overflow-hidden border rounded-[0.5rem]",
+                    selected
+                        ? "outline-2 outline-foreground border-foreground"
+                        : "border-border/50"
+                )}
                 style={{
-                    aspectRatio,
                     width: aspectRatio >= 1 ? "100%" : undefined,
                     height: aspectRatio <= 1 ? "100%" : undefined,
                 }}
             >
-                <img
-                    className="
-                    object-cover size-full
-                    transition-opacity duration-125
-                    "
-                    src={mediaApi.getMediaUrl(media.id)}
-                    onLoad={() => {
-                        setLoaded(true);
-                    }}
-                    style={{
-                        opacity: loaded ? "100%" : "0%",
-                    }}
-                />
-            </div>
+                <MediaSkeleton />
+                <MediaContent />
+            </MediaHolder>
         </div>
     );
 }
