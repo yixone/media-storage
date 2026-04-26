@@ -22,7 +22,7 @@ function HomePage() {
     }, []);
 
     return (
-        <PageLayout variant="centered" className="p-4">
+        <PageLayout variant="scrollable" className="p-4 w-full h-screen">
             <AssetsGrid assets={assets} />
         </PageLayout>
     );

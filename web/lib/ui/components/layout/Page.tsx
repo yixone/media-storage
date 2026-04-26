@@ -8,6 +8,7 @@ import { buildClassname, type VariantProps } from "@lib/ui/utils/classname";
 const pageLayoutVariants = {
     variant: {
         centered: "flex items-center justify-center",
+        scrollable: "flex items-start justify-center overflow-y-scroll",
     },
 };
 

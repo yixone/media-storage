@@ -14,6 +14,7 @@ import {
 
 import { HomePage } from "./pages/Home";
 import { UploadPage } from "./pages/Upload";
+import { PageLayout } from "@lib/ui/components/layout/Page";
 
 /**
  * Configures application
@@ -23,20 +24,20 @@ function Application() {
 
     return (
         <ApiProvider client={client}>
-            <InspectorProvider>
-                <div className="flex">
-                    <BrowserRouter>
+            <BrowserRouter>
+                <InspectorProvider>
+                    <PageLayout>
                         <Routes>
                             <Route index element={<HomePage />} />
 
                             <Route path="/upload" element={<UploadPage />} />
                         </Routes>
-                    </BrowserRouter>
-                    <Inspector>
-                        <AssetInspector />
-                    </Inspector>
-                </div>
-            </InspectorProvider>
+                        <Inspector>
+                            <AssetInspector />
+                        </Inspector>
+                    </PageLayout>
+                </InspectorProvider>
+            </BrowserRouter>
         </ApiProvider>
     );
 }

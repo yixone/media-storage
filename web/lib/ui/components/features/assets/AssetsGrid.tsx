@@ -6,7 +6,7 @@ import { useResizeObserver } from "@lib/ui/utils/observer";
 import { buildClassname } from "@lib/ui/utils/classname";
 
 import { useInspector } from "../../inspector";
-import { MediaContent, MediaHolder, MediaSkeleton } from "../../media";
+import { MediaDisplay } from "../media/MediaDisplay";
 
 const COLUMN_CALC_WIDTH = 250;
 const MIN_COLUMNS_COUNT = 2;
@@ -16,26 +16,26 @@ const MIN_COLUMNS_COUNT = 2;
  */
 function AssetsGrid({ assets }: { assets: Asset[] }) {
     const calcColsCount = (rootWidth: number) => {
+        console.log(rootWidth);
         return Math.floor(rootWidth / COLUMN_CALC_WIDTH);
     };
-
-    const [colsCount, setColsCount] = useState(
-        calcColsCount(window.innerWidth)
-    );
 
     const { targetRef } = useResizeObserver((e) => {
         const newCount = Math.max(
             calcColsCount(e[0].contentRect.width),
             MIN_COLUMNS_COUNT
         );
-
         setColsCount(newCount);
     });
+
+    const [colsCount, setColsCount] = useState(
+        calcColsCount(window.innerWidth)
+    );
 
     return (
         <div
             className="
-            grid gap-1 overflow-hidden
+            grid gap-1 overflow-hidden w-full
             "
             ref={targetRef}
             style={{
@@ -100,7 +100,7 @@ function GridAssetMedia({
             flex items-center justify-center
             "
         >
-            <MediaHolder
+            <MediaDisplay
                 media={media}
                 className={buildClassname(
                     "overflow-hidden border rounded-[0.5rem]",
@@ -112,10 +112,7 @@ function GridAssetMedia({
                     width: aspectRatio >= 1 ? "100%" : undefined,
                     height: aspectRatio <= 1 ? "100%" : undefined,
                 }}
-            >
-                <MediaSkeleton />
-                <MediaContent />
-            </MediaHolder>
+            />
         </div>
     );
 }

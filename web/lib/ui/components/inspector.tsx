@@ -1,7 +1,7 @@
 import type { Asset } from "@lib/api/types";
 import React, { useState } from "react";
 import { DateDisplay } from "./date";
-import { MediaContent, MediaHolder, MediaSkeleton } from "./media";
+import { MediaDisplay } from "./features/media/MediaDisplay";
 
 const INSPECTOR_WIDTH = "30rem";
 
@@ -104,16 +104,10 @@ function AssetInspector() {
             "
         >
             <div className="flex items-center justify-center">
-                <MediaHolder
+                <MediaDisplay
                     media={selectedAsset.media}
-                    className="
-                    overflow-hidden border border-border/65 rounded-[0.5rem]
-                    max-h-100 min-h-5
-                    "
-                >
-                    <MediaSkeleton />
-                    <MediaContent />
-                </MediaHolder>
+                    className="overflow-hidden border border-border/65 rounded-[0.5rem] max-h-100 min-h-5"
+                />
             </div>
 
             <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
