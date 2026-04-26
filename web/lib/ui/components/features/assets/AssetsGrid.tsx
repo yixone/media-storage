@@ -8,7 +8,7 @@ import { buildClassname } from "@lib/ui/utils/classname";
 import { useInspector } from "../../inspector";
 import { MediaDisplay } from "../media/MediaDisplay";
 
-const COLUMN_CALC_WIDTH = 250;
+const COLUMN_CALC_WIDTH = 200;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -16,21 +16,24 @@ const MIN_COLUMNS_COUNT = 2;
  */
 function AssetsGrid({ assets }: { assets: Asset[] }) {
     const calcColsCount = (rootWidth: number) => {
-        console.log(rootWidth);
-        return Math.floor(rootWidth / COLUMN_CALC_WIDTH);
+        const cols = Math.max(
+            Math.floor(rootWidth / COLUMN_CALC_WIDTH),
+            MIN_COLUMNS_COUNT
+        );
+        return cols;
     };
 
     const { targetRef } = useResizeObserver((e) => {
-        const newCount = Math.max(
-            calcColsCount(e[0].contentRect.width),
-            MIN_COLUMNS_COUNT
-        );
+        const newCount = calcColsCount(e[0].contentRect.width);
         setColsCount(newCount);
+
+        if (!gridReady) {
+            setGridReady(true);
+        }
     });
 
-    const [colsCount, setColsCount] = useState(
-        calcColsCount(window.innerWidth)
-    );
+    const [gridReady, setGridReady] = useState(false);
+    const [colsCount, setColsCount] = useState(MIN_COLUMNS_COUNT);
 
     return (
         <div
@@ -42,9 +45,7 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
                 gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
             }}
         >
-            {assets.map((a) => (
-                <GridAsset asset={a} key={a.id} />
-            ))}
+            {gridReady && assets.map((a) => <GridAsset asset={a} key={a.id} />)}
         </div>
     );
 }

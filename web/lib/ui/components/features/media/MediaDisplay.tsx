@@ -19,20 +19,19 @@ export function MediaDisplay({
     return (
         <div
             className={buildClassname("relative", className)}
-            style={{ aspectRatio, ...props.style }}
+            style={{
+                aspectRatio,
+                backgroundColor: `#${media.color}`,
+                ...props.style,
+            }}
         >
-            {!loaded && (
-                <div
-                    className="absolute size-full animate-pulse"
-                    style={{ backgroundColor: `#${media.color}` }}
-                />
-            )}
-
             <img
-                className="size-full"
+                className="size-full transition-opacity duration-150"
                 src={mediaApi.getMediaUrl(media.id)}
-                style={{ visibility: loaded ? "visible" : "hidden" }}
+                style={{ opacity: loaded ? "100%" : "0%" }}
                 onLoad={() => setLoaded(true)}
+                loading="lazy"
+                fetchPriority="high"
             />
         </div>
     );
