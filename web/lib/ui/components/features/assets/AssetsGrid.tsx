@@ -45,7 +45,10 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
                 gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
             }}
         >
-            {gridReady && assets.map((a) => <GridAsset asset={a} key={a.id} />)}
+            {gridReady &&
+                assets
+                    .filter((a) => a.media.state === "Ready")
+                    .map((a) => <GridAsset asset={a} key={a.id} />)}
         </div>
     );
 }

@@ -2,13 +2,11 @@ import type { Asset } from "@lib/api/types";
 import React, { useState } from "react";
 import { DateDisplay } from "./date";
 import { MediaDisplay } from "./features/media/MediaDisplay";
+import { useLocation } from "react-router";
 
 const INSPECTOR_WIDTH = "30rem";
 
 type InspectorContextProps = {
-    toggleInspector: () => void;
-    inspectorOpen: boolean;
-
     displayAsset: (asset?: Asset) => void;
     selectedAsset?: Asset;
 };
@@ -38,18 +36,13 @@ function useInspector() {
  * Inspector for displaying information
  */
 function InspectorProvider({ children }: React.ComponentProps<"div">) {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const [selectedAsset, setSelectedAsset] = useState<Asset | undefined>(
         undefined
     );
 
     const contextValue = React.useMemo<InspectorContextProps>(
         () => ({
-            toggleInspector: () => {
-                setOpen((s) => !s);
-            },
-            inspectorOpen: open,
-
             displayAsset: (a) => {
                 if (!open) setOpen(true);
                 setSelectedAsset(a);
@@ -69,8 +62,11 @@ function InspectorProvider({ children }: React.ComponentProps<"div">) {
 /**
  * Inspector root object
  */
-function Inspector({ children }: React.ComponentProps<"div">) {
-    const { inspectorOpen } = useInspector();
+function Inspector() {
+    const location = useLocation();
+
+    // FIXME: implement a better solution
+    if (location.pathname === "/upload") return;
 
     return (
         <div
@@ -80,9 +76,9 @@ function Inspector({ children }: React.ComponentProps<"div">) {
                 h-screen
                 overflow-hidden
                 "
-            style={{ width: inspectorOpen ? INSPECTOR_WIDTH : 0 }}
+            style={{ width: INSPECTOR_WIDTH }}
         >
-            {children}
+            <AssetInspector />
         </div>
     );
 }

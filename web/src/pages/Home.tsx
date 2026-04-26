@@ -4,7 +4,6 @@ import { useApi } from "@lib/api/context";
 import type { Asset } from "@lib/api/types";
 
 import { AssetsGrid } from "@lib/ui/components/features/assets";
-import { PageLayout } from "@lib/ui/components/layout/Page";
 
 /**
  * Application Home Page
@@ -22,9 +21,12 @@ function HomePage() {
     }, []);
 
     return (
-        <PageLayout variant="scrollable" className="p-4 w-full h-screen">
+        <div
+            className="flex items-start justify-center p-4 w-full h-screen"
+            style={{ scrollbarWidth: "thin" }}
+        >
             <AssetsGrid assets={assets} />
-        </PageLayout>
+        </div>
     );
 }
 
