@@ -1,7 +1,6 @@
 import { Outlet } from "react-router";
 
-import { InspectorProvider } from "./providers";
-import { Inspector } from "./inspector";
+import { Inspector, InspectorProvider } from "@lib/ui/components/inspector";
 
 /**
  * Basic Layout with Sidebar and Inspector

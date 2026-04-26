@@ -1,9 +1,11 @@
-import { useInspector } from "./providers";
+import { useInspector } from "./provider";
+import { DisplayView } from "./view";
 
 const INSPECTOR_WIDTH = "30rem";
 
 export function Inspector() {
-    const { node } = useInspector();
+    const { stack } = useInspector();
+    const current = stack[stack.length - 1];
 
     return (
         <div
@@ -15,7 +17,7 @@ export function Inspector() {
                 "
             style={{ width: INSPECTOR_WIDTH }}
         >
-            {node}
+            {current && <DisplayView view={current} />}
         </div>
     );
 }
