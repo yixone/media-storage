@@ -1,9 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import type { CreateAssetData } from "@lib/api/types";
+import { useApi } from "@lib/api/context";
 
 import { PageLayout } from "@lib/ui/components/layout/Page";
 import { Input } from "@lib/ui/components/design/Input";
+import { Label } from "@lib/ui/components/design/Label";
+import { Button } from "@lib/ui/components/design";
+import { useNavigate } from "react-router";
+
+// TODO:
+// Rewrite this bad code
 
 type UploadData = Pick<CreateAssetData, "caption" | "source_url" | "title">;
 
@@ -17,6 +24,11 @@ function UploadPage() {
     };
     const [uploadData, setUploadData] = useState(uploadDataObj);
 
+    const [uploading, setUploading] = useState(false);
+
+    const { assetApi } = useApi();
+    const navigate = useNavigate();
+
     function handleUploadDataChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target;
         setUploadData((prev) => ({
@@ -25,12 +37,21 @@ function UploadPage() {
         }));
     }
 
-    useEffect(() => {
-        console.log(uploadData);
-    }, [uploadData]);
-
     async function uploadAsset() {
-        // TODO
+        setUploading(true);
+
+        if (!file) {
+            setUploading(false);
+            return;
+        }
+
+        const DTO: CreateAssetData = {
+            attachment: file,
+            ...uploadData,
+        };
+
+        await assetApi.upload(DTO);
+        navigate("/");
     }
 
     return (
@@ -49,7 +70,8 @@ function UploadPage() {
                 <MetadataContainer
                     data={uploadData}
                     onDataChange={handleUploadDataChange}
-                    enabled={file !== null}
+                    enabled={uploading ? false : file !== null}
+                    onUpload={uploadAsset}
                 />
             </div>
         </PageLayout>
@@ -131,30 +153,56 @@ function MetadataContainer({
     data,
     onDataChange,
     enabled,
+    onUpload,
 }: {
     data: UploadData;
     onDataChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     enabled: boolean;
+    onUpload: () => void;
 }) {
     return (
-        <div className="flex flex-col items-center md:items-start justify-start gap-2 w-1/2">
-            <Input
-                name="title"
-                required
-                minLength={3}
-                placeholder="Title"
-                value={data.title ?? ""}
-                onChange={onDataChange}
-                disabled={!enabled}
-            />
+        <div className="flex flex-col items-center md:items-start justify-start gap-2 w-full md:min-w-75 md:w-1/2 *:flex *:flex-col *:gap-1">
+            <div>
+                <Label htmlFor="asset_title">Title</Label>
+                <Input
+                    id="asset_title"
+                    name="title"
+                    placeholder="Title"
+                    value={data.title ?? ""}
+                    onChange={onDataChange}
+                    disabled={!enabled}
+                />
+            </div>
+            <div>
+                <Label htmlFor="asset_caption">Caption</Label>
+                <Input
+                    id="asset_caption"
+                    name="caption"
+                    placeholder="Caption"
+                    value={data.caption ?? ""}
+                    onChange={onDataChange}
+                    disabled={!enabled}
+                />
+            </div>
+            <div>
+                <Label htmlFor="asset_source_url">Source URL</Label>
+                <Input
+                    id="asset_source_url"
+                    name="source_url"
+                    placeholder="Source URL"
+                    value={data.source_url ?? ""}
+                    onChange={onDataChange}
+                    disabled={!enabled}
+                />
+            </div>
 
-            <Input
-                name="caption"
-                placeholder="Caption"
-                value={data.caption ?? ""}
-                onChange={onDataChange}
+            <Button
                 disabled={!enabled}
-            />
+                className="mt-2"
+                onClick={() => onUpload()}
+            >
+                Upload
+            </Button>
         </div>
     );
 }

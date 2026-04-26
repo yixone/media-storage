@@ -1,5 +1,6 @@
-import { buildClassname } from "@lib/ui/utils/classname";
 import type React from "react";
+
+import { buildClassname } from "@lib/ui/utils/classname";
 
 export function Input({
     className,

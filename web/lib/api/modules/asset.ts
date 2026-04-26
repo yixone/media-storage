@@ -1,4 +1,4 @@
-import type { Asset } from "../types";
+import type { Asset, CreateAssetData } from "../types";
 import { AbstractModule } from "./module";
 
 /**
@@ -12,5 +12,27 @@ export class ApiAssetModule extends AbstractModule {
         // TODO: add pagination
         const list: Asset[] = await this.client.get("v0/assets");
         return list;
+    }
+
+    /**
+     * Loads the specified asset into the API
+     */
+    async upload(data: CreateAssetData) {
+        const multipartForm = new FormData();
+        multipartForm.append("file", data.attachment);
+        if (data.title) {
+            multipartForm.append("title", data.title);
+        }
+        if (data.caption) {
+            multipartForm.append("caption", data.caption);
+        }
+        if (data.source_url) {
+            multipartForm.append("source", data.source_url);
+        }
+
+        await this.client.performRequest("v0/assets", {
+            method: "POST",
+            body: multipartForm,
+        });
     }
 }
