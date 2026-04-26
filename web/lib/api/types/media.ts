@@ -16,10 +16,3 @@ export type Media = {
     height: number | null;
     color: string | null;
 };
-
-/**
- * Media creation DTO
- */
-export type CreateMediaData = {
-    file: File;
-};

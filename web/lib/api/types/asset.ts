@@ -1,4 +1,4 @@
-import type { CreateMediaData, Media } from "./media";
+import type { Media } from "./media";
 
 /**
  * Asset model
@@ -16,7 +16,7 @@ export type Asset = {
  * Asset creation DTO
  */
 export type CreateAssetData = {
-    media: CreateMediaData;
+    attachment: File;
     title: string | null;
     caption: string | null;
     source_url: string | null;
