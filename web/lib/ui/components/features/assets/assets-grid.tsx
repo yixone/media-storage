@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Asset, Media } from "@lib/api/types";
 
@@ -35,6 +35,12 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
     const [gridReady, setGridReady] = useState(false);
     const [colsCount, setColsCount] = useState(MIN_COLUMNS_COUNT);
 
+    const { stack } = useInspector();
+    const selectedId =
+        stack.length > 0 && stack[stack.length - 1].type == "display_asset"
+            ? stack[stack.length - 1].asset.id
+            : undefined;
+
     return (
         <div
             className="grid gap-1 overflow-hidden w-full"
@@ -46,7 +52,15 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
             {gridReady &&
                 assets
                     .filter((a) => a.media.state === "Ready")
-                    .map((a) => <GridAsset asset={a} key={a.id} />)}
+                    .map((a) => {
+                        return (
+                            <GridAsset
+                                asset={a}
+                                key={a.id}
+                                selected={a.id === selectedId}
+                            />
+                        );
+                    })}
         </div>
     );
 }
@@ -54,14 +68,19 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
 /**
  * Container for the grid layout asset
  */
-function GridAsset({ asset }: { asset: Asset }) {
+function GridAsset({ asset, selected }: { asset: Asset; selected: boolean }) {
     const { push } = useInspector();
 
     return (
         <div
-            className={
-                "group/grid-asset cursor-pointer transition-[background-color] duration-125 bg-transparent hover:bg-border/25 rounded-xl p-1"
-            }
+            data-selected={selected}
+            className="
+            group/grid-asset 
+            cursor-pointer 
+            transition-[background-color] duration-125 
+            bg-transparent hover:bg-border/25  data-[selected=true]:bg-foreground/8
+            rounded-xl p-1
+            "
             onClick={() => push({ type: "display_asset", asset })}
         >
             <GridAssetMedia media={asset.media} />
@@ -85,7 +104,17 @@ function GridAssetMedia({ media }: { media: Media }) {
                     aspectRatio,
                 }}
             >
-                <div className="border border-border/65 overflow-hidden rounded-md group-hover/grid-asset:border-ring/65">
+                <div
+                    className="
+                    border border-border/65 
+                    overflow-hidden 
+                    rounded-md 
+                    group-hover/grid-asset:border-ring/65 
+                    group-data-[selected=true]/grid-asset:border-ring 
+                    group-data-[selected=true]/grid-asset:outline 
+                    group-data-[selected=true]/grid-asset:outline-ring
+                    "
+                >
                     <MediaDisplay media={media} />
                 </div>
             </div>

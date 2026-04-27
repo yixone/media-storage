@@ -40,10 +40,6 @@ export function InspectorProvider({ children }: React.ComponentProps<"div">) {
         });
     }
 
-    useEffect(() => {
-        console.log(viewStack);
-    }, [viewStack]);
-
     const contextValue = React.useMemo<InspectorContextProps>(
         () => ({
             stack: viewStack,
