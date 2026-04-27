@@ -3,36 +3,36 @@ import type React from "react";
 import type { Media } from "@lib/api/types";
 import { useApi } from "@lib/api/context";
 
-import { Image } from "./image";
 import { buildClassname } from "@lib/ui/utils/classname";
+import { useState } from "react";
 
 export function MediaDisplay({
     media,
     className,
     style,
-    fit = "contain",
-}: { media: Media; fit?: "contain" | "cover" } & React.ComponentProps<"div">) {
+}: { media: Media } & React.ComponentProps<"div">) {
+    const [loaded, setLoaded] = useState(false);
     const { mediaApi } = useApi();
-
-    const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
-
-    const fitProps: React.CSSProperties | undefined =
-        fit == "contain"
-            ? {
-                  width: aspectRatio >= 1 ? "100%" : undefined,
-                  height: aspectRatio <= 1 ? "100%" : undefined,
-              }
-            : undefined;
 
     return (
         <div
-            className={buildClassname(className)}
-            style={{ aspectRatio, ...fitProps, ...style }}
+            className={buildClassname("relative", className)}
+            style={{
+                aspectRatio: (media.width ?? 1) / (media.height ?? 1),
+                backgroundColor: `#${media.color}`,
+                animation: loaded ? undefined : "var(--animate-pulse)",
+                ...style,
+            }}
         >
-            <Image
+            <img
                 src={mediaApi.getMediaUrl(media.id)}
-                className="h-full"
-                aspectRatio={aspectRatio}
+                className="absolute w-full h-auto max-h-full transition-opacity duration-125"
+                fetchPriority="high"
+                loading="lazy"
+                onLoad={() => setLoaded(true)}
+                style={{
+                    opacity: loaded ? "100%" : "0%",
+                }}
             />
         </div>
     );

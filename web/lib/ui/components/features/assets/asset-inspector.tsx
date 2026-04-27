@@ -14,18 +14,13 @@ export function AssetInspector({ asset }: { asset: Asset }) {
             "
         >
             <div
-                className="w-full max-h-100 min-h-35"
+                className="flex justify-center max-h-100 min-h-35"
                 style={{
                     aspectRatio:
                         (asset.media.width ?? 1) / (asset.media.height ?? 1),
                 }}
             >
-                <div className="flex justify-center size-full">
-                    <MediaDisplay
-                        media={asset.media}
-                        className="overflow-hidden border border-border/65 rounded-md"
-                    />
-                </div>
+                <MediaDisplay media={asset.media} />
             </div>
 
             <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
