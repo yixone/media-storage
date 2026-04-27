@@ -55,12 +55,13 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
  * Container for the grid layout asset
  */
 function GridAsset({ asset }: { asset: Asset }) {
-    // FIXME: Each asset item personally tracks the asset selected in the inspector
     const { push } = useInspector();
 
     return (
         <div
-            className={buildClassname("")}
+            className={
+                "group/grid-asset cursor-pointer transition-[background-color] duration-125 bg-transparent hover:bg-border/25 rounded-xl p-1"
+            }
             onClick={() => push({ type: "display_asset", asset })}
         >
             <GridAssetMedia media={asset.media} />
@@ -75,7 +76,7 @@ function GridAsset({ asset }: { asset: Asset }) {
 function GridAssetMedia({ media }: { media: Media }) {
     const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
     return (
-        <div className="aspect-square flex items-center justify-center overflow-hidden p-4">
+        <div className="aspect-square flex items-center justify-center overflow-hidden p-2">
             <div
                 className={buildClassname(
                     "justify-self-center",
@@ -85,7 +86,7 @@ function GridAssetMedia({ media }: { media: Media }) {
                     aspectRatio,
                 }}
             >
-                <div className="border border-border/65 overflow-hidden rounded-md">
+                <div className="border border-border/65 overflow-hidden rounded-md group-hover/grid-asset:border-ring/65">
                     <MediaDisplay media={media} />
                 </div>
             </div>
@@ -98,15 +99,8 @@ function GridAssetMedia({ media }: { media: Media }) {
  */
 function GridAssetData({ title }: { title: string | null }) {
     return (
-        <div className="w-[75%]">
-            <p
-                className="
-                overflow-hidden text-ellipsis
-                whitespace-nowrap
-                text-[1.125rem] text-primary/80
-                text-center
-                "
-            >
+        <div className="w-full px-8">
+            <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">
                 {title}
             </p>
         </div>
