@@ -1,7 +1,7 @@
 import type { Asset } from "@lib/api/types";
 
 import { DateDisplay } from "../date";
-import { MediaDisplay } from "../media/media-display";
+import { MediaDisplay } from "../media";
 
 export function AssetInspector({ asset }: { asset: Asset }) {
     const aspectRatio = (asset.media.width ?? 1) / (asset.media.height ?? 1);

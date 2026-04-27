@@ -5,10 +5,10 @@ import type { Asset, Media } from "@lib/api/types";
 import { useResizeObserver } from "@lib/ui/utils/observer";
 import { buildClassname } from "@lib/ui/utils/classname";
 
-import { MediaDisplay } from "../media/media-display";
 import { useInspector } from "../../inspector";
+import { MediaDisplay } from "../media";
 
-const COLUMN_CALC_WIDTH = 200;
+const COLUMN_CALC_WIDTH = 275;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -93,29 +93,22 @@ function GridAssetMedia({
     media: Media;
     selected: boolean;
 }) {
-    const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
-
     return (
         <div
             className="
             aspect-square
             size-full
-            box-border
             flex items-center justify-center
             "
         >
             <MediaDisplay
                 media={media}
                 className={buildClassname(
-                    "overflow-hidden border rounded-[0.5rem]",
+                    "overflow-hidden border rounded-md",
                     selected
                         ? "outline-2 outline-foreground border-foreground"
                         : "border-border/50"
                 )}
-                style={{
-                    width: aspectRatio >= 1 ? "100%" : undefined,
-                    height: aspectRatio <= 1 ? "100%" : undefined,
-                }}
             />
         </div>
     );

@@ -1,1 +1,2 @@
-export * from "./media-display";
+export * from "./image";
+export * from "./media";
