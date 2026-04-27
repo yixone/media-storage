@@ -4,7 +4,6 @@ import { DateDisplay } from "../date";
 import { MediaDisplay } from "../media";
 
 export function AssetInspector({ asset }: { asset: Asset }) {
-    const aspectRatio = (asset.media.width ?? 1) / (asset.media.height ?? 1);
     return (
         <div
             className="
@@ -15,18 +14,17 @@ export function AssetInspector({ asset }: { asset: Asset }) {
             "
         >
             <div
-                className="w-full max-h-100 min-h-5"
+                className="w-full max-h-100 min-h-35"
                 style={{
-                    aspectRatio,
+                    aspectRatio:
+                        (asset.media.width ?? 1) / (asset.media.height ?? 1),
                 }}
             >
-                <div className="flex size-full justify-center">
-                    <div>
-                        <MediaDisplay
-                            media={asset.media}
-                            className="overflow-hidden border border-border/65 rounded-[0.5rem] max-h-100 min-h-5 size-full"
-                        />
-                    </div>
+                <div className="flex justify-center size-full">
+                    <MediaDisplay
+                        media={asset.media}
+                        className="overflow-hidden border border-border/65 rounded-md"
+                    />
                 </div>
             </div>
 
