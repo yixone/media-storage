@@ -79,7 +79,6 @@ function GridAssetMedia({ media }: { media: Media }) {
         <div className="aspect-square flex items-center justify-center overflow-hidden p-2">
             <div
                 className={buildClassname(
-                    "justify-self-center",
                     aspectRatio >= 1 ? "w-full" : "h-full"
                 )}
                 style={{
