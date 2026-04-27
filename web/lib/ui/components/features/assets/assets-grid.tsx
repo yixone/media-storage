@@ -5,10 +5,10 @@ import type { Asset, Media } from "@lib/api/types";
 import { useResizeObserver } from "@lib/ui/utils/observer";
 import { buildClassname } from "@lib/ui/utils/classname";
 
-import { MediaDisplay } from "../media/media-display";
 import { useInspector } from "../../inspector";
+import { MediaDisplay } from "../media";
 
-const COLUMN_CALC_WIDTH = 200;
+const COLUMN_CALC_WIDTH = 275;
 const MIN_COLUMNS_COUNT = 2;
 
 /**
@@ -37,9 +37,7 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
 
     return (
         <div
-            className="
-            grid gap-1 overflow-hidden w-full
-            "
+            className="grid gap-1 overflow-hidden w-full"
             ref={targetRef}
             style={{
                 gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
@@ -57,28 +55,17 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
  * Container for the grid layout asset
  */
 function GridAsset({ asset }: { asset: Asset }) {
-    // FIXME: Each asset item personally tracks the asset selected in the inspector
     const { push } = useInspector();
-    const assetSelected = false;
 
     return (
-        <div className="block">
-            <div
-                className={buildClassname(
-                    `
-                transition-[background-color] duration-125 
-                rounded-md
-                flex flex-col gap-2 items-center
-                p-2
-                cursor-pointer
-                `,
-                    assetSelected ? "bg-foreground/8" : "hover:bg-foreground/5"
-                )}
-                onClick={() => push({ type: "display_asset", asset })}
-            >
-                <GridAssetMedia media={asset.media} selected={assetSelected} />
-                <GridAssetData title={asset.title} />
-            </div>
+        <div
+            className={
+                "group/grid-asset cursor-pointer transition-[background-color] duration-125 bg-transparent hover:bg-border/25 rounded-xl p-1"
+            }
+            onClick={() => push({ type: "display_asset", asset })}
+        >
+            <GridAssetMedia media={asset.media} />
+            <GridAssetData title={asset.title} />
         </div>
     );
 }
@@ -86,37 +73,22 @@ function GridAsset({ asset }: { asset: Asset }) {
 /**
  * Media component for the grid layout asset
  */
-function GridAssetMedia({
-    media,
-    selected,
-}: {
-    media: Media;
-    selected: boolean;
-}) {
+function GridAssetMedia({ media }: { media: Media }) {
     const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
-
     return (
-        <div
-            className="
-            aspect-square
-            size-full
-            box-border
-            flex items-center justify-center
-            "
-        >
-            <MediaDisplay
-                media={media}
+        <div className="aspect-square flex items-center justify-center overflow-hidden p-2">
+            <div
                 className={buildClassname(
-                    "overflow-hidden border rounded-[0.5rem]",
-                    selected
-                        ? "outline-2 outline-foreground border-foreground"
-                        : "border-border/50"
+                    aspectRatio >= 1 ? "w-full" : "h-full"
                 )}
                 style={{
-                    width: aspectRatio >= 1 ? "100%" : undefined,
-                    height: aspectRatio <= 1 ? "100%" : undefined,
+                    aspectRatio,
                 }}
-            />
+            >
+                <div className="border border-border/65 overflow-hidden rounded-md group-hover/grid-asset:border-ring/65">
+                    <MediaDisplay media={media} />
+                </div>
+            </div>
         </div>
     );
 }
@@ -126,15 +98,8 @@ function GridAssetMedia({
  */
 function GridAssetData({ title }: { title: string | null }) {
     return (
-        <div className="w-[75%]">
-            <p
-                className="
-                overflow-hidden text-ellipsis
-                whitespace-nowrap
-                text-[1.125rem] text-primary/80
-                text-center
-                "
-            >
+        <div className="w-full px-8">
+            <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">
                 {title}
             </p>
         </div>
