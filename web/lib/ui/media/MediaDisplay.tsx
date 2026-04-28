@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import type { Media } from "@lib/api/types";
 import { useApi } from "@lib/api/context";
 
 import { buildClassname } from "@lib/ui/classname";
-import { useState } from "react";
 
 export const MediaDisplay = React.memo(
     ({

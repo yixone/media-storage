@@ -1,6 +1,7 @@
 import type { Asset } from "@lib/api/types";
 
-import { MediaDisplay } from "../media";
+import { MediaDisplay } from "@lib/ui/media";
+
 import { DateDisplay } from "../Date";
 
 export function AssetInspector({ asset }: { asset: Asset }) {

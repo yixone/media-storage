@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import type { CreateAssetData } from "@lib/api/types";
 import { useApi } from "@lib/api/context";
 
-import { Button, Input, Label } from "@lib/ui/design";
+import { Button, Input, Label } from "@lib/ui/components/base";
 
 // TODO:
 // Rewrite this bad code
