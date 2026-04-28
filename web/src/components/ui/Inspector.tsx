@@ -1,24 +1,27 @@
+import { Resizable } from "@lib/ui/components/base";
 import { useInspector } from "../../providers";
 import { AssetInspector } from "./assets";
 
-const INSPECTOR_WIDTH = "25rem";
+const INSPECTOR_WIDTH = 25;
 
 export function Inspector() {
     const { activeView } = useInspector();
 
     return (
-        <div
-            className="
+        <Resizable defaultWidth={INSPECTOR_WIDTH}>
+            <div
+                className="
                 bg-card 
                 border-l border-border
                 h-screen
                 overflow-hidden
+                w-full
                 "
-            style={{ width: INSPECTOR_WIDTH }}
-        >
-            {activeView?.type == "display.asset" && (
-                <AssetInspector asset={activeView.asset} />
-            )}
-        </div>
+            >
+                {activeView?.type == "display.asset" && (
+                    <AssetInspector asset={activeView.asset} />
+                )}
+            </div>
+        </Resizable>
     );
 }

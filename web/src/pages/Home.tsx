@@ -22,7 +22,7 @@ function HomePage() {
     }, []);
 
     return (
-        <div className="w-full">
+        <div className="flex w-full">
             <Scrollable className="h-screen w-full p-4">
                 <AssetsGrid assets={assets} />
             </Scrollable>
