@@ -1,9 +1,6 @@
 import { Outlet } from "react-router";
 
-/**
- * Single Frame Layout
- */
-export function FrameLayout() {
+export function ViewLayout() {
     return (
         <div className="flex items-center justify-center">
             <Outlet />

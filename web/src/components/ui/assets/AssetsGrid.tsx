@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 import type { Asset } from "@lib/api/types";
 
-import { useResizeObserver } from "@lib/ui/utils/observer";
-import { buildClassname } from "@lib/ui/utils/classname";
+import { useResizeObserver } from "@lib/ui/observer";
+import { buildClassname } from "@lib/ui/classname";
 
-import { useInspector } from "../../inspector";
+import { useInspector } from "../../../providers";
 import { MediaDisplay } from "../media";
 
 const COLUMN_CALC_WIDTH = 275;
@@ -34,7 +34,7 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
 
     const selectAsset = (asset: Asset) => {
         setSelectedId(asset.id);
-        push({ type: "display_asset", asset });
+        addView({ type: "display.asset", asset });
     };
 
     const [gridReady, setGridReady] = useState(false);
@@ -42,7 +42,7 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
 
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
-    const { push } = useInspector();
+    const { addView } = useInspector();
 
     useEffect(() => {
         if (assets.length === 0) return;
@@ -87,10 +87,6 @@ function GridAsset({
     onSelect: (asset: Asset) => void;
 }) {
     const aspectRatio = (asset.media.width ?? 1) / (asset.media.height ?? 1);
-
-    useEffect(() => {
-        console.log(selected);
-    }, [selected]);
 
     return (
         <div

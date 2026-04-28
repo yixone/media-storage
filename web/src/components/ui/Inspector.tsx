@@ -1,11 +1,10 @@
-import { useInspector } from "./provider";
-import { DisplayView } from "./view";
+import { useInspector } from "../../providers";
+import { AssetInspector } from "./assets";
 
-const INSPECTOR_WIDTH = "30rem";
+const INSPECTOR_WIDTH = "25rem";
 
 export function Inspector() {
-    const { stack } = useInspector();
-    const current = stack[stack.length - 1];
+    const { activeView } = useInspector();
 
     return (
         <div
@@ -17,7 +16,9 @@ export function Inspector() {
                 "
             style={{ width: INSPECTOR_WIDTH }}
         >
-            {current && <DisplayView view={current} />}
+            {activeView?.type == "display.asset" && (
+                <AssetInspector asset={activeView.asset} />
+            )}
         </div>
     );
 }

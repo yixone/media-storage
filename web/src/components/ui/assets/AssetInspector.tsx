@@ -1,7 +1,7 @@
 import type { Asset } from "@lib/api/types";
 
-import { DateDisplay } from "../date";
 import { MediaDisplay } from "../media";
+import { DateDisplay } from "../Date";
 
 export function AssetInspector({ asset }: { asset: Asset }) {
     const aspectRatio = (asset.media.width ?? 1) / (asset.media.height ?? 1);
@@ -23,12 +23,14 @@ export function AssetInspector({ asset }: { asset: Asset }) {
             <h2 className="text-xl w-full whitespace-normal wrap-anywhere">
                 {asset.title}
             </h2>
+
             {asset.source_url && (
-                <a href={asset.source_url} className="text-foreground/65">
+                <a href={asset.source_url!} className="text-foreground/65">
                     <b>{"Source: "}</b>
                     <i className="decoration-1 underline">{asset.source_url}</i>
                 </a>
             )}
+
             <h2 className="text-foreground/65">
                 <b>{"Created: "}</b>
                 <DateDisplay date={new Date(asset.created_at)} />

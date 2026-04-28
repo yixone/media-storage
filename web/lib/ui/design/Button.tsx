@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { buildClassname, type VariantProps } from "@lib/ui/utils/classname";
+import { buildClassname, type VariantProps } from "@lib/ui/classname";
 
 export const buttonVariants = {
     variant: {

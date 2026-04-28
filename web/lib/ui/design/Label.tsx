@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { buildClassname } from "@lib/ui/utils/classname";
+import { buildClassname } from "@lib/ui/classname";
 
 export function Label({ className, ...props }: React.ComponentProps<"label">) {
     return (

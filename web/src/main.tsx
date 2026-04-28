@@ -5,12 +5,11 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { ApiProvider } from "@lib/api/context";
 import { ApiClient } from "@lib/api/client";
 
-import "@lib/ui/style";
-
-import { BrowseLayout, FrameLayout } from "@lib/ui/layouts";
+import "./style";
 
 import { HomePage } from "./pages/Home";
 import { UploadPage } from "./pages/Upload";
+import { BrowseLayout, ViewLayout } from "./layouts";
 
 /**
  * Configures application
@@ -26,7 +25,7 @@ function Application() {
                         <Route index element={<HomePage />} />
                     </Route>
 
-                    <Route element={<FrameLayout />}>
+                    <Route element={<ViewLayout />}>
                         <Route path="/upload" element={<UploadPage />} />
                     </Route>
                 </Routes>

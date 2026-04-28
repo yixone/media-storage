@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useApi } from "@lib/api/context";
 import type { Asset } from "@lib/api/types";
 
-import { AssetsGrid } from "@lib/ui/components/features/assets";
+import { AssetsGrid } from "../components/ui/assets";
 
 /**
  * Application Home Page

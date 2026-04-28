@@ -1,4 +1,4 @@
-import { buildClassname, type VariantProps } from "@lib/ui/utils/classname";
+import { buildClassname, type VariantProps } from "@lib/ui/classname";
 
 /**
  * Badge style options
