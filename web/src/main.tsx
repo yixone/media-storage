@@ -8,7 +8,9 @@ import { ApiClient } from "@lib/api/client";
 import "@lib/ui/style";
 
 import { BrowseLayout, FrameLayout } from "@lib/ui/layouts";
-import { HomePage, UploadPage } from "./pages";
+
+import { HomePage } from "./pages/Home";
+import { UploadPage } from "./pages/Upload";
 
 /**
  * Configures application

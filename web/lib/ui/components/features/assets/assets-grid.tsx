@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import type { Asset, Media } from "@lib/api/types";
+import type { Asset } from "@lib/api/types";
 
 import { useResizeObserver } from "@lib/ui/utils/observer";
 import { buildClassname } from "@lib/ui/utils/classname";
@@ -32,14 +32,22 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
         }
     });
 
+    const selectAsset = (asset: Asset) => {
+        setSelectedId(asset.id);
+        push({ type: "display_asset", asset });
+    };
+
     const [gridReady, setGridReady] = useState(false);
     const [colsCount, setColsCount] = useState(MIN_COLUMNS_COUNT);
 
-    const { stack } = useInspector();
-    const selectedId =
-        stack.length > 0 && stack[stack.length - 1].type == "display_asset"
-            ? stack[stack.length - 1].asset.id
-            : undefined;
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+
+    const { push } = useInspector();
+
+    useEffect(() => {
+        if (assets.length === 0) return;
+        selectAsset(assets[0]);
+    }, [assets]);
 
     return (
         <div
@@ -58,6 +66,7 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
                                 asset={a}
                                 key={a.id}
                                 selected={a.id === selectedId}
+                                onSelect={selectAsset}
                             />
                         );
                     })}
@@ -68,8 +77,20 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
 /**
  * Container for the grid layout asset
  */
-function GridAsset({ asset, selected }: { asset: Asset; selected: boolean }) {
-    const { push } = useInspector();
+function GridAsset({
+    asset,
+    selected,
+    onSelect,
+}: {
+    asset: Asset;
+    selected: boolean;
+    onSelect: (asset: Asset) => void;
+}) {
+    const aspectRatio = (asset.media.width ?? 1) / (asset.media.height ?? 1);
+
+    useEffect(() => {
+        console.log(selected);
+    }, [selected]);
 
     return (
         <div
@@ -81,31 +102,19 @@ function GridAsset({ asset, selected }: { asset: Asset; selected: boolean }) {
             bg-transparent hover:bg-border/25  data-[selected=true]:bg-foreground/8
             rounded-xl p-1
             "
-            onClick={() => push({ type: "display_asset", asset })}
+            onClick={() => onSelect(asset)}
         >
-            <GridAssetMedia media={asset.media} />
-            <GridAssetData title={asset.title} />
-        </div>
-    );
-}
-
-/**
- * Media component for the grid layout asset
- */
-function GridAssetMedia({ media }: { media: Media }) {
-    const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
-    return (
-        <div className="aspect-square flex items-center justify-center overflow-hidden p-2">
-            <div
-                className={buildClassname(
-                    aspectRatio >= 1 ? "w-full" : "h-full"
-                )}
-                style={{
-                    aspectRatio,
-                }}
-            >
+            <div className="aspect-square flex items-center justify-center overflow-hidden p-2">
                 <div
-                    className="
+                    className={buildClassname(
+                        aspectRatio >= 1 ? "w-full" : "h-full"
+                    )}
+                    style={{
+                        aspectRatio,
+                    }}
+                >
+                    <div
+                        className="
                     border border-border/65 
                     overflow-hidden 
                     rounded-md 
@@ -114,23 +123,16 @@ function GridAssetMedia({ media }: { media: Media }) {
                     group-data-[selected=true]/grid-asset:outline 
                     group-data-[selected=true]/grid-asset:outline-ring
                     "
-                >
-                    <MediaDisplay media={media} />
+                    >
+                        <MediaDisplay media={asset.media} />
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-}
-
-/**
- * A component for displaying metadata for a grid layout asset
- */
-function GridAssetData({ title }: { title: string | null }) {
-    return (
-        <div className="w-full px-8">
-            <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">
-                {title}
-            </p>
+            <div className="w-full px-8">
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">
+                    {asset.title}
+                </p>
+            </div>
         </div>
     );
 }
