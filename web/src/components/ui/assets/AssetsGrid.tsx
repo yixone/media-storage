@@ -2,46 +2,24 @@ import { useEffect, useState } from "react";
 
 import type { Asset } from "@lib/api/types";
 
-import { useResizeObserver } from "@lib/ui/observer";
 import { buildClassname } from "@lib/ui/classname";
 import { MediaDisplay } from "@lib/ui/media";
+import { Grid } from "@lib/ui/components/base";
 
 import { useInspector } from "../../../providers";
 
 const COLUMN_CALC_WIDTH = 240;
-const MIN_COLUMNS_COUNT = 2;
 
 /**
  * Assets grid layout
  */
 function AssetsGrid({ assets }: { assets: Asset[] }) {
-    const calcColsCount = (rootWidth: number) => {
-        const cols = Math.max(
-            Math.floor(rootWidth / COLUMN_CALC_WIDTH),
-            MIN_COLUMNS_COUNT
-        );
-        return cols;
-    };
-
-    const { targetRef } = useResizeObserver((e) => {
-        const newCount = calcColsCount(e[0].contentRect.width);
-        setColsCount(newCount);
-
-        if (!gridReady) {
-            setGridReady(true);
-        }
-    });
-
     const selectAsset = (asset: Asset) => {
         setSelectedId(asset.id);
         addView({ type: "display.asset", asset });
     };
 
-    const [gridReady, setGridReady] = useState(false);
-    const [colsCount, setColsCount] = useState(MIN_COLUMNS_COUNT);
-
     const [selectedId, setSelectedId] = useState<string | null>(null);
-
     const { addView } = useInspector();
 
     useEffect(() => {
@@ -50,27 +28,18 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
     }, [assets]);
 
     return (
-        <div
-            className="grid gap-1 overflow-hidden w-full"
-            ref={targetRef}
-            style={{
-                gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
-            }}
-        >
-            {gridReady &&
-                assets
-                    .filter((a) => a.media.state === "Ready")
-                    .map((a) => {
-                        return (
-                            <GridAsset
-                                asset={a}
-                                key={a.id}
-                                selected={a.id === selectedId}
-                                onSelect={selectAsset}
-                            />
-                        );
-                    })}
-        </div>
+        <Grid columnWidth={COLUMN_CALC_WIDTH}>
+            {assets
+                .filter((a) => a.media.state === "Ready")
+                .map((a) => (
+                    <GridAsset
+                        asset={a}
+                        key={a.id}
+                        selected={a.id === selectedId}
+                        onSelect={selectAsset}
+                    />
+                ))}
+        </Grid>
     );
 }
 
@@ -87,7 +56,6 @@ function GridAsset({
     onSelect: (asset: Asset) => void;
 }) {
     const aspectRatio = (asset.media.width ?? 1) / (asset.media.height ?? 1);
-
     return (
         <div
             data-selected={selected}
@@ -97,8 +65,11 @@ function GridAsset({
             transition-[background-color] duration-125 
             bg-transparent hover:bg-border/25  data-[selected=true]:bg-foreground/8
             rounded-xl p-1
+            focus:outline-none
             "
             onClick={() => onSelect(asset)}
+            tabIndex={1}
+            onFocus={() => onSelect(asset)}
         >
             <div className="aspect-square flex items-center justify-center overflow-hidden p-2">
                 <div
