@@ -16,7 +16,7 @@ export const MediaDisplay = React.memo(
 
         return (
             <div
-                className={buildClassname("relative", className)}
+                className={buildClassname(className, "relative")}
                 style={{
                     aspectRatio: (media.width ?? 1) / (media.height ?? 1),
                     backgroundColor: `#${media.color}`,
@@ -26,7 +26,8 @@ export const MediaDisplay = React.memo(
             >
                 <img
                     src={mediaApi.getMediaUrl(media.id)}
-                    className="absolute w-full h-auto max-h-full transition-opacity duration-125"
+                    draggable={false}
+                    className="absolute w-full h-auto max-h-full transition-opacity duration-125 select-none"
                     fetchPriority="high"
                     loading="lazy"
                     onLoad={() => setLoaded(true)}

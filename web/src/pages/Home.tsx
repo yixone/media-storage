@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useApi } from "@lib/api/context";
 import type { Asset } from "@lib/api/types";
 
-import { AssetsGrid } from "../components/ui/assets";
-import { Scrollable } from "@lib/ui/components/base";
+import { AssetsGrid } from "../components/ui/asset";
+import { Scrollable } from "../components/ui/base";
 
 /**
  * Application Home Page

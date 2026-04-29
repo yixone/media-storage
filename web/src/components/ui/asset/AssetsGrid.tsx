@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 
 import type { Asset } from "@lib/api/types";
 
-import { buildClassname } from "@lib/ui/classname";
-import { MediaDisplay } from "@lib/ui/media";
-import { Grid } from "@lib/ui/components/base";
+import { Grid } from "../base";
 
 import { useInspector } from "../../../providers";
-
-const COLUMN_CALC_WIDTH = 240;
+import { useNavigate } from "react-router";
+import { AssetMedia } from "./AssetMedia";
 
 /**
  * Assets grid layout
@@ -28,7 +26,7 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
     }, [assets]);
 
     return (
-        <Grid columnWidth={COLUMN_CALC_WIDTH}>
+        <Grid columnWidth={230}>
             {assets
                 .filter((a) => a.media.state === "Ready")
                 .map((a) => (
@@ -55,7 +53,12 @@ function GridAsset({
     selected: boolean;
     onSelect: (asset: Asset) => void;
 }) {
-    const aspectRatio = (asset.media.width ?? 1) / (asset.media.height ?? 1);
+    const navigate = useNavigate();
+
+    const goToAssetPage = () => {
+        navigate(`a/${asset.id}`);
+    };
+
     return (
         <div
             data-selected={selected}
@@ -65,35 +68,16 @@ function GridAsset({
             transition-[background-color] duration-125 
             bg-transparent hover:bg-border/25  data-[selected=true]:bg-foreground/8
             rounded-xl p-1
+            flex flex-col
             focus:outline-none
             "
             onClick={() => onSelect(asset)}
-            tabIndex={1}
             onFocus={() => onSelect(asset)}
+            onDoubleClick={() => goToAssetPage()}
+            tabIndex={1}
         >
-            <div className="aspect-square flex items-center justify-center overflow-hidden p-2">
-                <div
-                    className={buildClassname(
-                        aspectRatio >= 1 ? "w-full" : "h-full"
-                    )}
-                    style={{
-                        aspectRatio,
-                    }}
-                >
-                    <div
-                        className="
-                    border border-border/65 
-                    overflow-hidden 
-                    rounded-md 
-                    group-hover/grid-asset:border-ring/65 
-                    group-data-[selected=true]/grid-asset:border-ring 
-                    group-data-[selected=true]/grid-asset:outline 
-                    group-data-[selected=true]/grid-asset:outline-ring
-                    "
-                    >
-                        <MediaDisplay media={asset.media} />
-                    </div>
-                </div>
+            <div className="aspect-square overflow-hidden">
+                <AssetMedia media={asset.media} />
             </div>
             <div className="w-full px-8">
                 <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">

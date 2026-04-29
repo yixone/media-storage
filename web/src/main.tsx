@@ -10,6 +10,7 @@ import "./style";
 import { HomePage } from "./pages/Home";
 import { UploadPage } from "./pages/Upload";
 import { BrowseLayout, ViewLayout } from "./layouts";
+import { AssetViewPage } from "./pages/AssetView";
 
 /**
  * Configures application
@@ -27,6 +28,7 @@ function Application() {
 
                     <Route element={<ViewLayout />}>
                         <Route path="/upload" element={<UploadPage />} />
+                        <Route path="/a/:id" element={<AssetViewPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

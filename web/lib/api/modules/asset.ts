@@ -17,6 +17,14 @@ export class ApiAssetModule extends AbstractModule {
     }
 
     /**
+     * Returns an Asset by ID
+     */
+    async get(id: string): Promise<Asset> {
+        let asset: Asset = await this.client.get(`v0/assets/${id}`);
+        return asset;
+    }
+
+    /**
      * Loads the specified asset into the API
      */
     async upload(data: CreateAssetData) {

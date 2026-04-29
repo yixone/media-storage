@@ -1,5 +1,5 @@
 import { useInspector } from "../../providers";
-import { AssetInspector } from "./assets";
+import { AssetInspector } from "./asset";
 
 const INSPECTOR_WIDTH = "25rem";
 
