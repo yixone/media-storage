@@ -64,14 +64,6 @@ pub async fn upload_asset(
                     continue;
                 }
 
-                let disposition = field
-                    .content_disposition()
-                    .ok_or(create_error!(MultipartError))?;
-
-                if uploading.title.is_none() {
-                    uploading.title = disposition.get_filename().map(|v| v.to_string());
-                }
-
                 let mimetype = field
                     .content_type()
                     .ok_or(create_error!(MultipartError))?
