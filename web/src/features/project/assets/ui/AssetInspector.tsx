@@ -1,4 +1,4 @@
-import { getDisplaySize } from "../../media/displaySize";
+import { getDisplaySize } from "../../media/utils/displaySize";
 import type { Asset } from "../models";
 import { AssetMedia } from "./AssetMedia";
 

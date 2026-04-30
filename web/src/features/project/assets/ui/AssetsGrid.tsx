@@ -6,20 +6,41 @@ import { useInspector } from "@/features/common/inspector";
 import { AssetMedia } from "./AssetMedia";
 import type { Asset } from "../models";
 import { getAssetViewUrl } from "../utils/url";
-import {
-    AssetsGridLayout,
-    GridAssetLayout,
-    GridAssetMediaLayout,
-} from "./AssetsGrid.layout";
-import { Skeleton } from "@/ui";
+import { useResizeObserver } from "@/features/common/observer";
 
-function AssetsGrid({ assets }: { assets: Asset[] }) {
+function useGridLayout() {
+    const [colsCount, setColsCount] = useState(2);
+    const [layoutReady, setLayoutReady] = useState(false);
+
+    const calcColsCount = (rootWidth: number) => {
+        const cols = Math.max(Math.floor(rootWidth / 230), 2);
+        return cols;
+    };
+
+    const { targetRef } = useResizeObserver((e) => {
+        const newCount = calcColsCount(e[0].contentRect.width);
+        setColsCount(newCount);
+
+        if (!layoutReady) {
+            setLayoutReady(true);
+        }
+    });
+
+    return { colsCount, layoutReady, targetRef };
+}
+
+function useAssetActions(assets: Asset[]) {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { addView } = useInspector();
+    const navigate = useNavigate();
 
     const selectAsset = (asset: Asset) => {
         setSelectedId(asset.id);
         addView({ type: "display.asset", asset });
+    };
+
+    const openAsset = (asset: Asset) => {
+        navigate(getAssetViewUrl(asset));
     };
 
     useEffect(() => {
@@ -27,88 +48,73 @@ function AssetsGrid({ assets }: { assets: Asset[] }) {
         selectAsset(assets[0]);
     }, [assets]);
 
+    return { selectedId, selectAsset, openAsset };
+}
+
+export function AssetsGrid({ assets }: { assets: Asset[] }) {
+    const { colsCount, layoutReady, targetRef } = useGridLayout();
+    const { selectedId, selectAsset, openAsset } = useAssetActions(assets);
+
     return (
-        <AssetsGridLayout>
-            {assets.map((a) => (
-                <GridAsset
-                    asset={a}
-                    key={a.id}
-                    selected={a.id === selectedId}
-                    onSelect={selectAsset}
-                />
-            ))}
-        </AssetsGridLayout>
+        <div
+            className="grid gap-0.5"
+            ref={targetRef}
+            style={{
+                gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
+            }}
+        >
+            {layoutReady &&
+                assets
+                    .filter((a) => a.media.state === "Ready")
+                    .map((a) => (
+                        <GridAsset
+                            asset={a}
+                            key={a.id}
+                            selected={a.id === selectedId}
+                            onSelect={selectAsset}
+                            onOpen={openAsset}
+                        />
+                    ))}
+        </div>
     );
 }
 
 export type GridAssetProps = {
     asset: Asset;
-
     selected: boolean;
     onSelect: (asset: Asset) => void;
+    onOpen: (asset: Asset) => void;
 };
 
-export type GridAssetPlaceholderProps = {
-    asset: Asset;
-};
-
-function GridAsset({ asset, selected, onSelect }: GridAssetProps) {
-    if (asset.media.state !== "Ready")
-        return <GridAssetPlaceholder asset={asset} />;
-
-    const navigate = useNavigate();
-
-    const goToAssetPage = () => {
-        navigate(getAssetViewUrl(asset));
-    };
-
+function GridAsset({ asset, selected, onSelect, onOpen }: GridAssetProps) {
     return (
-        <GridAssetLayout
+        <div
             data-selected={selected}
+            className="
+            group/grid-asset 
+            cursor-pointer 
+            bg-transparent hover:bg-foreground/4 data-[selected=true]:bg-foreground/8 
+            rounded-md p-1 
+            flex flex-col 
+            outline-none"
             onClick={() => onSelect(asset)}
             onFocus={() => onSelect(asset)}
-            onDoubleClick={() => goToAssetPage()}
+            onDoubleClick={() => onOpen(asset)}
             tabIndex={1}
         >
-            <GridAssetMediaLayout className="p-1">
+            <div className="aspect-square flex justify-center items-center p-1">
                 <AssetMedia
                     className="
-                    border border-border/75 overflow-hidden rounded-md select-none 
-                    group-data-[selected=true]/grid-asset:border-ring
-                    group-data-[selected=true]/grid-asset:outline
-                    group-data-[selected=true]/grid-asset:outline-ring
-                    "
+                    border border-border/75 overflow-hidden rounded-md select-none
+                    group-data-[selected=true]/grid-asset:border-ring"
                     media={asset.media}
                 />
-            </GridAssetMediaLayout>
-            <GridAssetMeta title={asset.title} />
-        </GridAssetLayout>
-    );
-}
-
-function GridAssetPlaceholder({ asset }: GridAssetPlaceholderProps) {
-    return (
-        <GridAssetLayout>
-            <GridAssetMediaLayout className="p-2">
-                <Skeleton className="size-full" />
-            </GridAssetMediaLayout>
-            <GridAssetMeta title={asset.title} />
-        </GridAssetLayout>
-    );
-}
-
-export type GridAssetMetaProps = {
-    title: string | null;
-};
-
-function GridAssetMeta({ title }: GridAssetMetaProps) {
-    return (
-        <div className="w-full px-8">
-            <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">
-                {title}
-            </p>
+            </div>
+            <div className="w-full px-6">
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">
+                    {asset.title}
+                </p>
+            </div>
         </div>
     );
 }
-
-export { AssetsGrid };

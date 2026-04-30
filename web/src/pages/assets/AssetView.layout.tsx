@@ -55,6 +55,9 @@ export function AssetViewDetails({
     ...props
 }: React.ComponentProps<"div">) {
     return (
-        <div className={buildClassname("md:flex-1", className)} {...props} />
+        <div
+            className={buildClassname("md:flex-1 flex flex-col", className)}
+            {...props}
+        />
     );
 }

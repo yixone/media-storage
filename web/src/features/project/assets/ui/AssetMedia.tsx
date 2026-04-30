@@ -4,7 +4,7 @@ import { useApi } from "@/api/context";
 import { buildClassname } from "@/ui/utils/classname";
 
 import type { Media } from "../../media/models";
-import { getAspectRatio } from "../../media/aspectRatio";
+import { getAspectRatio } from "../../media/utils";
 
 type AssetMediaProps = {
     media: Media;

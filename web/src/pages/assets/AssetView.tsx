@@ -10,11 +10,11 @@ import {
     AssetViewLayout,
     AssetViewMediaContainer,
 } from "./AssetView.layout";
-import { getAspectRatio } from "@/features/project/media/aspectRatio";
+import { getAspectRatio } from "@/features/project/media/utils";
 import { AssetMedia } from "@/features/project/assets/ui";
+import { getDisplaySize } from "@/features/project/media/utils/displaySize";
 
-export function AssetViewPage() {
-    const { id } = useParams();
+function useTarget(id?: string) {
     const { assetApi } = useApi();
 
     const [asset, setAsset] = useState<Asset | null>(null);
@@ -33,6 +33,13 @@ export function AssetViewPage() {
         })();
     }, []);
 
+    return { asset };
+}
+
+export function AssetViewPage() {
+    const { id } = useParams();
+    const { asset } = useTarget(id);
+
     if (!asset) return null;
 
     return (
@@ -48,12 +55,24 @@ export function AssetViewPage() {
                 </AssetViewMediaContainer>
             </AssetViewContent>
             <AssetViewDetails className="p-4">
-                <div className="flex flex-col">
-                    <h2 className="text-xl w-full whitespace-normal wrap-anywhere font-medium">
-                        {asset.title}
-                    </h2>
-                </div>
+                <AssetDetails asset={asset} />
             </AssetViewDetails>
         </AssetViewLayout>
+    );
+}
+
+type AssetDetailsProps = { asset: Asset };
+
+function AssetDetails({ asset }: AssetDetailsProps) {
+    return (
+        <div>
+            <h2 className="text-2xl w-full whitespace-normal wrap-anywhere font-medium">
+                {asset.title}
+            </h2>
+
+            <h2 className="opacity-60 text-lg">
+                {asset.media.mimetype} - {getDisplaySize(asset.media.size)}
+            </h2>
+        </div>
     );
 }
