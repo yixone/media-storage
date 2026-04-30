@@ -5,6 +5,7 @@ import { useApi } from "@/api/context";
 
 import type { Asset } from "@/features/project/assets/models";
 import { AssetMedia } from "@/features/project/assets/ui";
+import { getDisplaySize } from "@/features/project/media/displaySize";
 
 export function AssetViewPage() {
     const { id } = useParams();
@@ -29,16 +30,24 @@ export function AssetViewPage() {
     if (!asset) return null;
 
     return (
-        <div className="size-full grid pt-4">
-            <div className="flex justify-center justify-self-center w-200">
-                <div className="w-full border">
-                    <AssetMedia media={asset.media} />
-                </div>
-                <div className="w-full">
-                    <h2 className="text-xl w-full whitespace-normal wrap-anywhere font-medium">
-                        {asset.title}
-                    </h2>
-                </div>
+        <div className="relative size-full flex flex-col md:flex-row h-screen">
+            <div className="size-full flex justify-center items-center p-10 overflow-hidden bg-muted/65">
+                {asset.media.state !== "Ready" && <h1>Processing...</h1>}
+                {asset.media.state === "Ready" && (
+                    <AssetMedia
+                        className="border border-border/75 overflow-hidden rounded-xl"
+                        media={asset.media}
+                    />
+                )}
+            </div>
+            <div className="h-full w-2/5 bg-background py-10 px-4 flex flex-col">
+                <h2 className="text-3xl w-full whitespace-normal wrap-anywhere font-medium">
+                    {asset.title}
+                </h2>
+
+                <h2 className="text-lg opacity-60">
+                    {asset.media.mimetype} - {getDisplaySize(asset.media.size)}
+                </h2>
             </div>
         </div>
     );

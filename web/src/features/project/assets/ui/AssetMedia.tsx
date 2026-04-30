@@ -7,10 +7,15 @@ import type { Media } from "../../media/models";
 
 type AssetMediaProps = {
     media: Media;
+    useSkeleton?: boolean;
     className?: string;
 };
 
-export function AssetMedia({ media, className }: AssetMediaProps) {
+export function AssetMedia({
+    media,
+    useSkeleton = true,
+    className,
+}: AssetMediaProps) {
     const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
 
     const [loaded, setLoaded] = useState(false);
@@ -27,7 +32,9 @@ export function AssetMedia({ media, className }: AssetMediaProps) {
             <div
                 className="size-full relative"
                 style={{
-                    backgroundColor: `#${media.color ?? "fff"}`,
+                    backgroundColor: useSkeleton
+                        ? `#${media.color ?? "fff"}`
+                        : undefined,
                     animation: loaded ? undefined : "var(--animate-pulse)",
                 }}
             >
