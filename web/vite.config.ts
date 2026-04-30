@@ -8,10 +8,10 @@ export default defineConfig({
     plugins: [react(), tailwindcss()],
     resolve: {
         alias: {
-            ...readdirSync(resolve(__dirname, "lib")).reduce(
+            ...readdirSync(resolve(__dirname, "src")).reduce(
                 (p, f) => ({
                     ...p,
-                    [`@lib/${f}`]: resolve(__dirname, "lib", f),
+                    [`@/${f}`]: resolve(__dirname, "src", f),
                 }),
                 {}
             ),

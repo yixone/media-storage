@@ -2,14 +2,15 @@ import { createRoot } from "react-dom/client";
 
 import { BrowserRouter, Route, Routes } from "react-router";
 
-import { ApiProvider } from "@lib/api/context";
-import { ApiClient } from "@lib/api/client";
+import { ApiProvider } from "@/api/context";
+import { ApiClient } from "@/api/client";
 
 import "./style";
 
-import { HomePage } from "./pages/Home";
-import { UploadPage } from "./pages/Upload";
-import { BrowseLayout, ViewLayout } from "./layouts";
+import { BrowseLayout, ViewLayout } from "@/layouts";
+
+import { HomePage } from "@/pages/Home";
+import { AssetViewPage, AssetCreatePage } from "@/pages/assets";
 
 /**
  * Configures application
@@ -26,7 +27,11 @@ function Application() {
                     </Route>
 
                     <Route element={<ViewLayout />}>
-                        <Route path="/upload" element={<UploadPage />} />
+                        <Route
+                            path="/asset/create"
+                            element={<AssetCreatePage />}
+                        />
+                        <Route path="/asset/:id" element={<AssetViewPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

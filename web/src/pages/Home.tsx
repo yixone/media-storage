@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useApi } from "@lib/api/context";
-import type { Asset } from "@lib/api/types";
+import { useApi } from "../api/context";
 
-import { AssetsGrid } from "../components/ui/assets";
+import { Scrollable } from "@/ui";
+import { AssetsGrid } from "@/features/project/assets/ui";
+import type { Asset } from "@/features/project/assets/models";
 
 /**
  * Application Home Page
@@ -16,17 +17,15 @@ function HomePage() {
     useEffect(() => {
         (async () => {
             const assets = await assetApi.getList();
-            setAssets(assets);
+            // TODO: temporary solution for displaying the list of assets in the order they were added
+            setAssets(assets.reverse());
         })();
     }, []);
 
     return (
-        <div
-            className="flex items-start justify-center p-4 w-full h-screen overflow-y-scroll"
-            style={{ scrollbarWidth: "thin" }}
-        >
+        <Scrollable className="h-screen w-full p-4">
             <AssetsGrid assets={assets} />
-        </div>
+        </Scrollable>
     );
 }
 
