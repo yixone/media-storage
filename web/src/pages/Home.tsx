@@ -23,11 +23,9 @@ function HomePage() {
     }, []);
 
     return (
-        <div className="w-full">
-            <Scrollable className="h-screen w-full p-4">
-                <AssetsGrid assets={assets} />
-            </Scrollable>
-        </div>
+        <Scrollable className="h-screen w-full p-4">
+            <AssetsGrid assets={assets} />
+        </Scrollable>
     );
 }
 

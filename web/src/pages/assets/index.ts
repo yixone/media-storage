@@ -1,2 +1,4 @@
-export * from "./View";
-export * from "./Create";
+export * from "./AssetView.layout";
+export * from "./AssetView";
+
+export * from "./AssetCreate";

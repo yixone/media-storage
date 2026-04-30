@@ -25,7 +25,7 @@ export function AssetsGridLayout({ children }: AssetsGridLayoutProps) {
 
     return (
         <div
-            className="grid gap-1 overflow-hidden w-full"
+            className="grid gap-0.5 overflow-hidden w-full"
             ref={targetRef}
             style={{
                 gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,

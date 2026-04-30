@@ -4,6 +4,7 @@ import { useApi } from "@/api/context";
 import { buildClassname } from "@/ui/utils/classname";
 
 import type { Media } from "../../media/models";
+import { getAspectRatio } from "../../media/aspectRatio";
 
 type AssetMediaProps = {
     media: Media;
@@ -16,7 +17,7 @@ export function AssetMedia({
     useSkeleton = true,
     className,
 }: AssetMediaProps) {
-    const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
+    const aspectRatio = getAspectRatio(media);
 
     const [loaded, setLoaded] = useState(false);
     const { mediaApi } = useApi();
