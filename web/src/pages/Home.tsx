@@ -16,7 +16,7 @@ function HomePage() {
 
     useEffect(() => {
         (async () => {
-            const assets = await assetApi.getList();
+            const assets = await assetApi.getList(0, 5);
             // TODO: temporary solution for displaying the list of assets in the order they were added
             setAssets(assets.reverse());
         })();
