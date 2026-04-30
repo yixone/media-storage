@@ -25,13 +25,21 @@
 
         "forceConsistentCasingInFileNames": true,
 
+        "baseUrl": ".",
         "paths": {
-            "@lib/api": ["./lib/api"],
-            "@lib/api/*": ["./lib/api/*"],
+            "@/api/*": ["src/api/*"],
 
-            "@lib/ui": ["./lib/ui"],
-            "@lib/ui/*": ["./lib/ui/*"]
+            "@/features/*": ["src/features/*"],
+
+            "@/layouts": ["src/layouts"],
+            "@/layouts/*": ["src/layouts/*"],
+
+            "@/pages": ["src/pages"],
+            "@/pages/*": ["src/pages/*"],
+
+            "@/ui": ["src/ui"],
+            "@/ui/*": ["src/ui/*"]
         }
     },
-    "include": ["src", "lib"]
+    "include": ["src"]
 }

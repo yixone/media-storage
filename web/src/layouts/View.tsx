@@ -2,7 +2,7 @@ import { Outlet } from "react-router";
 
 export function ViewLayout() {
     return (
-        <div className="flex items-center justify-center">
+        <div className="grid relative">
             <Outlet />
         </div>
     );

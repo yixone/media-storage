@@ -1,12 +1,11 @@
 import { Outlet } from "react-router";
 
-import { InspectorProvider } from "../providers";
-import { Inspector } from "../components/ui/Inspector";
+import { Inspector, InspectorProvider } from "@/features/common/inspector";
 
 export function BrowseLayout() {
     return (
         <InspectorProvider>
-            <div className="flex w-full">
+            <div className="flex w-full relative">
                 <Outlet />
 
                 <Inspector />

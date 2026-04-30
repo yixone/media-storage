@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { useApi } from "@lib/api/context";
-import type { Asset } from "@lib/api/types";
+import { useApi } from "../api/context";
 
-import { AssetsGrid } from "../components/ui/asset";
-import { Scrollable } from "../components/ui/base";
+import { Scrollable } from "@/ui";
+import { AssetsGrid } from "@/features/project/assets/ui";
+import type { Asset } from "@/features/project/assets/models";
 
 /**
  * Application Home Page

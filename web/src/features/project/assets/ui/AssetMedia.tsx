@@ -1,0 +1,48 @@
+import { useState } from "react";
+
+import { useApi } from "@/api/context";
+import { buildClassname } from "@/ui/utils/classname";
+
+import type { Media } from "../../media/models";
+
+type AssetMediaProps = {
+    media: Media;
+    className?: string;
+};
+
+export function AssetMedia({ media, className }: AssetMediaProps) {
+    const aspectRatio = (media.width ?? 1) / (media.height ?? 1);
+
+    const [loaded, setLoaded] = useState(false);
+    const { mediaApi } = useApi();
+
+    return (
+        <div
+            className={buildClassname(
+                className,
+                aspectRatio > 1 ? "w-full" : "h-full"
+            )}
+            style={{ aspectRatio }}
+        >
+            <div
+                className="size-full relative"
+                style={{
+                    backgroundColor: `#${media.color ?? "fff"}`,
+                    animation: loaded ? undefined : "var(--animate-pulse)",
+                }}
+            >
+                <img
+                    src={mediaApi.getMediaUrl(media.id)}
+                    draggable={false}
+                    className="absolute top-0 left-0 size-full"
+                    fetchPriority="high"
+                    loading="lazy"
+                    onLoad={() => setLoaded(true)}
+                    style={{
+                        visibility: loaded ? "visible" : "hidden",
+                    }}
+                />
+            </div>
+        </div>
+    );
+}
