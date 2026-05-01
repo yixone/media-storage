@@ -20,7 +20,7 @@ export function AssetViewContent({
     return (
         <div
             className={buildClassname(
-                "md:flex-3 w-full max-h-1/2 md:max-h-full bg-background md:bg-muted",
+                "md:flex-3 w-full max-h-2/3 md:max-h-full bg-background md:bg-muted",
                 className
             )}
             {...props}
@@ -57,7 +57,10 @@ export function AssetViewDetails({
 }: React.ComponentProps<"div">) {
     return (
         <div
-            className={buildClassname("md:flex-1 flex flex-col", className)}
+            className={buildClassname(
+                "not-md:border-t border-border md:flex-1 flex flex-col",
+                className
+            )}
             {...props}
         />
     );

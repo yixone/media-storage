@@ -14,6 +14,9 @@ import { getAspectRatio } from "@/features/project/media/utils";
 import { AssetMedia } from "@/features/project/assets/ui";
 import { getDisplaySize } from "@/features/project/media/utils/displaySize";
 
+import { ArrowLeftIcon } from "@/ui/icons";
+import { Button } from "@/ui";
+
 function useTarget(id?: string) {
     const { assetApi } = useApi();
 
@@ -40,17 +43,31 @@ export function AssetViewPage() {
     const { id } = useParams();
     const { asset } = useTarget(id);
 
+    const navigate = useNavigate();
+
     if (!asset) return null;
 
     return (
         <AssetViewLayout className="w-full h-screen">
-            <AssetViewContent className="p-1 md:p-4 flex items-center justify-center">
+            <AssetViewContent className="p-0 md:p-4 flex items-center justify-center relative">
+                <div className="absolute top-0 left-0 p-2 md:p-4 z-4">
+                    <Button
+                        variant="outline"
+                        className="size-11 p-1.5"
+                        size="icon"
+                        onClick={() => {
+                            navigate(-1);
+                        }}
+                    >
+                        <ArrowLeftIcon className="fill-foreground w-full" />
+                    </Button>
+                </div>
                 <AssetViewMediaContainer
                     aspectRatio={getAspectRatio(asset.media)}
                 >
                     <div className="">
                         <AssetMedia
-                            className="size-full border border-border/75 overflow-hidden rounded-xl md:rounded-md"
+                            className="size-full md:border border-border/75 overflow-hidden md:rounded-md"
                             media={asset.media}
                         />
                     </div>
@@ -68,7 +85,7 @@ type AssetDetailsProps = { asset: Asset };
 function AssetDetails({ asset }: AssetDetailsProps) {
     return (
         <div>
-            <h2 className="text-2xl w-full whitespace-normal wrap-anywhere font-medium">
+            <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
                 {asset.title}
             </h2>
 
