@@ -6,7 +6,10 @@ import { useInspector } from "@/features/common/inspector";
 import { AssetMedia } from "./AssetMedia";
 import type { Asset } from "../models";
 import { getAssetViewUrl } from "../utils/url";
-import { useResizeObserver } from "@/features/common/observer";
+import {
+    useIntersectionObserver,
+    useResizeObserver,
+} from "@/features/common/observer";
 
 function useGridLayout() {
     const [colsCount, setColsCount] = useState(2);
@@ -29,9 +32,26 @@ function useGridLayout() {
     return { colsCount, layoutReady, targetRef };
 }
 
+function useListRefill(refillCallback: () => void) {
+    const { targetRef } = useIntersectionObserver(
+        (e) => {
+            const entry = e[0];
+            if (!entry.isIntersecting) return;
+            refillCallback();
+        },
+        {
+            threshold: 0.15,
+            rootMargin: "15px",
+        }
+    );
+
+    return { refillTriggerRef: targetRef };
+}
+
 function useAssetActions(assets: Asset[]) {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const { addView } = useInspector();
+
     const navigate = useNavigate();
 
     const selectAsset = (asset: Asset) => {
@@ -45,19 +65,25 @@ function useAssetActions(assets: Asset[]) {
 
     useEffect(() => {
         if (assets.length === 0) return;
-        selectAsset(assets[0]);
+        selectAsset(assets.filter((a) => a.media.state === "Ready")[0]);
     }, [assets]);
 
     return { selectedId, selectAsset, openAsset };
 }
 
-export function AssetsGrid({ assets }: { assets: Asset[] }) {
+type AssetsGridProps = {
+    assets: Asset[];
+    onEndReached: () => void;
+};
+
+export function AssetsGrid({ assets, onEndReached }: AssetsGridProps) {
     const { colsCount, layoutReady, targetRef } = useGridLayout();
+    const { refillTriggerRef } = useListRefill(onEndReached);
     const { selectedId, selectAsset, openAsset } = useAssetActions(assets);
 
     return (
         <div
-            className="grid gap-0.5"
+            className="grid gap-0.5 relative"
             ref={targetRef}
             style={{
                 gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,
@@ -75,6 +101,11 @@ export function AssetsGrid({ assets }: { assets: Asset[] }) {
                             onOpen={openAsset}
                         />
                     ))}
+
+            <div
+                ref={refillTriggerRef}
+                className="absolute h-125 md:h-100 w-full bottom-0 pointer-events-none"
+            ></div>
         </div>
     );
 }

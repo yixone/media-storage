@@ -74,6 +74,7 @@ impl AssetsRepository for SqliteDb {
         let items = sqlx::query_as(
             "
         SELECT * FROM assets
+        ORDER BY created_at DESC
         LIMIT ? OFFSET ?
         ",
         )
