@@ -59,7 +59,7 @@ export function AssetViewPage() {
                             navigate(-1);
                         }}
                     >
-                        <ArrowLeftIcon className="fill-foreground w-full" />
+                        <ArrowLeftIcon className="text-foreground w-full" />
                     </Button>
                 </div>
                 <AssetViewMediaContainer
@@ -74,24 +74,14 @@ export function AssetViewPage() {
                 </AssetViewMediaContainer>
             </AssetViewContent>
             <AssetViewDetails className="p-4">
-                <AssetDetails asset={asset} />
+                <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
+                    {asset.title}
+                </h2>
+
+                <h2 className="opacity-60 text-lg">
+                    {asset.media.mimetype} - {getDisplaySize(asset.media.size)}
+                </h2>
             </AssetViewDetails>
         </AssetViewLayout>
-    );
-}
-
-type AssetDetailsProps = { asset: Asset };
-
-function AssetDetails({ asset }: AssetDetailsProps) {
-    return (
-        <div>
-            <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
-                {asset.title}
-            </h2>
-
-            <h2 className="opacity-60 text-lg">
-                {asset.media.mimetype} - {getDisplaySize(asset.media.size)}
-            </h2>
-        </div>
     );
 }

@@ -28,7 +28,7 @@ export function useInspector() {
     return ctx;
 }
 
-export function InspectorProvider({ children }: { children: React.ReactNode }) {
+function useViewStack() {
     const [viewStackArr, setViewStackArr] = useState<InspectorView[]>([]);
     const activeView =
         viewStackArr.length > 0
@@ -49,8 +49,15 @@ export function InspectorProvider({ children }: { children: React.ReactNode }) {
     function popView() {
         const v = activeView;
         setViewStackArr((p) => p.filter((i) => i !== v));
+
         return v;
     }
+
+    return { viewStackArr, activeView, addView, popView };
+}
+
+export function InspectorProvider({ children }: { children: React.ReactNode }) {
+    const { viewStackArr, activeView, addView, popView } = useViewStack();
 
     const contextValue = React.useMemo<InspectorContextProps>(
         () => ({
@@ -59,7 +66,7 @@ export function InspectorProvider({ children }: { children: React.ReactNode }) {
             addView,
             popView,
         }),
-        [viewStackArr, activeView]
+        [viewStackArr, activeView, open]
     );
 
     return (

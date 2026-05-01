@@ -40,8 +40,8 @@ function useListRefill(refillCallback: () => void) {
             refillCallback();
         },
         {
-            threshold: 0.15,
-            rootMargin: "15px",
+            threshold: 0.25,
+            rootMargin: "0px",
         }
     );
 
@@ -50,6 +50,7 @@ function useListRefill(refillCallback: () => void) {
 
 function useAssetActions(assets: Asset[]) {
     const [selectedId, setSelectedId] = useState<string | null>(null);
+
     const { addView } = useInspector();
 
     const navigate = useNavigate();
@@ -64,7 +65,7 @@ function useAssetActions(assets: Asset[]) {
     };
 
     useEffect(() => {
-        if (assets.length === 0) return;
+        if (assets.length === 0 || selectedId !== null) return;
         selectAsset(assets.filter((a) => a.media.state === "Ready")[0]);
     }, [assets]);
 
