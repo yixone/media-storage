@@ -44,14 +44,16 @@ export function AssetViewPage() {
 
     return (
         <AssetViewLayout className="w-full h-screen">
-            <AssetViewContent className="p-1 md:p-4">
+            <AssetViewContent className="p-1 md:p-4 flex items-center justify-center">
                 <AssetViewMediaContainer
                     aspectRatio={getAspectRatio(asset.media)}
                 >
-                    <AssetMedia
-                        className="border border-border/75 overflow-hidden rounded-xl md:rounded-md"
-                        media={asset.media}
-                    />
+                    <div className="">
+                        <AssetMedia
+                            className="size-full border border-border/75 overflow-hidden rounded-xl md:rounded-md"
+                            media={asset.media}
+                        />
+                    </div>
                 </AssetViewMediaContainer>
             </AssetViewContent>
             <AssetViewDetails className="p-4">

@@ -14,16 +14,19 @@ export function AssetViewLayout({
 
 export function AssetViewContent({
     className,
+    children,
     ...props
 }: React.ComponentProps<"div">) {
     return (
         <div
             className={buildClassname(
-                "md:flex-3 md:h-full bg-background md:bg-muted flex items-center",
+                "md:flex-3 w-full max-h-1/2 md:max-h-full bg-background md:bg-muted",
                 className
             )}
             {...props}
-        />
+        >
+            {children}
+        </div>
     );
 }
 
@@ -32,19 +35,17 @@ type MediaContainerProps = {
 } & React.ComponentProps<"div">;
 
 export function AssetViewMediaContainer({
-    aspectRatio,
     className,
+    aspectRatio,
     ...props
 }: MediaContainerProps) {
     return (
         <div
             className={buildClassname(
-                "max-h-150 w-full md:max-h-full flex justify-center items-center",
+                "w-full max-h-full h-auto flex justify-center",
                 className
             )}
-            style={{
-                aspectRatio,
-            }}
+            style={{ aspectRatio }}
             {...props}
         />
     );
