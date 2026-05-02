@@ -8,9 +8,8 @@ import {
     AssetViewLayout,
     AssetViewMediaContainer,
 } from "./AssetView.layout";
-import { getAspectRatio } from "@/features/project/media/utils";
+import { mediaAspectRatio, humanMediaSize } from "@/features/media";
 import { AssetMedia } from "@/features/project/assets/ui";
-import { getDisplaySize } from "@/features/project/media/utils/displaySize";
 
 import { ArrowLeftIcon } from "@/features/shared/ui/icons";
 import { Button } from "@/features/shared/ui";
@@ -63,7 +62,7 @@ export function AssetViewPage() {
                     </Button>
                 </div>
                 <AssetViewMediaContainer
-                    aspectRatio={getAspectRatio(asset.media)}
+                    aspectRatio={mediaAspectRatio(asset.media)}
                 >
                     <div className="">
                         <AssetMedia
@@ -79,7 +78,7 @@ export function AssetViewPage() {
                 </h2>
 
                 <h2 className="opacity-60 text-lg">
-                    {asset.media.mimetype} - {getDisplaySize(asset.media.size)}
+                    {asset.media.mimetype} - {humanMediaSize(asset.media.size)}
                 </h2>
             </AssetViewDetails>
         </AssetViewLayout>

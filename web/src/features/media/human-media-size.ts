@@ -1,4 +1,4 @@
-export function getDisplaySize(size: number) {
+export function humanMediaSize(size: number) {
     if (size > 1e6) {
         return `${(size / 1e6).toFixed(2)} MB`;
     } else if (size > 1e3) {

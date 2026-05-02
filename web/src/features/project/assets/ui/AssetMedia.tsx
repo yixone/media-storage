@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useApi } from "@/providers";
 import { cn } from "@/utils/classname";
 
-import type { Media } from "../../media/models";
-import { getAspectRatio } from "../../media/utils";
+import type { Media } from "@/api/models";
+import { mediaAspectRatio } from "@/features/media";
 
 type AssetMediaProps = {
-    media: Media;
+    media: Media.Media;
     useSkeleton?: boolean;
     className?: string;
 };
@@ -17,7 +17,7 @@ export function AssetMedia({
     useSkeleton = true,
     className,
 }: AssetMediaProps) {
-    const aspectRatio = getAspectRatio(media);
+    const aspectRatio = mediaAspectRatio(media);
 
     const [loaded, setLoaded] = useState(false);
     const { mediaApiV0 } = useApi();

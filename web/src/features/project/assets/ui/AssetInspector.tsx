@@ -1,7 +1,7 @@
 import type { InspectorView } from "@/features/inspector";
-import { getDisplaySize } from "../../media/utils/displaySize";
 import { AssetMedia } from "./AssetMedia";
 import type { Assets } from "@/api/models";
+import { humanMediaSize } from "@/features/media";
 
 export class AssetInspector implements InspectorView {
     viewType = "display.asset";
@@ -27,7 +27,7 @@ export class AssetInspector implements InspectorView {
                     </h2>
 
                     <h2 className="opacity-60">
-                        {`${this.asset.media.mimetype} - ${getDisplaySize(
+                        {`${this.asset.media.mimetype} - ${humanMediaSize(
                             this.asset.media.size
                         )}`}
                     </h2>
