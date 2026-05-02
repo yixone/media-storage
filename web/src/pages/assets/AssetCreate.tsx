@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 import type { CreateAssetData } from "@/features/project/assets/models";
-import { useApi } from "@/api";
+
+import { useApi } from "@/providers";
+
 import { Button, Input, Label } from "@/ui";
 
 // TODO:
@@ -22,7 +24,7 @@ export function AssetCreatePage() {
 
     const [uploading, setUploading] = useState(false);
 
-    const { assetsV0 } = useApi();
+    const { assetsApiV0 } = useApi();
     const navigate = useNavigate();
 
     function handleUploadDataChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -46,7 +48,7 @@ export function AssetCreatePage() {
             ...uploadData,
         };
 
-        await assetsV0.upload(DTO);
+        await assetsApiV0.upload(DTO);
         navigate("/");
     }
 

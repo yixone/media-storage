@@ -38,6 +38,8 @@
             "@/pages": ["src/pages"],
             "@/pages/*": ["src/pages/*"],
 
+            "@/providers": ["src/providers"],
+
             "@/ui": ["src/ui"],
             "@/ui/*": ["src/ui/*"],
 

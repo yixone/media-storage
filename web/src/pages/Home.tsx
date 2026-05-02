@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
-import { useApi } from "@/api";
-
-import { Scrollable } from "@/ui";
 import { AssetsGrid } from "@/features/project/assets/ui";
 import type { Asset } from "@/features/project/assets/models";
+
+import { useApi } from "@/providers";
+
+import { Scrollable } from "@/ui";
 
 const PAGINATION_LIMIT = 30;
 
@@ -16,7 +17,7 @@ const useAssetsList = () => {
 
     const noMoreAssets = useRef(false);
 
-    const { assetsV0 } = useApi();
+    const { assetsApiV0 } = useApi();
 
     const callRefill = async () => {
         if (assetsLoading.current || noMoreAssets.current) return;
@@ -25,7 +26,7 @@ const useAssetsList = () => {
         assetsLoading.current = true;
         listCursor.current += PAGINATION_LIMIT;
 
-        const refill = await assetsV0.getList(
+        const refill = await assetsApiV0.getList(
             listCursor.current,
             PAGINATION_LIMIT
         );
@@ -46,7 +47,7 @@ const useAssetsList = () => {
             assetsLoading.current = true;
             console.log("[ASSETS LIST] Requesting a list of assets");
 
-            const assetsList = await assetsV0.getList(0, PAGINATION_LIMIT);
+            const assetsList = await assetsApiV0.getList(0, PAGINATION_LIMIT);
             setAssets(assetsList);
 
             if (assetsList.length < PAGINATION_LIMIT) {

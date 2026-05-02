@@ -1,4 +1,4 @@
-import { AbstractModule } from "@/api/abstract-mod";
+import { AbstractModule } from "@/api";
 
 export class ApiMediaV0 extends AbstractModule {
     public getMediaUrl(id: string) {

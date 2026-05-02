@@ -1,12 +1,11 @@
-import React from "react";
-
+import type { ApiClient } from "@/api";
 import {
-    MODULES_REGISTRY,
     constructApiMods,
+    MODULES_REGISTRY,
     type ModuleInstances,
-} from "./backend";
+} from "@/api/backend";
 
-import type { ApiClient } from "./client";
+import React from "react";
 
 type ApiProviderProps = { client: ApiClient; children?: React.ReactNode };
 type ApiContextProps = ModuleInstances<typeof MODULES_REGISTRY>;

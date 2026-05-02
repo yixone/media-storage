@@ -1,10 +1,11 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 
-import { ApiClient, ApiProvider } from "@/api";
+import { ApiClient } from "@/api";
 
 import "./style.css";
 import { AppRoutes } from "./routing";
+import { ApiProvider } from "./providers";
 
 /**
  * Configures application

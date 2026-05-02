@@ -1,12 +1,12 @@
-import type { AbstractModule } from "../abstract-mod";
+import type { AbstractModule } from "../abstract-module";
 import type { ApiClient } from "../client";
 import { ApiAssetsV0, ApiMediaV0 } from "./v0";
 
 type ModuleConstructor = new (client: ApiClient) => AbstractModule;
 
 export const MODULES_REGISTRY = {
-    assetsV0: ApiAssetsV0,
-    mediaV0: ApiMediaV0,
+    assetsApiV0: ApiAssetsV0,
+    mediaApiV0: ApiMediaV0,
 } as const satisfies Record<string, ModuleConstructor>;
 
 export type ModuleInstances<Reg extends Record<string, ModuleConstructor>> = {

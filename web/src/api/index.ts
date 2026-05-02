@@ -1,3 +1,2 @@
-export * from "./abstract-mod";
+export * from "./abstract-module";
 export * from "./client";
-export * from "./provider";

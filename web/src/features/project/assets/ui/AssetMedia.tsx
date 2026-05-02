@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useApi } from "@/api";
+import { useApi } from "@/providers";
 import { buildClassname } from "@/ui/utils/classname";
 
 import type { Media } from "../../media/models";
@@ -20,7 +20,7 @@ export function AssetMedia({
     const aspectRatio = getAspectRatio(media);
 
     const [loaded, setLoaded] = useState(false);
-    const { mediaV0 } = useApi();
+    const { mediaApiV0 } = useApi();
 
     return (
         <div
@@ -40,7 +40,7 @@ export function AssetMedia({
                 }}
             >
                 <img
-                    src={mediaV0.getMediaUrl(media.id)}
+                    src={mediaApiV0.getMediaUrl(media.id)}
                     draggable={false}
                     className="absolute top-0 left-0 size-full"
                     fetchPriority="high"

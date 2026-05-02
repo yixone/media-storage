@@ -1,4 +1,4 @@
-import { AbstractModule } from "@/api/abstract-mod";
+import { AbstractModule } from "@/api";
 import type { Assets } from "@/api/models";
 
 export class ApiAssetsV0 extends AbstractModule {

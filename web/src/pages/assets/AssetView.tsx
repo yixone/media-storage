@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import { useApi } from "@/api";
-
 import type { Asset } from "@/features/project/assets/models";
 import {
     AssetViewContent,
@@ -14,11 +12,13 @@ import { getAspectRatio } from "@/features/project/media/utils";
 import { AssetMedia } from "@/features/project/assets/ui";
 import { getDisplaySize } from "@/features/project/media/utils/displaySize";
 
+import { useApi } from "@/providers";
+
 import { ArrowLeftIcon } from "@/ui/icons";
 import { Button } from "@/ui";
 
 function useTarget(id?: string) {
-    const { assetsV0 } = useApi();
+    const { assetsApiV0 } = useApi();
 
     const [asset, setAsset] = useState<Asset | null>(null);
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ function useTarget(id?: string) {
             if (!id) return;
 
             try {
-                const asset = await assetsV0.get(id);
+                const asset = await assetsApiV0.get(id);
                 setAsset(asset);
             } catch (err) {
                 navigate("/");
