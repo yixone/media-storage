@@ -9,9 +9,11 @@ export class ApiAssetModule extends AbstractModule {
      * Returns a list of assets with pagination
      */
     async getList(cursor: number = 0, limit: number = 50): Promise<Asset[]> {
-        const list: Asset[] = await this.client.get("v0/assets", {
-            cursor: cursor.toString(),
-            limit: limit.toString(),
+        const list: Asset[] = await this.client.request("v0/assets", {
+            params: {
+                cursor: cursor.toString(),
+                limit: limit.toString(),
+            },
         });
         return list;
     }
@@ -20,7 +22,7 @@ export class ApiAssetModule extends AbstractModule {
      * Returns an Asset by ID
      */
     async get(id: string): Promise<Asset> {
-        let asset: Asset = await this.client.get(`v0/assets/${id}`);
+        let asset: Asset = await this.client.request(`v0/assets/${id}`);
         return asset;
     }
 
@@ -40,7 +42,7 @@ export class ApiAssetModule extends AbstractModule {
             multipartForm.append("source", data.source_url);
         }
 
-        await this.client.performRequest("v0/assets", {
+        await this.client.request("v0/assets", {
             method: "POST",
             body: multipartForm,
         });

@@ -27,6 +27,7 @@
 
         "baseUrl": ".",
         "paths": {
+            "@/api": ["src/api"],
             "@/api/*": ["src/api/*"],
 
             "@/features/*": ["src/features/*"],
@@ -38,7 +39,10 @@
             "@/pages/*": ["src/pages/*"],
 
             "@/ui": ["src/ui"],
-            "@/ui/*": ["src/ui/*"]
+            "@/ui/*": ["src/ui/*"],
+
+            "@/utils": ["src/utils"],
+            "@/utils/*": ["src/utils/*"]
         }
     },
     "include": ["src"]

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import { useApi } from "@/api/context";
+import { useApi } from "@/api";
 
 import type { Asset } from "@/features/project/assets/models";
 import {
@@ -18,7 +18,7 @@ import { ArrowLeftIcon } from "@/ui/icons";
 import { Button } from "@/ui";
 
 function useTarget(id?: string) {
-    const { assetApi } = useApi();
+    const { assetsV0 } = useApi();
 
     const [asset, setAsset] = useState<Asset | null>(null);
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ function useTarget(id?: string) {
             if (!id) return;
 
             try {
-                const asset = await assetApi.get(id);
+                const asset = await assetsV0.get(id);
                 setAsset(asset);
             } catch (err) {
                 navigate("/");
