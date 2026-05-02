@@ -1,4 +1,4 @@
-import { buildClassname, type VariantProps } from "./utils/classname";
+import { cn, type VariantProps } from "@/utils";
 
 const alertVariants = {
     variant: {
@@ -17,7 +17,7 @@ export function Alert({
 }: AlertProps) {
     return (
         <div
-            className={buildClassname(
+            className={cn(
                 "group/alert relative grid w-full gap-0.5 rounded-lg border px-3 py-2 text-left text-sm",
                 alertVariants.variant[variant],
                 className
@@ -34,10 +34,7 @@ export function AlertTitle({
     return (
         <div
             data-slot="alert-title"
-            className={buildClassname(
-                "text-lg font-medium [&_a]:underline",
-                className
-            )}
+            className={cn("text-lg font-medium [&_a]:underline", className)}
             {...props}
         />
     );
@@ -49,7 +46,7 @@ export function AlertDescription({
 }: React.ComponentProps<"div">) {
     return (
         <div
-            className={buildClassname(
+            className={cn(
                 "text-sm text-balance text-muted-foreground md:text-pretty [&_a]:underline [&_a]:underline-offset-3 [&_p:not(:last-child)]:mb-4",
                 className
             )}

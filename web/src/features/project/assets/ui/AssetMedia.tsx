@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useApi } from "@/providers";
-import { buildClassname } from "@/ui/utils/classname";
+import { cn } from "@/utils/classname";
 
 import type { Media } from "../../media/models";
 import { getAspectRatio } from "../../media/utils";
@@ -24,10 +24,7 @@ export function AssetMedia({
 
     return (
         <div
-            className={buildClassname(
-                className,
-                aspectRatio > 1 ? "w-full" : "h-full"
-            )}
+            className={cn(className, aspectRatio > 1 ? "w-full" : "h-full")}
             style={{ aspectRatio }}
         >
             <div

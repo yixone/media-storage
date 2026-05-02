@@ -1,11 +1,11 @@
-import type React from "react";
+import { cn } from "@/utils";
 
-import { buildClassname } from "./utils/classname";
+type LabelProps = React.ComponentProps<"label">;
 
-export function Label({ className, ...props }: React.ComponentProps<"label">) {
+export function Label({ className, ...props }: LabelProps) {
     return (
         <label
-            className={buildClassname(
+            className={cn(
                 `
                 flex items-center
                 gap-2

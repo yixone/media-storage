@@ -1,8 +1,8 @@
-import type { IconProps } from "../props";
+import type { IconProps } from "./icon-props";
 
 export function ArrowLeftIcon({ ...props }: IconProps) {
     return (
-        <svg viewBox="0 0 24 24" fill="none" {...props}>
+        <svg viewBox="0 0 24 24" {...props}>
             <path
                 d="M14 7L9 12"
                 stroke="currentColor"

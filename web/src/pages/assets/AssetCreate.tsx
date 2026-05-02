@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
+import { Button, Input, Label } from "@/features/shared/ui";
 import type { CreateAssetData } from "@/features/project/assets/models";
 
 import { useApi } from "@/providers";
-
-import { Button, Input, Label } from "@/ui";
 
 // TODO:
 // Rewrite this bad code

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
+import { Scrollable } from "@/features/shared/ui";
+
 import { AssetsGrid } from "@/features/project/assets/ui";
 import type { Asset } from "@/features/project/assets/models";
 
 import { useApi } from "@/providers";
-
-import { Scrollable } from "@/ui";
 
 const PAGINATION_LIMIT = 30;
 

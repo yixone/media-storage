@@ -1,4 +1,4 @@
-import { buildClassname } from "@/ui/utils/classname";
+import { cn } from "@/utils/classname";
 
 export function AssetViewLayout({
     className,
@@ -6,7 +6,7 @@ export function AssetViewLayout({
 }: React.ComponentProps<"div">) {
     return (
         <div
-            className={buildClassname("flex flex-col md:flex-row", className)}
+            className={cn("flex flex-col md:flex-row", className)}
             {...props}
         />
     );
@@ -19,7 +19,7 @@ export function AssetViewContent({
 }: React.ComponentProps<"div">) {
     return (
         <div
-            className={buildClassname(
+            className={cn(
                 "md:flex-3 w-full max-h-2/3 md:max-h-full bg-background md:bg-linear-to-b md:from-muted md:to-foreground/10",
                 className
             )}
@@ -41,7 +41,7 @@ export function AssetViewMediaContainer({
 }: MediaContainerProps) {
     return (
         <div
-            className={buildClassname(
+            className={cn(
                 "w-full max-h-full h-auto flex justify-center",
                 className
             )}
@@ -57,7 +57,7 @@ export function AssetViewDetails({
 }: React.ComponentProps<"div">) {
     return (
         <div
-            className={buildClassname(
+            className={cn(
                 "not-md:border-t border-border md:flex-1 flex flex-col",
                 className
             )}

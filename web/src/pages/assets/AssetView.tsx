@@ -12,10 +12,10 @@ import { getAspectRatio } from "@/features/project/media/utils";
 import { AssetMedia } from "@/features/project/assets/ui";
 import { getDisplaySize } from "@/features/project/media/utils/displaySize";
 
-import { useApi } from "@/providers";
+import { ArrowLeftIcon } from "@/features/shared/ui/icons";
+import { Button } from "@/features/shared/ui";
 
-import { ArrowLeftIcon } from "@/ui/icons";
-import { Button } from "@/ui";
+import { useApi } from "@/providers";
 
 function useTarget(id?: string) {
     const { assetsApiV0 } = useApi();

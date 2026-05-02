@@ -1,8 +1,5 @@
-import { buildClassname, type VariantProps } from "./utils/classname";
+import { cn, type VariantProps } from "@/utils";
 
-/**
- * Badge style options
- */
 const badgeVariants = {
     variant: {
         default: "bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
@@ -13,17 +10,17 @@ const badgeVariants = {
     },
 };
 
-/**
- * Badge UI component
- */
-function Badge({
+type BadgeProps = React.ComponentProps<"span"> &
+    VariantProps<typeof badgeVariants>;
+
+export function Badge({
     className,
     variant = "default",
     ...props
-}: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants>) {
+}: BadgeProps) {
     return (
         <span
-            className={buildClassname(
+            className={cn(
                 `
                 flex items-center justify-center gap-1 overflow-hidden
                 rounded-full
@@ -38,5 +35,3 @@ function Badge({
         />
     );
 }
-
-export { Badge, badgeVariants };

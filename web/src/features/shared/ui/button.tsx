@@ -1,8 +1,6 @@
-import type React from "react";
+import { cn, type VariantProps } from "@/utils";
 
-import { buildClassname, type VariantProps } from "./utils/classname";
-
-export const buttonVariants = {
+const buttonVariants = {
     variant: {
         default:
             "bg-primary text-primary-foreground enabled:hover:bg-primary/85",
@@ -17,15 +15,18 @@ export const buttonVariants = {
     },
 };
 
+type ButtonProps = React.ComponentProps<"button"> &
+    VariantProps<typeof buttonVariants>;
+
 export function Button({
     variant = "default",
     size = "default",
     className,
     ...props
-}: VariantProps<typeof buttonVariants> & React.ComponentProps<"button">) {
+}: ButtonProps) {
     return (
         <button
-            className={buildClassname(
+            className={cn(
                 buttonVariants.variant[variant],
                 buttonVariants.size[size],
                 `
