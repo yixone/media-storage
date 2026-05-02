@@ -7,7 +7,7 @@ import { getAssetViewUrl } from "../utils/url";
 import {
     useIntersectionObserver,
     useResizeObserver,
-} from "@/features/common/observer";
+} from "@/features/shared/utils";
 
 import { useInspector } from "@/providers";
 import { AssetInspector } from "./AssetInspector";

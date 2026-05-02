@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Scrollable } from "@/features/shared/ui";
+import { Scrollable } from "@/features/shared/utils";
 
 import { AssetsGrid } from "@/features/project/assets/ui";
 import type { Asset } from "@/features/project/assets/models";
