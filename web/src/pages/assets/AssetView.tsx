@@ -53,8 +53,8 @@ export function AssetViewPage() {
                 <div className="absolute top-0 left-0 p-2 md:p-4 z-4">
                     <Button
                         variant="outline"
-                        className="size-11 p-1.5"
                         size="icon"
+                        className="size-10 md:size-11 p-1 md:p-1.5"
                         onClick={() => {
                             navigate(-1);
                         }}

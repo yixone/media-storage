@@ -20,7 +20,7 @@ export function AssetViewContent({
     return (
         <div
             className={buildClassname(
-                "md:flex-3 w-full max-h-2/3 md:max-h-full bg-background md:bg-muted",
+                "md:flex-3 w-full max-h-2/3 md:max-h-full bg-background md:bg-linear-to-b md:from-muted md:to-foreground/10",
                 className
             )}
             {...props}
