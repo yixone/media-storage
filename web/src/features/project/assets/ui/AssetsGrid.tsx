@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { useInspector } from "@/features/common/inspector";
-
 import { AssetMedia } from "./AssetMedia";
 import type { Asset } from "../models";
 import { getAssetViewUrl } from "../utils/url";
@@ -10,6 +8,9 @@ import {
     useIntersectionObserver,
     useResizeObserver,
 } from "@/features/common/observer";
+
+import { useInspector } from "@/providers";
+import { AssetInspector } from "./AssetInspector";
 
 function useGridLayout() {
     const [colsCount, setColsCount] = useState(2);
@@ -57,7 +58,7 @@ function useAssetActions(assets: Asset[]) {
 
     const selectAsset = (asset: Asset) => {
         setSelectedId(asset.id);
-        addView({ type: "display.asset", asset });
+        addView(new AssetInspector(asset));
     };
 
     const openAsset = (asset: Asset) => {

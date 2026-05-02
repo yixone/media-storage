@@ -17,6 +17,7 @@ export function useApi() {
     if (!ctx) {
         throw new Error("useApi() hook must be used within an ApiProvider");
     }
+
     return ctx;
 }
 

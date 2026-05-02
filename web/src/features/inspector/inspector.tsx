@@ -1,12 +1,8 @@
-import { AssetInspector } from "@/features/project/assets/ui";
-
-import { useInspector } from "./inspectorProvider";
+import { useInspector } from "@/providers";
 
 const INSPECTOR_WIDTH = "25rem";
 
 export function Inspector() {
-    const { activeView } = useInspector();
-
     return (
         <div
             className="
@@ -17,9 +13,15 @@ export function Inspector() {
                 "
             style={{ width: INSPECTOR_WIDTH }}
         >
-            {activeView?.type == "display.asset" && (
-                <AssetInspector asset={activeView.asset} />
-            )}
+            <InspectorOutlet />
         </div>
     );
+}
+
+export function InspectorOutlet() {
+    const { activeView } = useInspector();
+
+    if (!activeView) return null;
+
+    return activeView.render();
 }

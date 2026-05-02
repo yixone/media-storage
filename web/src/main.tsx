@@ -22,4 +22,5 @@ function Application() {
     );
 }
 
-createRoot(document.getElementById("root")!).render(<Application />);
+const root = createRoot(document.getElementById("root")!);
+root.render(<Application />);

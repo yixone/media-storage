@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
 
-import { Inspector, InspectorProvider } from "@/features/common/inspector";
+import { InspectorProvider } from "@/providers";
+import { Inspector } from "@/features/inspector";
 
 export function BrowseLayout() {
     return (
