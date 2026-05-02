@@ -1,7 +1,7 @@
 import type { InspectorView } from "@/features/inspector";
-import { AssetMedia } from "./AssetMedia";
 import type { Assets } from "@/api/models";
 import { humanMediaSize } from "@/features/media";
+import { AssetMedia } from "@/features/assets";
 
 export class AssetInspector implements InspectorView {
     viewType = "display.asset";

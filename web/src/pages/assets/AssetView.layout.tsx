@@ -42,7 +42,7 @@ export function AssetViewMediaContainer({
     return (
         <div
             className={cn(
-                "w-full max-h-full h-auto flex justify-center",
+                "w-full md:w-9/10 max-h-full h-auto flex justify-center",
                 className
             )}
             style={{ aspectRatio }}

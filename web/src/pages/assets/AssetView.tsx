@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import type { Asset } from "@/features/project/assets/models";
 import {
     AssetViewContent,
     AssetViewDetails,
     AssetViewLayout,
     AssetViewMediaContainer,
 } from "./AssetView.layout";
-import { mediaAspectRatio, humanMediaSize } from "@/features/media";
-import { AssetMedia } from "@/features/project/assets/ui";
 
+import type { Assets } from "@/api/models";
+
+import { AssetMedia } from "@/features/assets";
+import { mediaAspectRatio, humanMediaSize } from "@/features/media";
 import { ArrowLeftIcon } from "@/features/shared/ui/icons";
 import { Button } from "@/features/shared/ui";
 
@@ -19,7 +20,7 @@ import { useApi } from "@/providers";
 function useTarget(id?: string) {
     const { assetsApiV0 } = useApi();
 
-    const [asset, setAsset] = useState<Asset | null>(null);
+    const [asset, setAsset] = useState<Assets.Asset | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,7 +65,7 @@ export function AssetViewPage() {
                 <AssetViewMediaContainer
                     aspectRatio={mediaAspectRatio(asset.media)}
                 >
-                    <div className="">
+                    <div className="box-border">
                         <AssetMedia
                             className="size-full md:border border-border/75 overflow-hidden md:rounded-md"
                             media={asset.media}

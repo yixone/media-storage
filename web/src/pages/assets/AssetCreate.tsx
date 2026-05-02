@@ -2,14 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { Button, Input, Label } from "@/features/shared/ui";
-import type { CreateAssetData } from "@/features/project/assets/models";
 
 import { useApi } from "@/providers";
+import type { Assets } from "@/api/models";
 
 // TODO:
 // Rewrite this bad code
 
-type UploadData = Pick<CreateAssetData, "caption" | "source_url" | "title">;
+type UploadData = Pick<
+    Assets.CreateAssetRequest,
+    "caption" | "source_url" | "title"
+>;
 
 export function AssetCreatePage() {
     const [file, setFile] = useState<File | null>(null);
@@ -42,7 +45,7 @@ export function AssetCreatePage() {
             return;
         }
 
-        const DTO: CreateAssetData = {
+        const DTO: Assets.CreateAssetRequest = {
             attachment: file,
             ...uploadData,
         };

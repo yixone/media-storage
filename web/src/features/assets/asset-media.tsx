@@ -1,21 +1,22 @@
 import { useState } from "react";
 
-import { useApi } from "@/providers";
-import { cn } from "@/utils/classname";
-
 import type { Media } from "@/api/models";
-import { mediaAspectRatio } from "@/features/media";
+import { useApi } from "@/providers";
+import { cn } from "@/utils";
+
+import { mediaAspectRatio } from "../media";
 
 type AssetMediaProps = {
     media: Media.Media;
     useSkeleton?: boolean;
-    className?: string;
-};
+} & React.ComponentProps<"div">;
 
 export function AssetMedia({
     media,
     useSkeleton = true,
     className,
+    style,
+    ...props
 }: AssetMediaProps) {
     const aspectRatio = mediaAspectRatio(media);
 
@@ -25,7 +26,8 @@ export function AssetMedia({
     return (
         <div
             className={cn(className, aspectRatio > 1 ? "w-full" : "h-full")}
-            style={{ aspectRatio }}
+            style={{ aspectRatio, ...style }}
+            {...props}
         >
             <div
                 className="size-full relative"

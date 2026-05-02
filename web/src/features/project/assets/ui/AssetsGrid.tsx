@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { AssetMedia } from "./AssetMedia";
 import type { Asset } from "../models";
 import { getAssetViewUrl } from "../utils/url";
 import {
@@ -11,6 +10,7 @@ import {
 
 import { useInspector } from "@/providers";
 import { AssetInspector } from "./AssetInspector";
+import { AssetMedia } from "@/features/assets";
 
 function useGridLayout() {
     const [colsCount, setColsCount] = useState(2);
