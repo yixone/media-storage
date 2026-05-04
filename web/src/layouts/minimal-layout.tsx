@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 
-export function ViewLayout() {
+export function MinimalLayout() {
     return (
         <div className="size-full relative">
             <Outlet />

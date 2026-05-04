@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 
-import { BrowseLayout, ViewLayout } from "@/layouts";
+import { BrowseLayout, MinimalLayout } from "@/layouts";
 
 import { HomePage } from "@/pages";
 import { AssetCreatePage, AssetViewPage } from "@/pages/asset";
@@ -12,7 +12,7 @@ export function AppRoutes() {
                 <Route index element={<HomePage />} />
             </Route>
 
-            <Route element={<ViewLayout />}>
+            <Route element={<MinimalLayout />}>
                 <Route path="/asset/create" element={<AssetCreatePage />} />
                 <Route path="/asset/:id" element={<AssetViewPage />} />
             </Route>

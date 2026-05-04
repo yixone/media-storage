@@ -1,2 +1,2 @@
-export * from "./browse";
-export * from "./view";
+export * from "./browse-layout";
+export * from "./minimal-layout";
