@@ -1,0 +1,49 @@
+import type { Assets } from "@/api/models";
+import { AssetMedia } from "../asset-media";
+
+type AssetsGridItemProps = {
+    asset: Assets.Asset;
+
+    selected: boolean;
+
+    onSelect: (asset: Assets.Asset) => void;
+    onOpen: (asset: Assets.Asset) => void;
+};
+
+export function AssetsGridItem({
+    asset,
+    selected,
+    onSelect,
+    onOpen,
+}: AssetsGridItemProps) {
+    return (
+        <div
+            data-selected={selected}
+            className="
+                group/grid-asset 
+                cursor-pointer 
+                bg-transparent hover:bg-foreground/4 data-[selected=true]:bg-foreground/8 
+                rounded-md p-1 
+                flex flex-col 
+                outline-none"
+            onClick={() => onSelect(asset)}
+            onFocus={() => onSelect(asset)}
+            onDoubleClick={() => onOpen(asset)}
+            tabIndex={1}
+        >
+            <div className="aspect-square flex justify-center items-center p-1">
+                <AssetMedia
+                    className="
+                        border border-border/75 overflow-hidden rounded-md select-none
+                        group-data-[selected=true]/grid-asset:border-ring"
+                    media={asset.media}
+                />
+            </div>
+            <div className="w-full px-6">
+                <p className="overflow-hidden text-ellipsis whitespace-nowrap text-[1.125rem] text-primary/90 text-center">
+                    {asset.title}
+                </p>
+            </div>
+        </div>
+    );
+}
