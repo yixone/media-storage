@@ -36,7 +36,7 @@ export class AssetsGrid implements AssetsListLayout {
 
         return (
             <div
-                className="grid gap-0.5 relative"
+                className="grid gap-0.5 relative p-2"
                 ref={targetRef}
                 style={{
                     gridTemplateColumns: `repeat(${colsCount}, minmax(0, 1fr))`,

@@ -13,7 +13,7 @@ import type { Assets } from "@/api/models";
 import { AssetMedia } from "@/features/assets";
 import { mediaAspectRatio, humanMediaSize } from "@/features/media";
 import { ArrowLeftIcon } from "@/features/shared/ui/icons";
-import { Button } from "@/features/shared/ui";
+import { Button, Separator } from "@/features/shared/ui";
 
 import { useApi } from "@/providers";
 
@@ -73,14 +73,39 @@ export function AssetViewPage() {
                     </div>
                 </AssetViewMediaContainer>
             </AssetViewContent>
-            <AssetViewDetails className="p-4">
-                <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
-                    {asset.title}
-                </h2>
+            <AssetViewDetails className="p-4 gap-2">
+                <div className="">
+                    <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
+                        {asset.title}
+                    </h2>
+                    {asset.source_url && (
+                        <a
+                            className="decoration-1 underline decoration-foreground/50"
+                            href={asset.source_url}
+                        >
+                            {asset.source_url}
+                        </a>
+                    )}
+                </div>
+                <Separator />
 
-                <h2 className="opacity-60 text-lg">
-                    {asset.media.mimetype} - {humanMediaSize(asset.media.size)}
-                </h2>
+                <div className="w-full flex">
+                    <div className="w-full flex justify-center items-center">
+                        <h2>{asset.media.mimetype}</h2>
+                    </div>
+
+                    <Separator orientation="vertical" className="w-0.75" />
+
+                    <div className="w-full flex justify-center items-center">
+                        <h2>{humanMediaSize(asset.media.size)}</h2>
+                    </div>
+
+                    <Separator orientation="vertical" className="w-0.75" />
+
+                    <div className="w-full flex justify-center items-center">
+                        {asset.media.width} x {asset.media.height}
+                    </div>
+                </div>
             </AssetViewDetails>
         </AssetViewLayout>
     );

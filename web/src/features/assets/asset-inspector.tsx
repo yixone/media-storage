@@ -1,6 +1,7 @@
 import type { Assets } from "@/api/models";
 import type { InspectorView } from "../inspector";
 import { AssetMedia } from "./asset-media";
+import { Separator } from "../shared/ui";
 import { humanMediaSize } from "../media";
 
 export class AssetInspector implements InspectorView {
@@ -21,15 +22,10 @@ export class AssetInspector implements InspectorView {
                     />
                 </div>
 
-                <div className="flex flex-col gap-0.5 px-2">
+                <div className="flex flex-col gap-1 px-2">
+                    <Separator />
                     <h2 className="text-xl w-full whitespace-normal wrap-anywhere font-medium">
                         {this.asset.title}
-                    </h2>
-
-                    <h2 className="opacity-60">
-                        {`${this.asset.media.mimetype} - ${humanMediaSize(
-                            this.asset.media.size
-                        )}`}
                     </h2>
                 </div>
             </div>
