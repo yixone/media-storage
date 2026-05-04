@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 import type { Assets } from "@/api/models";
-import { useApi, useInspector } from "@/providers";
+import { useApi } from "@/providers";
+
+import { useAssetNavigation, useAssetSelection } from "./assets-list-events";
 import { AssetsListScroll } from "./assets-list-scroll";
-import { AssetInspector } from "@/features/project/assets/ui";
 import { AssetsGrid } from "../grid";
-import { useNavigate } from "react-router";
 
 const PAGINATION_LIMIT = 25;
 
@@ -51,29 +51,6 @@ function useAssetsListData() {
     }, []);
 
     return { assets, loadMoreAssets, assetsOut };
-}
-
-function useAssetSelection() {
-    const { addView } = useInspector();
-
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-
-    function selectAsset(asset: Assets.Asset) {
-        setSelectedId(asset.id);
-        addView(new AssetInspector(asset));
-    }
-
-    return { selectedId, selectAsset };
-}
-
-function useAssetNavigation() {
-    const navigate = useNavigate();
-
-    function openAsset(asset: Assets.Asset) {
-        navigate(`/asset/${asset.id}`);
-    }
-
-    return { openAsset };
 }
 
 export function AssetsList() {
