@@ -1,2 +1,2 @@
-export * from "./Browse";
-export * from "./View";
+export * from "./browse";
+export * from "./view";

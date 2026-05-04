@@ -6,7 +6,7 @@ import {
     AssetViewDetails,
     AssetViewLayout,
     AssetViewMediaContainer,
-} from "./AssetView.layout";
+} from "./asset-view-layout";
 
 import type { Assets } from "@/api/models";
 

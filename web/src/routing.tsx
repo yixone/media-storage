@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import { BrowseLayout, ViewLayout } from "@/layouts";
 
 import { HomePage } from "@/pages";
-import { AssetCreatePage, AssetViewPage } from "@/pages/assets";
+import { AssetCreatePage, AssetViewPage } from "@/pages/asset";
 
 export function AppRoutes() {
     return (
