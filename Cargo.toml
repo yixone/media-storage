@@ -1,3 +1,15 @@
+[workspace]
+resolver = "2"
+members = ["crates/content-store"]
+
+[workspace.package]
+repository = "https://github.com/yixone/media-storage"
+edition = "2024"
+publish = false
+
+[workspace.dependencies]
+ms-content-store = { path = "crates/content-store" }
+
 [package]
 name = "media-storage"
 version = "0.1.0"
