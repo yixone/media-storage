@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/content-store"]
+members = ["api"]
 
 [workspace.package]
 repository = "https://github.com/yixone/media-storage"
@@ -8,9 +8,6 @@ edition = "2024"
 publish = false
 
 [workspace.dependencies]
-# Media Storage
-ms-content-store = { path = "crates/content-store" }
-
 # Actix
 actix-web = "4.11.0"
 actix-multipart = "0.7.2"
@@ -43,6 +40,9 @@ sqlx = "0.8.5"
 # Tracing
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
+
+# Dev dependencies
+tempfile = "3.27.0"
 
 
 [package]
