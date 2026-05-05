@@ -40,11 +40,13 @@ impl AsRef<Path> for BlobPath {
     }
 }
 
+#[derive(Debug, PartialEq)]
 pub enum RenameBlobResult {
     Renamed,
     AlreadyExists,
 }
 
+#[derive(Debug, PartialEq)]
 pub enum RemoveBlobResult {
     Removed,
     NotFound,
