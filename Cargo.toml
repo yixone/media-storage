@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["api"]
+members = ["libs/blob-host"]
 
 [workspace.package]
 repository = "https://github.com/yixone/media-storage"
@@ -8,6 +8,9 @@ edition = "2024"
 publish = false
 
 [workspace.dependencies]
+# Libs (`ms` - media storage)
+ms-blob-host = { path = "libs/blob-host" }
+
 # Actix
 actix-web = "4.11.0"
 actix-multipart = "0.7.2"
@@ -24,6 +27,7 @@ hex = "0.4.3"
 bytes = "1.11.1"
 uuid = "1.17.0"
 chrono = "0.4.42"
+tempfile = "3.27.0"
 
 # Serde
 serde = "1.0.219"
@@ -40,59 +44,3 @@ sqlx = "0.8.5"
 # Tracing
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
-
-# Dev dependencies
-tempfile = "3.27.0"
-
-
-[package]
-name = "media-storage"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-# Actix
-actix-web = "4.11.0"
-actix-multipart = "0.7.2"
-actix-cors = "0.7.1"
-
-# Async
-async-trait = "0.1.89"
-futures = "0.3.32"
-tokio = { version = "1.47.1", features = [
-    "fs",
-    "io-util",
-    "macros",
-    "rt-multi-thread",
-] }
-tokio-util = { version = "0.7.16", features = ["io"] }
-
-# Utils/Types
-hex = "0.4.3"
-bytes = "1.11.1"
-uuid = { version = "1.17.0", features = ["v4", "serde"] }
-chrono = { version = "0.4.42", features = ["serde"] }
-
-# Serde
-serde = { version = "1.0.219", features = ["derive"] }
-
-# Crypto
-sha2 = "0.10.9"
-
-# Media
-image = "0.25.10"
-
-# Database
-sqlx = { version = "0.8.5", features = [
-    "sqlite",
-    "runtime-tokio",
-    "chrono",
-    "uuid",
-] }
-
-# Tracing
-tracing = "0.1.40"
-tracing-subscriber = "0.3.18"
-
-[dev-dependencies]
-tempfile = "3.27.0"
