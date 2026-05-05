@@ -1,5 +1,9 @@
 use bytes::Bytes;
-use ms_blob_host::{BlobHostExt, BlobPath, FsBlobHost, RemoveBlobResult};
+use ms_blob_host::{
+    ext::{BlobHostExt, RemoveBlobResult},
+    fs::FsBlobHost,
+    path::BlobPath,
+};
 use tempfile::TempDir;
 use tokio::io::AsyncReadExt;
 
