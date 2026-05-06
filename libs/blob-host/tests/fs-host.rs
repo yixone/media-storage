@@ -7,12 +7,12 @@ use ms_blob_host::{
 use tempfile::TempDir;
 use tokio::io::AsyncReadExt;
 
+const TEST_BLOB: Bytes = Bytes::from_static(&[67, 42]);
+
 fn temp_blob_host() -> FsBlobHost {
     let temp = TempDir::new().unwrap();
     FsBlobHost::new(temp.path()).unwrap()
 }
-
-const TEST_BLOB: Bytes = Bytes::from_static(&[67, 42]);
 
 #[tokio::test]
 async fn write_and_finalize_the_blob() {

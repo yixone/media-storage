@@ -11,6 +11,7 @@ use crate::{
     path::BlobPath,
 };
 
+#[derive(Debug)]
 pub struct FsBlobHost {
     mount: PathBuf,
 }
@@ -33,11 +34,6 @@ impl FsBlobHost {
         }
         Ok(())
     }
-}
-
-pub struct FsBlobWriter {
-    pub writer: BufWriter<File>,
-    pub target: PathBuf,
 }
 
 #[async_trait::async_trait]
@@ -93,6 +89,12 @@ impl BlobHostExt for FsBlobHost {
             Err(e) => Err(e.into()),
         }
     }
+}
+
+#[derive(Debug)]
+pub struct FsBlobWriter {
+    pub writer: BufWriter<File>,
+    pub target: PathBuf,
 }
 
 #[async_trait::async_trait]

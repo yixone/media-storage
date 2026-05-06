@@ -9,6 +9,7 @@ pub use error::BlobHostError;
 
 use crate::{ext::BlobHostExt, fs::FsBlobHost};
 
+#[derive(Debug, Clone)]
 pub enum BlobHost {
     Fs(Arc<FsBlobHost>),
 }
