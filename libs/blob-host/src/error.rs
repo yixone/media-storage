@@ -1,6 +1,5 @@
 #[derive(Debug)]
 pub enum BlobHostError {
-    BlobTooLarge,
     InvalidBlobPath,
     BlobPathConflict,
     Io(std::io::Error),
