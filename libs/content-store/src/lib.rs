@@ -1,77 +1,18 @@
+pub mod error;
+pub mod key;
+
 use bytes::Bytes;
 use futures::{Stream, TryStreamExt};
-use ms_blob_host::{BlobHost, BlobHostError, ext::RenameBlobResult, path::BlobPath};
+use ms_blob_host::{BlobHost, ext::RenameBlobResult};
 use sha2::{Digest, Sha256};
 use tokio::io::AsyncRead;
 use tokio_util::io::{ReaderStream, StreamReader};
-use uuid::Uuid;
+
+pub use error::ContentStorageError;
+
+use crate::key::{StorageKey, TempKey};
 
 #[derive(Debug)]
-pub enum ContentStorageError {
-    BlobTooLarge,
-    BackendError(BlobHostError),
-    Io(std::io::Error),
-}
-
-impl From<BlobHostError> for ContentStorageError {
-    fn from(e: BlobHostError) -> Self {
-        ContentStorageError::BackendError(e)
-    }
-}
-
-impl From<std::io::Error> for ContentStorageError {
-    fn from(e: std::io::Error) -> Self {
-        ContentStorageError::Io(e)
-    }
-}
-
-pub struct StorageKey {
-    pub inner: String,
-}
-
-impl StorageKey {
-    pub fn from_digest(d: [u8; 32]) -> Self {
-        StorageKey {
-            inner: hex::encode(d),
-        }
-    }
-
-    pub fn to_blob_path(&self) -> BlobPath {
-        BlobPath {
-            inner: format!(
-                "global/{}/{}/{}",
-                &self.inner[..2],
-                &self.inner[2..4],
-                self.inner
-            ),
-        }
-    }
-}
-
-pub struct TempKey {
-    pub uuid: Uuid,
-}
-
-impl TempKey {
-    pub fn new() -> Self {
-        TempKey {
-            uuid: Uuid::new_v4(),
-        }
-    }
-
-    pub fn to_blob_path(&self) -> BlobPath {
-        BlobPath {
-            inner: format!("temp/{}", self.uuid.simple()),
-        }
-    }
-}
-
-impl Default for TempKey {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 pub struct StoragePutResult {
     pub key: StorageKey,
     pub size: usize,

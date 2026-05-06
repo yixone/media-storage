@@ -332,6 +332,7 @@ dependencies = [
  "hex",
  "ms-blob-host",
  "sha2",
+ "tempfile",
  "tokio",
  "tokio-util",
  "uuid",
