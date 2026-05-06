@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["libs/blob-host", "libs/content-store"]
+members = ["libs/blob_host", "libs/content_store", "libs/shared_models"]
 
 [workspace.package]
 repository = "https://github.com/yixone/media-storage"
@@ -9,8 +9,8 @@ publish = false
 
 [workspace.dependencies]
 # Libs (`ms` - media storage)
-ms-blob-host = { path = "libs/blob-host" }
-ms-content-store = { path = "libs/content-store" }
+ms_blob_host = { path = "libs/blob_host" }
+ms_content_store = { path = "libs/content_store" }
 
 # Actix
 actix-web = "4.11.0"

@@ -1,5 +1,5 @@
 [package]
-name = "ms-content-store"
+name = "ms_content_store"
 version = "0.1.0"
 repository.workspace = true
 edition.workspace = true
@@ -9,7 +9,7 @@ publish.workspace = true
 
 [dependencies]
 # Libs
-ms-blob-host.workspace = true
+ms_blob_host.workspace = true
 
 # Async
 futures.workspace = true
