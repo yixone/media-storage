@@ -8,3 +8,4 @@ publish.workspace = true
 [dependencies]
 # Utils/Types
 uuid = { workspace = true, features = ["v4"] }
+chrono = { workspace = true }
