@@ -14,3 +14,10 @@ pub struct Asset {
     pub title: Option<String>,
     pub caption: Option<String>,
 }
+
+patch_model! {
+    AssetPatchData {
+        title: Option<String>,
+        caption: Option<String>
+    }
+}

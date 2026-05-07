@@ -11,3 +11,10 @@ pub struct Collection {
     pub title: String,
     pub description: Option<String>,
 }
+
+patch_model! {
+    CollectionPatchData {
+        title: String,
+        description: Option<String>
+    }
+}

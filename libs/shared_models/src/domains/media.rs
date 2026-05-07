@@ -26,3 +26,14 @@ pub enum MediaStatus {
     Ready,
     Failed,
 }
+
+patch_model! {
+    MediaPatchData {
+        color: Option<String>,
+
+        width: Option<u16>,
+        height: Option<u16>,
+
+        status: MediaStatus
+    }
+}
