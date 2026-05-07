@@ -3,6 +3,7 @@ use chrono::{DateTime, Utc};
 id_type!(CollectionId as uuid::Uuid);
 
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "sqlx", derive(sqlx::FromRow))]
 pub struct Collection {
     pub id: CollectionId,
 

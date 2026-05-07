@@ -3,6 +3,7 @@ use chrono::{DateTime, Utc};
 id_type!(MediaId as String);
 
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "sqlx", derive(sqlx::FromRow))]
 pub struct Media {
     pub id: MediaId,
 
@@ -20,6 +21,7 @@ pub struct Media {
 }
 
 #[derive(Debug, Clone, Copy)]
+#[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(rename_all = "lowercase"))]
 pub enum MediaStatus {
     Pending,
     Processing,

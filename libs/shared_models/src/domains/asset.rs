@@ -5,6 +5,7 @@ use crate::domains::MediaId;
 id_type!(AssetId as i64);
 
 #[derive(Debug, Clone)]
+#[cfg_attr(feature = "sqlx", derive(sqlx::FromRow))]
 pub struct Asset {
     pub id: AssetId,
     pub media: MediaId,
