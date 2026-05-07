@@ -15,4 +15,14 @@ pub struct Media {
 
     pub width: Option<u16>,
     pub height: Option<u16>,
+
+    pub status: MediaStatus,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum MediaStatus {
+    Pending,
+    Processing,
+    Ready,
+    Failed,
 }
