@@ -7,7 +7,7 @@ publish.workspace = true
 
 [features]
 serde = ["dep:serde", "uuid/serde"]
-sqlx = ["dep:sqlx"]
+sqlx = ["dep:sqlx", "sqlx/chrono", "sqlx/uuid"]
 
 [dependencies]
 # Utils/Types
