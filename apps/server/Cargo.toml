@@ -1,0 +1,13 @@
+[package]
+name = "ms_server"
+version = "0.1.0"
+
+repository.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+# Actix
+actix-web.workspace = true
+actix-multipart.workspace = true
+actix-cors.workspace = true

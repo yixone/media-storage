@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "apps/server",
     "libs/blob_host",
     "libs/content_store",
     "libs/database",
@@ -16,8 +17,8 @@ publish = false
 # Libs (`ms` - media storage)
 ms_blob_host = { path = "libs/blob_host" }
 ms_content_store = { path = "libs/content_store" }
-ms_shared_models = { path = "libs/shared_models" }
 ms_database = { path = "libs/database" }
+ms_shared_models = { path = "libs/shared_models" }
 
 # Actix
 actix-web = "4.11.0"
