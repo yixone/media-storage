@@ -5,6 +5,8 @@ pub enum DatabaseError {
     Conflict,
     BrokenRelation,
     SqlxDriverError(sqlx::Error),
+    SqlxMigratorError(sqlx::migrate::MigrateError),
+    IoError(std::io::Error),
 }
 
 impl From<sqlx::Error> for DatabaseError {
@@ -21,5 +23,17 @@ impl From<sqlx::Error> for DatabaseError {
             sqlx::Error::RowNotFound => DatabaseError::NotFound,
             _ => DatabaseError::SqlxDriverError(err),
         }
+    }
+}
+
+impl From<std::io::Error> for DatabaseError {
+    fn from(e: std::io::Error) -> Self {
+        DatabaseError::IoError(e)
+    }
+}
+
+impl From<sqlx::migrate::MigrateError> for DatabaseError {
+    fn from(e: sqlx::migrate::MigrateError) -> Self {
+        DatabaseError::SqlxMigratorError(e)
     }
 }
