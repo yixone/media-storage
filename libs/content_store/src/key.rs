@@ -1,5 +1,9 @@
+use std::str::FromStr;
+
 use ms_blob_host::path::BlobPath;
 use uuid::Uuid;
+
+use crate::ContentStorageError;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct StorageKey {
@@ -7,6 +11,12 @@ pub struct StorageKey {
 }
 
 impl StorageKey {
+    pub fn from_str_unchecked(str: &str) -> Self {
+        StorageKey {
+            inner: str.to_string(),
+        }
+    }
+
     pub fn from_digest(d: [u8; 32]) -> Self {
         StorageKey {
             inner: hex::encode(d),
@@ -22,6 +32,19 @@ impl StorageKey {
                 self.inner
             ),
         }
+    }
+}
+
+impl FromStr for StorageKey {
+    type Err = ContentStorageError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if s.len() != 64 || !s.chars().all(|c| c.is_ascii_hexdigit()) {
+            return Err(ContentStorageError::InvalidStorageKey);
+        }
+
+        Ok(StorageKey {
+            inner: s.to_string(),
+        })
     }
 }
 

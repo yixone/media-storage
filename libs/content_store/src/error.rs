@@ -3,6 +3,7 @@ use ms_blob_host::BlobHostError;
 #[derive(Debug)]
 pub enum ContentStorageError {
     BlobTooLarge,
+    InvalidStorageKey,
     BackendError(BlobHostError),
     Io(std::io::Error),
 }
