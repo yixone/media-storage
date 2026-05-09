@@ -35,6 +35,12 @@ impl StorageKey {
     }
 }
 
+impl AsRef<StorageKey> for StorageKey {
+    fn as_ref(&self) -> &StorageKey {
+        self
+    }
+}
+
 impl FromStr for StorageKey {
     type Err = ContentStorageError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {

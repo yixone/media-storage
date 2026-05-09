@@ -1,10 +1,11 @@
 use std::sync::Arc;
 
-use actix_web::web::Data;
+use actix_cors::Cors;
+use actix_web::{App, HttpServer, web::Data};
 use ms_blob_host::BlobHost;
 use ms_content_store::ContentStorage;
 use ms_database::sqlite::SqliteDatabase;
-use ms_server::{di::DataContext, error::AppResult};
+use ms_server::{di::DataContext, error::AppResult, routes};
 
 const DB_FILE: &str = "data/storage.db";
 
@@ -31,6 +32,16 @@ async fn main() -> AppResult<()> {
         db,
         store: Arc::new(store),
     });
+
+    HttpServer::new(move || {
+        App::new()
+            .wrap(Cors::permissive())
+            .configure(routes::config)
+            .app_data(ctx.clone())
+    })
+    .bind(LISTEN_ADDR)?
+    .run()
+    .await?;
 
     Ok(())
 }

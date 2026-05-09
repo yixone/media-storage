@@ -1,6 +1,9 @@
 use chrono::{DateTime, Utc};
 
-id_type!(MediaId as String);
+id_type!(
+    #[derive(Eq, Hash)]
+    MediaId as String
+);
 
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "sqlx", derive(sqlx::FromRow))]

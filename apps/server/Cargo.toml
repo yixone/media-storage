@@ -20,6 +20,8 @@ actix-cors.workspace = true
 
 # Async
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+futures = { workspace = true }
+tokio-util = { workspace = true, features = ["io"] }
 
 # Types
 chrono = { workspace = true, features = ["serde"] }
