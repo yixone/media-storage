@@ -440,6 +440,7 @@ dependencies = [
  "iana-time-zone",
  "js-sys",
  "num-traits",
+ "serde",
  "wasm-bindgen",
  "windows-link",
 ]
@@ -1445,6 +1446,9 @@ dependencies = [
  "actix-cors",
  "actix-multipart",
  "actix-web",
+ "chrono",
+ "ms_shared_models",
+ "serde",
 ]
 
 [[package]]
@@ -1452,6 +1456,7 @@ name = "ms_shared_models"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "rand 0.10.1",
  "serde",
  "sqlx",
  "uuid",

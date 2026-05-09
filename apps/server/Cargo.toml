@@ -7,7 +7,16 @@ edition.workspace = true
 publish.workspace = true
 
 [dependencies]
+# Libs
+ms_shared_models = { workspace = true, features = ["serde"] }
+
 # Actix
 actix-web.workspace = true
 actix-multipart.workspace = true
 actix-cors.workspace = true
+
+# Types
+chrono = { workspace = true, features = ["serde"] }
+
+# Serde
+serde = { workspace = true, features = ["derive"] }
