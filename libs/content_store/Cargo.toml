@@ -1,0 +1,29 @@
+[package]
+name = "ms_content_store"
+version = "0.1.0"
+repository.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[features]
+
+[dependencies]
+# Libs
+ms_blob_host.workspace = true
+
+# Async
+futures.workspace = true
+tokio = { workspace = true, features = ["io-util"] }
+tokio-util = { workspace = true, features = ["io"] }
+
+# Utils/Types
+bytes.workspace = true
+uuid = { workspace = true, features = ["v4"] }
+hex.workspace = true
+
+# Crypto
+sha2.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

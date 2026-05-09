@@ -1,0 +1,36 @@
+[package]
+name = "ms_server"
+version = "0.1.0"
+
+repository.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+# Libs
+ms_blob_host = { workspace = true }
+ms_content_store = { workspace = true }
+ms_database = { workspace = true }
+ms_shared_models = { workspace = true, features = ["serde"] }
+ms_media = { workspace = true }
+
+# Actix
+actix-web.workspace = true
+actix-multipart.workspace = true
+actix-cors.workspace = true
+
+# Async
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+futures = { workspace = true }
+tokio-util = { workspace = true, features = ["io"] }
+
+# Types/Utils
+chrono = { workspace = true, features = ["serde"] }
+hex.workspace = true
+
+# Serde
+serde = { workspace = true, features = ["derive"] }
+
+# Tracing
+tracing.workspace = true
+tracing-subscriber.workspace = true

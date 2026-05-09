@@ -1,9 +1,27 @@
-[package]
-name = "media-storage"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "2"
+members = [
+    "apps/server",
+    "libs/blob_host",
+    "libs/content_store",
+    "libs/database",
+    "libs/media",
+    "libs/shared_models",
+]
 
-[dependencies]
+[workspace.package]
+repository = "https://github.com/yixone/media-storage"
+edition = "2024"
+publish = false
+
+[workspace.dependencies]
+# Libs (`ms` - media storage)
+ms_blob_host = { path = "libs/blob_host" }
+ms_content_store = { path = "libs/content_store" }
+ms_database = { path = "libs/database" }
+ms_media = { path = "libs/media" }
+ms_shared_models = { path = "libs/shared_models" }
+
 # Actix
 actix-web = "4.11.0"
 actix-multipart = "0.7.2"
@@ -12,22 +30,19 @@ actix-cors = "0.7.1"
 # Async
 async-trait = "0.1.89"
 futures = "0.3.32"
-tokio = { version = "1.47.1", features = [
-    "fs",
-    "io-util",
-    "macros",
-    "rt-multi-thread",
-] }
-tokio-util = { version = "0.7.16", features = ["io"] }
+tokio = "1.47.1"
+tokio-util = "0.7.16"
 
 # Utils/Types
 hex = "0.4.3"
 bytes = "1.11.1"
-uuid = { version = "1.17.0", features = ["v4", "serde"] }
-chrono = { version = "0.4.42", features = ["serde"] }
+uuid = "1.17.0"
+chrono = "0.4.42"
+tempfile = "3.27.0"
+rand = "0.10.1"
 
 # Serde
-serde = { version = "1.0.219", features = ["derive"] }
+serde = "1.0.219"
 
 # Crypto
 sha2 = "0.10.9"
@@ -36,16 +51,8 @@ sha2 = "0.10.9"
 image = "0.25.10"
 
 # Database
-sqlx = { version = "0.8.5", features = [
-    "sqlite",
-    "runtime-tokio",
-    "chrono",
-    "uuid",
-] }
+sqlx = "0.8.5"
 
 # Tracing
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
-
-[dev-dependencies]
-tempfile = "3.27.0"
