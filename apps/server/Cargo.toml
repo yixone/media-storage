@@ -18,8 +18,15 @@ actix-web.workspace = true
 actix-multipart.workspace = true
 actix-cors.workspace = true
 
+# Async
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+
 # Types
 chrono = { workspace = true, features = ["serde"] }
 
 # Serde
 serde = { workspace = true, features = ["derive"] }
+
+# Tracing
+tracing.workspace = true
+tracing-subscriber.workspace = true

@@ -1,5 +1,6 @@
 pub type DbResut<T> = std::result::Result<T, DatabaseError>;
 
+#[derive(Debug)]
 pub enum DatabaseError {
     NotFound,
     Conflict,
