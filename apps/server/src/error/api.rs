@@ -16,7 +16,7 @@ impl ResponseError for AppError {
             AppError::FileTooLarge => StatusCode::PAYLOAD_TOO_LARGE,
             AppError::AlreadyExists => StatusCode::CONFLICT,
             AppError::NotFound => StatusCode::NOT_FOUND,
-            AppError::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
+            _ => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 

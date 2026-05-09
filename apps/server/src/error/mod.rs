@@ -17,6 +17,7 @@ pub enum AppError {
     NotFound,
 
     InternalError,
+    MultipartError,
 }
 
 impl std::fmt::Display for AppError {
@@ -58,3 +59,4 @@ map_error! {
 }
 
 map_error!(std::io::Error => InternalError);
+map_error!(actix_multipart::MultipartError => MultipartError);
