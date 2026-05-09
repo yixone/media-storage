@@ -22,6 +22,7 @@ pub struct Media {
 
 #[derive(Debug, Clone, Copy)]
 #[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(rename_all = "lowercase"))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub enum MediaStatus {
     Pending,
     Processing,
