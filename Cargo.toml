@@ -5,6 +5,7 @@ members = [
     "libs/blob_host",
     "libs/content_store",
     "libs/database",
+    "libs/media",
     "libs/shared_models",
 ]
 

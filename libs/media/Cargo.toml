@@ -1,0 +1,17 @@
+[package]
+name = "media"
+version = "0.1.0"
+repository.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+
+[dependencies]
+# Async
+tokio = { workspace = true, features = ["io-util"] }
+
+# Media
+image.workspace = true
+
+# Utils/Types
+bytes.workspace = true
