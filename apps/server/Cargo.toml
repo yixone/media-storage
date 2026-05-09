@@ -8,6 +8,9 @@ publish.workspace = true
 
 [dependencies]
 # Libs
+ms_blob_host = { workspace = true }
+ms_content_store = { workspace = true }
+ms_database = { workspace = true }
 ms_shared_models = { workspace = true, features = ["serde"] }
 
 # Actix
