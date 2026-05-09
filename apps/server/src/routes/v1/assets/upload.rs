@@ -3,7 +3,9 @@ use actix_web::{HttpResponse, post, web};
 use chrono::Utc;
 use futures::TryStreamExt;
 use ms_database::traits::{AssetRepoExt, MediaRepoExt};
-use ms_shared_models::domains::{Asset, AssetId, Media, MediaId, MediaStatus};
+use ms_shared_models::domains::{
+    Asset, AssetError, AssetId, Media, MediaError, MediaId, MediaStatus,
+};
 
 use crate::{
     bg::media::MediaWorkerTask,
@@ -45,7 +47,7 @@ pub async fn upload_asset(
 
                 let mimtype = field
                     .content_type()
-                    .ok_or(AppError::MultipartError)?
+                    .ok_or(MediaError::InvalidMimetype)?
                     .to_string();
 
                 // FIXME: fix this ugly errors mapping
@@ -75,7 +77,7 @@ pub async fn upload_asset(
                         .db
                         .get_media(&media_id)
                         .await?
-                        .ok_or(AppError::NotFound)?,
+                        .ok_or(MediaError::MediaNotFound)?,
                 };
 
                 uploading.uploaded_media = Some(media);
@@ -90,7 +92,7 @@ pub async fn upload_asset(
     }
 
     let Some(media) = uploading.uploaded_media else {
-        return Err(AppError::MultipartError);
+        return Err(AssetError::MissingUploadMedia.into());
     };
 
     let asset = Asset {

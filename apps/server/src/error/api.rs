@@ -6,16 +6,28 @@ use crate::error::AppError;
 #[derive(Serialize)]
 pub struct ApiError<'a> {
     code: u16,
+    #[serde(flatten)]
     error: &'a AppError,
 }
 
 impl ResponseError for AppError {
     fn status_code(&self) -> StatusCode {
         match self {
-            AppError::InvalidId => StatusCode::BAD_REQUEST,
-            AppError::FileTooLarge => StatusCode::PAYLOAD_TOO_LARGE,
-            AppError::AlreadyExists => StatusCode::CONFLICT,
-            AppError::NotFound => StatusCode::NOT_FOUND,
+            AppError::AssetError(e) => match e {
+                ms_shared_models::domains::AssetError::MissingUploadMedia => {
+                    StatusCode::BAD_REQUEST
+                }
+                ms_shared_models::domains::AssetError::InvalidSourceUrl => StatusCode::BAD_REQUEST,
+                ms_shared_models::domains::AssetError::AssetNotFound => StatusCode::NOT_FOUND,
+            },
+            AppError::MediaError(e) => match e {
+                ms_shared_models::domains::MediaError::InvalidMimetype => StatusCode::BAD_REQUEST,
+                ms_shared_models::domains::MediaError::MediaTooLarge => {
+                    StatusCode::PAYLOAD_TOO_LARGE
+                }
+                ms_shared_models::domains::MediaError::BadMediaKey => StatusCode::BAD_REQUEST,
+                ms_shared_models::domains::MediaError::MediaNotFound => StatusCode::NOT_FOUND,
+            },
             _ => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }

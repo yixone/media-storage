@@ -5,6 +5,7 @@ use ms_database::{
     pagination::Pagination,
     traits::{AssetRepoExt, MediaRepoExt},
 };
+use ms_shared_models::domains::MediaError;
 use serde::Deserialize;
 
 use crate::{
@@ -42,7 +43,10 @@ pub async fn get_assets_list(
     let api_assets = assets
         .into_iter()
         .map(|a| -> AppResult<ApiAsset> {
-            let media = media_map.get(&a.media).cloned().ok_or(AppError::NotFound)?;
+            let media = media_map
+                .get(&a.media)
+                .cloned()
+                .ok_or(MediaError::MediaNotFound)?;
             Ok(ApiAsset::from_domains(a, media))
         })
         .collect::<Result<Vec<_>, AppError>>()?;

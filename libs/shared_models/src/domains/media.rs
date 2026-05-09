@@ -36,10 +36,17 @@ pub enum MediaStatus {
 patch_model! {
     MediaPatchData {
         color: Option<String>,
-
         width: Option<u16>,
         height: Option<u16>,
-
         status: MediaStatus
     }
+}
+
+#[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+pub enum MediaError {
+    InvalidMimetype,
+    MediaTooLarge,
+    BadMediaKey,
+    MediaNotFound,
 }

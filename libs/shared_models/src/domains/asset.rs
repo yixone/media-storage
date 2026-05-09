@@ -38,3 +38,11 @@ patch_model! {
         source_url: Option<String>
     }
 }
+
+#[derive(Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+pub enum AssetError {
+    AssetNotFound,
+    MissingUploadMedia,
+    InvalidSourceUrl,
+}
