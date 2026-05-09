@@ -58,5 +58,7 @@ map_error! {
     }
 }
 
+map_error!(ms_media::MediaError => InternalError);
+
 map_error!(std::io::Error => InternalError);
 map_error!(actix_multipart::MultipartError => MultipartError);

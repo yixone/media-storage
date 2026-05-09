@@ -12,6 +12,7 @@ ms_blob_host = { workspace = true }
 ms_content_store = { workspace = true }
 ms_database = { workspace = true }
 ms_shared_models = { workspace = true, features = ["serde"] }
+ms_media = { workspace = true }
 
 # Actix
 actix-web.workspace = true
@@ -23,8 +24,9 @@ tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
 futures = { workspace = true }
 tokio-util = { workspace = true, features = ["io"] }
 
-# Types
+# Types/Utils
 chrono = { workspace = true, features = ["serde"] }
+hex.workspace = true
 
 # Serde
 serde = { workspace = true, features = ["derive"] }

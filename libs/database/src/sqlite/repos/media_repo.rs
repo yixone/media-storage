@@ -1,7 +1,7 @@
 use ms_shared_models::domains::{Media, MediaId, MediaPatchData};
 use sqlx::QueryBuilder;
 
-use crate::{DbResut, sqlite::SqliteDatabase, traits::MediaRepoExt};
+use crate::{DbResut, pagination::Pagination, sqlite::SqliteDatabase, traits::MediaRepoExt};
 
 impl MediaRepoExt for SqliteDatabase {
     async fn insert_media(&self, media: &Media) -> DbResut<()> {
@@ -91,5 +91,20 @@ impl MediaRepoExt for SqliteDatabase {
         .await?;
 
         Ok(res.rows_affected() == 1)
+    }
+
+    async fn get_pending_media(&self, pagination: Pagination) -> DbResut<Vec<Media>> {
+        let items = sqlx::query_as(
+            "
+        SELECT * FROM media
+        WHERE status IN ('pending')
+        LIMIT ? OFFSET ?
+        ",
+        )
+        .bind(pagination.limit)
+        .bind(pagination.offset)
+        .fetch_all(&self.pool)
+        .await?;
+        Ok(items)
     }
 }

@@ -2,7 +2,7 @@ use std::slice;
 
 use ms_shared_models::domains::{Media, MediaId, MediaPatchData};
 
-use crate::DbResut;
+use crate::{DbResut, pagination::Pagination};
 
 pub trait MediaRepoExt {
     async fn insert_media(&self, media: &Media) -> DbResut<()>;
@@ -14,6 +14,8 @@ pub trait MediaRepoExt {
     }
 
     async fn get_media_by_ids(&self, ids: &[MediaId]) -> DbResut<Vec<Media>>;
+
+    async fn get_pending_media(&self, pagination: Pagination) -> DbResut<Vec<Media>>;
 
     // TODO: Replace bool with RepositoryResult.rows_affected
     async fn patch_media(&self, id: &MediaId, patch: &MediaPatchData) -> DbResut<bool>;

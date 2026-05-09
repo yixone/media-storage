@@ -1696,15 +1696,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "media"
-version = "0.1.0"
-dependencies = [
- "bytes",
- "image",
- "tokio",
-]
-
-[[package]]
 name = "memchr"
 version = "2.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1782,6 +1773,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ms_media"
+version = "0.1.0"
+dependencies = [
+ "bytes",
+ "image",
+ "tokio",
+]
+
+[[package]]
 name = "ms_server"
 version = "0.1.0"
 dependencies = [
@@ -1790,9 +1790,11 @@ dependencies = [
  "actix-web",
  "chrono",
  "futures",
+ "hex",
  "ms_blob_host",
  "ms_content_store",
  "ms_database",
+ "ms_media",
  "ms_shared_models",
  "serde",
  "tokio",

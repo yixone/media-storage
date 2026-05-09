@@ -1,5 +1,6 @@
 pub(crate) type MediaResult<T> = std::result::Result<T, MediaError>;
 
+#[derive(Debug)]
 pub enum MediaError {
     Image(image::ImageError),
     Io(std::io::Error),

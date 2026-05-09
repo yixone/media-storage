@@ -21,7 +21,7 @@ CREATE TABLE media (
     blob_size       BIGINT          NOT NULL,
     content_type    VARCHAR(128)    NOT NULL,
 
-    color           VARCHAR(6),
+    color           VARCHAR(7),
 
     width           INT,
     height          INT,

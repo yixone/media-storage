@@ -19,6 +19,7 @@ publish = false
 ms_blob_host = { path = "libs/blob_host" }
 ms_content_store = { path = "libs/content_store" }
 ms_database = { path = "libs/database" }
+ms_media = { path = "libs/media" }
 ms_shared_models = { path = "libs/shared_models" }
 
 # Actix

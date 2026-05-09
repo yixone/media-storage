@@ -1,5 +1,5 @@
 [package]
-name = "media"
+name = "ms_media"
 version = "0.1.0"
 repository.workspace = true
 edition.workspace = true

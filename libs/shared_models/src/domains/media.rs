@@ -23,7 +23,7 @@ pub struct Media {
     pub status: MediaStatus,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(rename_all = "lowercase"))]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub enum MediaStatus {

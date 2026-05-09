@@ -5,7 +5,12 @@ use actix_web::{App, HttpServer, web::Data};
 use ms_blob_host::BlobHost;
 use ms_content_store::ContentStorage;
 use ms_database::sqlite::SqliteDatabase;
-use ms_server::{di::DataContext, error::AppResult, routes};
+use ms_server::{
+    bg::media::MediaWorker,
+    di::{DataContext, MessagesContext},
+    error::AppResult,
+    routes,
+};
 
 const DB_FILE: &str = "data/storage.db";
 
@@ -33,11 +38,17 @@ async fn main() -> AppResult<()> {
         store: Arc::new(store),
     });
 
+    let media_worker = MediaWorker::new(ctx.clone().into_inner(), 128);
+    let media_worker_msgs = media_worker.spawn().await;
+
+    let messages_ctx = Data::new(MessagesContext { media_worker_msgs });
+
     HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
             .configure(routes::config)
             .app_data(ctx.clone())
+            .app_data(messages_ctx.clone())
     })
     .bind(LISTEN_ADDR)?
     .run()

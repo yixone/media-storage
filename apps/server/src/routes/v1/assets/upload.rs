@@ -6,7 +6,8 @@ use ms_database::traits::{AssetRepoExt, MediaRepoExt};
 use ms_shared_models::domains::{Asset, AssetId, Media, MediaId, MediaStatus};
 
 use crate::{
-    di::DataContext,
+    bg::media::MediaWorkerTask,
+    di::{DataContext, MessagesContext},
     error::{AppError, AppResult},
     http::multipart::read_field_to_string,
     models::v1::asset::ApiAsset,
@@ -27,6 +28,7 @@ struct UploadingContext {
 pub async fn upload_asset(
     mut payload: Multipart,
     ctx: web::Data<DataContext>,
+    msgs_ctx: web::Data<MessagesContext>,
 ) -> AppResult<HttpResponse> {
     let mut uploading = UploadingContext::default();
 
@@ -100,6 +102,14 @@ pub async fn upload_asset(
         source_url: uploading.source_url,
     };
     ctx.db.insert_asset(&asset).await?;
+
+    if uploading.is_new_media {
+        MediaWorkerTask::NewMedia {
+            id: media.id.clone(),
+        }
+        .send(&msgs_ctx.media_worker_msgs)
+        .await;
+    }
 
     let api_asset = ApiAsset::from_domains(asset, media);
     Ok(HttpResponse::Created().json(api_asset))
