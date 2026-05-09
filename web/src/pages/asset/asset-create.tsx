@@ -26,7 +26,7 @@ export function AssetCreatePage() {
 
     const [uploading, setUploading] = useState(false);
 
-    const { assetsApiV0 } = useApi();
+    const { assetsApiV1 } = useApi();
     const navigate = useNavigate();
 
     function handleUploadDataChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -50,7 +50,7 @@ export function AssetCreatePage() {
             ...uploadData,
         };
 
-        await assetsApiV0.upload(DTO);
+        await assetsApiV1.upload(DTO);
         navigate("/");
     }
 

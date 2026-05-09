@@ -1,14 +1,14 @@
 import { AbstractModule } from "@/api";
 import type { Assets } from "@/api/models";
 
-export class ApiAssetsV0 extends AbstractModule {
+export class ApiAssetsV1 extends AbstractModule {
     public async getList(
-        cursor: number = 0,
+        offset: number = 0,
         limit: number = 50
     ): Promise<Assets.Asset[]> {
-        const list: Assets.Asset[] = await this.client.request("v0/assets", {
+        const list: Assets.Asset[] = await this.client.request("v1/assets", {
             params: {
-                cursor: cursor.toString(),
+                offset: offset.toString(),
                 limit: limit.toString(),
             },
         });
@@ -16,7 +16,7 @@ export class ApiAssetsV0 extends AbstractModule {
     }
 
     public async get(id: string): Promise<Assets.Asset> {
-        let asset: Assets.Asset = await this.client.request(`v0/assets/${id}`);
+        let asset: Assets.Asset = await this.client.request(`v1/assets/${id}`);
         return asset;
     }
 
@@ -26,9 +26,10 @@ export class ApiAssetsV0 extends AbstractModule {
 
         if (data.title) multipartForm.append("title", data.title);
         if (data.caption) multipartForm.append("caption", data.caption);
-        if (data.source_url) multipartForm.append("source", data.source_url);
+        if (data.source_url)
+            multipartForm.append("source_url", data.source_url);
 
-        await this.client.request("v0/assets", {
+        await this.client.request("v1/assets", {
             method: "POST",
             body: multipartForm,
         });

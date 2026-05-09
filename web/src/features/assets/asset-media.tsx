@@ -21,7 +21,7 @@ export function AssetMedia({
     const aspectRatio = mediaAspectRatio(media);
 
     const [loaded, setLoaded] = useState(false);
-    const { mediaApiV0 } = useApi();
+    const { mediaApiV1 } = useApi();
 
     return (
         <div
@@ -33,13 +33,13 @@ export function AssetMedia({
                 className="size-full relative"
                 style={{
                     backgroundColor: useSkeleton
-                        ? `#${media.color ?? "fff"}`
+                        ? `${media.color ?? "#fff"}`
                         : undefined,
                     animation: loaded ? undefined : "var(--animate-pulse)",
                 }}
             >
                 <img
-                    src={mediaApiV0.getMediaUrl(media.id)}
+                    src={mediaApiV1.getMediaUrl(media.id)}
                     draggable={false}
                     className="absolute top-0 left-0 size-full"
                     fetchPriority="high"

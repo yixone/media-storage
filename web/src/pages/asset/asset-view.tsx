@@ -18,7 +18,7 @@ import { Button, Separator } from "@/features/shared/ui";
 import { useApi } from "@/providers";
 
 function useTarget(id?: string) {
-    const { assetsApiV0 } = useApi();
+    const { assetsApiV1 } = useApi();
 
     const [asset, setAsset] = useState<Assets.Asset | null>(null);
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ function useTarget(id?: string) {
             if (!id) return;
 
             try {
-                const asset = await assetsApiV0.get(id);
+                const asset = await assetsApiV1.get(id);
                 setAsset(asset);
             } catch (err) {
                 navigate("/");
@@ -91,13 +91,13 @@ export function AssetViewPage() {
 
                 <div className="w-full flex">
                     <div className="w-full flex justify-center items-center">
-                        <h2>{asset.media.mimetype}</h2>
+                        <h2>{asset.media.content_type}</h2>
                     </div>
 
                     <Separator orientation="vertical" className="w-0.75" />
 
                     <div className="w-full flex justify-center items-center">
-                        <h2>{humanMediaSize(asset.media.size)}</h2>
+                        <h2>{humanMediaSize(asset.media.blob_size)}</h2>
                     </div>
 
                     <Separator orientation="vertical" className="w-0.75" />

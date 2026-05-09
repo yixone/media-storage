@@ -10,7 +10,7 @@ import { AssetsGrid } from "../grid";
 const PAGINATION_LIMIT = 25;
 
 function useAssetsListData() {
-    const { assetsApiV0 } = useApi();
+    const { assetsApiV1 } = useApi();
 
     const [assets, setAssets] = useState<Assets.Asset[]>([]);
 
@@ -27,7 +27,7 @@ function useAssetsListData() {
 
         assetsLoading.current = true;
 
-        const data = await assetsApiV0.getList(offset, limit);
+        const data = await assetsApiV1.getList(offset, limit);
         setAssets((a) => [...a, ...data]);
 
         if (data.length < limit) {
@@ -61,7 +61,7 @@ export function AssetsList() {
 
     useEffect(() => {
         if (assets.length > 0 && selectedId === null) {
-            selectAsset(assets.filter((a) => a.media.state === "Ready")[0]);
+            selectAsset(assets.filter((a) => a.media.status === "Ready")[0]);
         }
     }, [assets]);
 
