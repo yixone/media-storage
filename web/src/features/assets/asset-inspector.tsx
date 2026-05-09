@@ -27,6 +27,10 @@ export class AssetInspector implements InspectorView {
                     <h2 className="text-xl w-full whitespace-normal wrap-anywhere font-medium">
                         {this.asset.title}
                     </h2>
+
+                    <p className="text-foreground/60">
+                        {new Date(this.asset.created_at).toLocaleString()}
+                    </p>
                     <p className="text-foreground/60">
                         {humanMediaSize(this.asset.media.blob_size)}
                     </p>

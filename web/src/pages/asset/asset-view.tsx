@@ -74,7 +74,7 @@ export function AssetViewPage() {
                 </AssetViewMediaContainer>
             </AssetViewContent>
             <AssetViewDetails className="p-4 gap-2">
-                <div className="">
+                <div className="flex flex-col gap-1">
                     <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
                         {asset.title}
                     </h2>
@@ -86,6 +86,9 @@ export function AssetViewPage() {
                             {asset.source_url}
                         </a>
                     )}
+                    <p className="text-foreground/80">
+                        {new Date(asset.created_at).toLocaleString()}
+                    </p>
                 </div>
                 <Separator />
 
