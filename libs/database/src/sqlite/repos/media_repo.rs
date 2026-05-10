@@ -64,7 +64,8 @@ impl MediaRepoExt for SqliteDatabase {
             "status" => patch.status,
             "width" => patch.width,
             "height" => patch.height,
-            "color" => patch.color
+            "color" => patch.color,
+            "thumbnail_key" => patch.thumbnail_key
         };
 
         if !has_changes {

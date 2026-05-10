@@ -4,7 +4,7 @@ use ms_content_store::key::StorageKey;
 use ms_database::{pagination::Pagination, traits::MediaRepoExt};
 use ms_media::image::MediaImage;
 use ms_shared_models::{
-    domains::{Media, MediaId, MediaPatchData, MediaStatus},
+    domains::{Media, MediaId, MediaPatchData, MediaStatus, ThumbnailKey},
     patch::PatchField,
 };
 use tokio::sync::mpsc::{Receiver, Sender, channel};
@@ -51,6 +51,11 @@ async fn process_image_command(img_media: &Media, ctx: &DataContext) -> AppResul
     let (w, h) = img.get_dimension();
     let color = format!("#{}", hex::encode(img.get_color()));
 
+    let thumbnail_image = img.generate_thumbnail(250)?;
+    let saved_thumbnail = ctx.store.put(thumbnail_image).await?;
+
+    let thumbnail_key = ThumbnailKey(saved_thumbnail.key.inner);
+
     ctx.db
         .patch_media(
             &img_media.id,
@@ -59,6 +64,7 @@ async fn process_image_command(img_media: &Media, ctx: &DataContext) -> AppResul
                 height: PatchField::Update(Some(h as u16)),
                 color: PatchField::Update(Some(color)),
                 status: PatchField::Update(MediaStatus::Ready),
+                thumbnail_key: PatchField::Update(thumbnail_key),
             },
         )
         .await?;

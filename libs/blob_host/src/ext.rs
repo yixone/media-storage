@@ -33,7 +33,7 @@ pub trait BlobHostExt {
 }
 
 #[async_trait::async_trait]
-pub trait BlobWriterExt {
+pub trait BlobWriterExt: Send + Sync {
     async fn write(&mut self, data: bytes::Bytes) -> Result<(), BlobHostError>;
 
     async fn finalize(self: Box<Self>) -> Result<(), BlobHostError>;

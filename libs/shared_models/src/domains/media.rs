@@ -5,6 +5,8 @@ id_type!(
     MediaId as String
 );
 
+id_type!(ThumbnailKey as String);
+
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "sqlx", derive(sqlx::FromRow))]
 pub struct Media {
@@ -19,6 +21,8 @@ pub struct Media {
 
     pub width: Option<u16>,
     pub height: Option<u16>,
+
+    pub thumbnail_key: ThumbnailKey,
 
     pub status: MediaStatus,
 }
@@ -40,6 +44,7 @@ patch_model! {
         width: Option<u16>,
         height: Option<u16>,
 
+        thumbnail_key: ThumbnailKey,
         status: MediaStatus
     }
 }
