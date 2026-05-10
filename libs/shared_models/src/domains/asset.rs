@@ -37,13 +37,19 @@ patch_model! {
     AssetPatchData {
         title: Option<String>,
         caption: Option<String>,
+
         source_url: Option<String>,
+
         is_deleted: bool
     }
 }
 
 #[derive(Debug)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde::Serialize),
+    serde(rename_all = "SCREAMING_SNAKE_CASE")
+)]
 pub enum AssetError {
     AssetNotFound,
     MissingUploadMedia,

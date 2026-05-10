@@ -36,14 +36,20 @@ pub enum MediaStatus {
 patch_model! {
     MediaPatchData {
         color: Option<String>,
+
         width: Option<u16>,
         height: Option<u16>,
+
         status: MediaStatus
     }
 }
 
 #[derive(Debug)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde::Serialize),
+    serde(rename_all = "SCREAMING_SNAKE_CASE")
+)]
 pub enum MediaError {
     InvalidMimetype,
     MediaTooLarge,
