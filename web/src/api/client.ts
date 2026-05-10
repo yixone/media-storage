@@ -40,7 +40,10 @@ export class ApiClient {
         if (opts.json) {
             return {
                 method: opts.method,
-                headers: opts.headers,
+                headers: {
+                    "content-type": "application/json",
+                    ...opts.headers,
+                },
                 body: JSON.stringify(opts.json),
             };
         }
@@ -63,8 +66,12 @@ export class ApiClient {
                 throw new ApiError(res.status, text);
             }
 
-            const item: T = await res.json();
-            return item;
+            if (res.status != 204) {
+                const item: T = await res.json();
+                return item;
+            }
+
+            return;
         } catch (err) {
             log.error(url, err);
             throw err;

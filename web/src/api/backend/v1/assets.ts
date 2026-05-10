@@ -34,4 +34,11 @@ export class ApiAssetsV1 extends AbstractModule {
             body: multipartForm,
         });
     }
+
+    public async update(id: string, data: Assets.UpdateAssetRequest) {
+        await this.client.request(`v1/assets/${id}`, {
+            method: "PATCH",
+            json: data,
+        });
+    }
 }

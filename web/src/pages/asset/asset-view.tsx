@@ -12,8 +12,12 @@ import type { Assets } from "@/api/models";
 
 import { AssetMedia } from "@/features/assets";
 import { mediaAspectRatio, humanMediaSize } from "@/features/media";
-import { ArrowLeftIcon } from "@/features/shared/ui/icons";
-import { Button, Separator } from "@/features/shared/ui";
+import {
+    ArrowLeftIcon,
+    DeleteIcon,
+    EditIcon,
+} from "@/features/shared/ui/icons";
+import { Button, Input, Separator } from "@/features/shared/ui";
 
 import { useApi } from "@/providers";
 
@@ -39,9 +43,53 @@ function useTarget(id?: string) {
     return { asset };
 }
 
+function useEditMode() {
+    const { assetsApiV1 } = useApi();
+
+    const [editMode, setEditMode] = useState(false);
+
+    const [editData, setEditData] = useState<Assets.UpdateAssetRequest | null>(
+        null
+    );
+
+    const updateEditData = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        setEditData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const startEdit = (asset: Assets.Asset) => {
+        setEditData({
+            title: asset.title,
+            caption: asset.caption,
+            source_url: asset.source_url,
+        });
+        setEditMode(true);
+    };
+
+    const applyEdit = async (asset: Assets.Asset) => {
+        if (!editData) {
+            setEditMode(false);
+            return;
+        }
+
+        await assetsApiV1.update(asset.id, editData);
+
+        location.reload();
+    };
+
+    return { editMode, startEdit, applyEdit, editData, updateEditData };
+}
+
 export function AssetViewPage() {
     const { id } = useParams();
     const { asset } = useTarget(id);
+
+    const { editMode, startEdit, applyEdit, editData, updateEditData } =
+        useEditMode();
 
     const navigate = useNavigate();
 
@@ -73,41 +121,94 @@ export function AssetViewPage() {
                     </div>
                 </AssetViewMediaContainer>
             </AssetViewContent>
-            <AssetViewDetails className="p-4 gap-2">
-                <div className="flex flex-col gap-1">
-                    <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
-                        {asset.title}
-                    </h2>
-                    {asset.source_url && (
-                        <a
-                            className="decoration-1 underline decoration-foreground/50"
-                            href={asset.source_url}
-                        >
-                            {asset.source_url}
-                        </a>
-                    )}
-                    <p className="text-foreground/80">
-                        {new Date(asset.created_at).toLocaleString()}
-                    </p>
+            <AssetViewDetails className="p-4 gap-1 not-md:flex-col-reverse">
+                <div className="size-full flex flex-col gap-2">
+                    <div className="flex flex-col gap-1">
+                        {!editMode && (
+                            <>
+                                <h2 className="text-3xl md:text-2xl w-full whitespace-normal wrap-anywhere font-medium">
+                                    {asset.title}
+                                </h2>
+                                {asset.source_url && (
+                                    <a
+                                        className="decoration-1 underline decoration-foreground/50"
+                                        href={asset.source_url}
+                                    >
+                                        {asset.source_url}
+                                    </a>
+                                )}
+                            </>
+                        )}
+                        {editMode && (
+                            <>
+                                <Input
+                                    value={editData?.title ?? ""}
+                                    className="enabled:text-3xl enabled:md:text-2xl font-medium"
+                                    onChange={updateEditData}
+                                    name="title"
+                                />
+                                <Input
+                                    value={editData?.source_url ?? ""}
+                                    onChange={updateEditData}
+                                    name="source_url"
+                                />
+                            </>
+                        )}
+                        <p className="text-foreground/80">
+                            {new Date(asset.created_at).toLocaleString()}
+                        </p>
+                    </div>
+                    <Separator />
+
+                    <div className="w-full flex">
+                        <div className="w-full flex justify-center items-center">
+                            <h2>{asset.media.content_type}</h2>
+                        </div>
+
+                        <Separator orientation="vertical" className="w-0.75" />
+
+                        <div className="w-full flex justify-center items-center">
+                            <h2>{humanMediaSize(asset.media.blob_size)}</h2>
+                        </div>
+
+                        <Separator orientation="vertical" className="w-0.75" />
+
+                        <div className="w-full flex justify-center items-center">
+                            {asset.media.width} x {asset.media.height}
+                        </div>
+                    </div>
                 </div>
-                <Separator />
 
-                <div className="w-full flex">
-                    <div className="w-full flex justify-center items-center">
-                        <h2>{asset.media.content_type}</h2>
-                    </div>
-
-                    <Separator orientation="vertical" className="w-0.75" />
-
-                    <div className="w-full flex justify-center items-center">
-                        <h2>{humanMediaSize(asset.media.blob_size)}</h2>
-                    </div>
-
-                    <Separator orientation="vertical" className="w-0.75" />
-
-                    <div className="w-full flex justify-center items-center">
-                        {asset.media.width} x {asset.media.height}
-                    </div>
+                <div className="size-full flex items-end gap-1 *:h-9">
+                    <Button
+                        className="w-full flex items-center"
+                        variant={editMode ? "default" : "outline"}
+                        onClick={() => {
+                            editMode ? applyEdit(asset) : startEdit(asset);
+                        }}
+                    >
+                        {!editMode && (
+                            <>
+                                <EditIcon
+                                    fill="transparent"
+                                    className="aspect-square h-1/2"
+                                />
+                                Edit
+                            </>
+                        )}
+                        {editMode && <>Apply</>}
+                    </Button>
+                    {!editMode && (
+                        <Button
+                            className="w-full flex items-center enabled:hover:bg-destructive/70 enabled:hover:text-background"
+                            variant="outline"
+                        >
+                            <>
+                                <DeleteIcon className="aspect-square h-1/2" />
+                                Delete
+                            </>
+                        </Button>
+                    )}
                 </div>
             </AssetViewDetails>
         </AssetViewLayout>
