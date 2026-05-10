@@ -29,13 +29,16 @@ pub struct Asset {
     pub caption: Option<String>,
 
     pub source_url: Option<String>,
+
+    pub is_deleted: bool,
 }
 
 patch_model! {
     AssetPatchData {
         title: Option<String>,
         caption: Option<String>,
-        source_url: Option<String>
+        source_url: Option<String>,
+        is_deleted: bool
     }
 }
 

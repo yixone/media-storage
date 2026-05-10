@@ -15,6 +15,8 @@ pub struct ApiAsset {
     pub caption: Option<String>,
 
     pub source_url: Option<String>,
+
+    pub is_deleted: bool,
 }
 
 impl ApiAsset {
@@ -26,6 +28,7 @@ impl ApiAsset {
             title: a.title,
             caption: a.caption,
             source_url: a.source_url,
+            is_deleted: a.is_deleted,
         }
     }
 }

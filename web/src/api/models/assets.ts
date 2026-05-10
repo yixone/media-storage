@@ -8,6 +8,7 @@ export namespace Assets {
         title: string | null;
         caption: string | null;
         source_url: string | null;
+        is_deleted: boolean;
     };
 
     export type CreateAssetRequest = {
@@ -21,5 +22,6 @@ export namespace Assets {
         title?: string | null;
         caption?: string | null;
         source_url?: string | null;
+        is_deleted?: boolean;
     };
 }

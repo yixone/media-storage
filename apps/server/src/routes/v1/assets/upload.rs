@@ -102,6 +102,7 @@ pub async fn upload_asset(
         title: uploading.title,
         caption: uploading.caption,
         source_url: uploading.source_url,
+        is_deleted: false,
     };
     ctx.db.insert_asset(&asset).await?;
 

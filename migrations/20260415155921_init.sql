@@ -9,6 +9,8 @@ CREATE TABLE assets (
 
     source_url      VARCHAR(512),
 
+    is_deleted      BOOLEAN         NOT NULL,
+
     PRIMARY KEY (id),
     FOREIGN KEY (media) REFERENCES media(id) ON DELETE CASCADE
 );

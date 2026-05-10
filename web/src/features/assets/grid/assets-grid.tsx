@@ -40,7 +40,9 @@ export class AssetsGrid implements AssetsListLayout {
             >
                 {layoutReady &&
                     list
-                        .filter((a) => a.media.status === "Ready")
+                        .filter(
+                            (a) => a.media.status === "Ready" && !a.is_deleted
+                        )
                         .map((a) => (
                             <AssetsGridItem
                                 asset={a}

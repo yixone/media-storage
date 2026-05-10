@@ -8,11 +8,12 @@ use serde::Deserialize;
 
 use crate::{di::DataContext, error::AppResult};
 
-#[derive(Debug, Deserialize)]
+#[derive(Deserialize)]
 struct UpdateAssetRequest {
     title: Option<String>,
     caption: Option<String>,
     source_url: Option<String>,
+    is_deleted: Option<bool>,
 }
 
 #[patch("/{id}")]
@@ -27,6 +28,7 @@ pub async fn update_asset(
         title: PatchField::from_option_string(payload.title),
         caption: PatchField::from_option_string(payload.caption),
         source_url: PatchField::from_option_string(payload.source_url),
+        is_deleted: PatchField::from(payload.is_deleted),
     };
 
     if !ctx.db.patch_asset(&id, &patch).await? {

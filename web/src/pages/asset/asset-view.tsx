@@ -36,7 +36,7 @@ function useTarget(id?: string) {
     return { asset };
 }
 
-function useEditMode() {
+function useEditMode(asset: Assets.Asset | null) {
     const { assetsApiV1 } = useApi();
 
     const [editMode, setEditMode] = useState(false);
@@ -54,7 +54,9 @@ function useEditMode() {
         }));
     };
 
-    const startEdit = (asset: Assets.Asset) => {
+    const startEdit = () => {
+        if (!asset) return;
+
         setEditData({
             title: asset.title,
             caption: asset.caption,
@@ -63,7 +65,9 @@ function useEditMode() {
         setEditMode(true);
     };
 
-    const applyEdit = async (asset: Assets.Asset) => {
+    const applyEdit = async () => {
+        if (!asset) return;
+
         if (!editData) {
             setEditMode(false);
             return;
@@ -77,14 +81,30 @@ function useEditMode() {
     return { editMode, startEdit, applyEdit, editData, updateEditData };
 }
 
+function useAssetDelete(asset: Assets.Asset | null) {
+    const { assetsApiV1 } = useApi();
+    const navigate = useNavigate();
+
+    const deleteAsset = async () => {
+        if (!asset) return;
+
+        await assetsApiV1.update(asset.id, { is_deleted: true });
+        navigate(-1);
+    };
+
+    return { deleteAsset };
+}
+
 export function AssetViewPage() {
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const { asset } = useTarget(id);
 
     const { editMode, startEdit, applyEdit, editData, updateEditData } =
-        useEditMode();
+        useEditMode(asset);
 
-    const navigate = useNavigate();
+    const { deleteAsset } = useAssetDelete(asset);
 
     if (!asset) return null;
 
@@ -178,7 +198,7 @@ export function AssetViewPage() {
                         className="w-full flex items-center"
                         variant={editMode ? "default" : "outline"}
                         onClick={() => {
-                            editMode ? applyEdit(asset) : startEdit(asset);
+                            editMode ? applyEdit() : startEdit();
                         }}
                     >
                         {!editMode && (
@@ -195,6 +215,7 @@ export function AssetViewPage() {
                     {!editMode && (
                         <Button
                             className="w-full flex items-center enabled:hover:bg-destructive/70 enabled:hover:text-background"
+                            onClick={deleteAsset}
                             variant="outline"
                         >
                             <>

@@ -8,9 +8,9 @@ impl AssetRepoExt for SqliteDatabase {
         sqlx::query(
             "
         INSERT INTO assets (
-            id, media, created_at, title, caption, source_url
+            id, media, created_at, title, caption, source_url, is_deleted
         )
-        VALUES ( ?, ?, ?, ?, ?, ? )
+        VALUES ( ?, ?, ?, ?, ?, ?, ? )
         ",
         )
         .bind(&asset.id)
@@ -19,6 +19,7 @@ impl AssetRepoExt for SqliteDatabase {
         .bind(&asset.title)
         .bind(&asset.caption)
         .bind(&asset.source_url)
+        .bind(asset.is_deleted)
         .execute(&self.pool)
         .await?;
         Ok(())
@@ -95,7 +96,8 @@ impl AssetRepoExt for SqliteDatabase {
             qb,
             "title" => patch.title,
             "caption" => patch.caption,
-            "source_url" => patch.source_url
+            "source_url" => patch.source_url,
+            "is_deleted" => patch.is_deleted
         };
 
         if !has_changes {
