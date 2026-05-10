@@ -37,6 +37,17 @@ impl MediaImage {
         (self.inner.width(), self.inner.height())
     }
 
+    pub fn generate_thumbnail(&self, n_w: u32) -> MediaResult<ImageStream> {
+        let (w, h) = self.get_dimension();
+        let n_h = (h * n_w) / w;
+
+        let thumbnail_image = MediaImage {
+            inner: self.inner.resize(n_w, n_h, FilterType::Gaussian),
+        };
+
+        thumbnail_image.to_stream(ImageFormat::WebP)
+    }
+
     pub fn to_stream(self, format: ImageFormat) -> MediaResult<ImageStream> {
         let mut buf = Vec::new();
         self.inner.write_to(Cursor::new(&mut buf), format)?;

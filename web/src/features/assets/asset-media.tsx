@@ -8,11 +8,13 @@ import { mediaAspectRatio } from "../media";
 
 type AssetMediaProps = {
     media: Media.Media;
+    format: Media.MediaFormat;
     useSkeleton?: boolean;
 } & React.ComponentProps<"div">;
 
 export function AssetMedia({
     media,
+    format = "preview",
     useSkeleton = true,
     className,
     style,
@@ -39,7 +41,7 @@ export function AssetMedia({
                 }}
             >
                 <img
-                    src={mediaApiV1.getMediaUrl(media.id)}
+                    src={mediaApiV1.getMediaUrl(media.id, format)}
                     draggable={false}
                     className="absolute top-0 left-0 size-full"
                     fetchPriority="high"

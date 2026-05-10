@@ -4,7 +4,7 @@ use chrono::Utc;
 use futures::TryStreamExt;
 use ms_database::traits::{AssetRepoExt, MediaRepoExt};
 use ms_shared_models::domains::{
-    Asset, AssetError, AssetId, Media, MediaError, MediaId, MediaStatus,
+    Asset, AssetError, AssetId, Media, MediaError, MediaId, MediaStatus, ThumbnailKey,
 };
 
 use crate::{
@@ -61,7 +61,7 @@ pub async fn upload_asset(
                 let media = match put_res.is_new {
                     true => {
                         let media = Media {
-                            id: media_id,
+                            id: media_id.clone(),
                             created_at: Utc::now(),
                             blob_size: put_res.size as i64,
                             content_type: mimtype,
@@ -69,6 +69,7 @@ pub async fn upload_asset(
                             width: None,
                             height: None,
                             status: MediaStatus::Pending,
+                            thumbnail_key: ThumbnailKey(media_id.0),
                         };
                         ctx.db.insert_media(&media).await?;
                         media

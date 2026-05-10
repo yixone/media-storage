@@ -130,6 +130,7 @@ export function AssetViewPage() {
                     <div className="box-border">
                         <AssetMedia
                             className="size-full md:border border-border/75 overflow-hidden md:rounded-md"
+                            format="original"
                             media={asset.media}
                         />
                     </div>
