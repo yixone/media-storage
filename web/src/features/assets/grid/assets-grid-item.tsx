@@ -3,33 +3,19 @@ import { AssetMedia } from "../asset-media";
 
 type AssetsGridItemProps = {
     asset: Assets.Asset;
-
-    selected: boolean;
-
-    onSelect: (asset: Assets.Asset) => void;
-    onOpen: (asset: Assets.Asset) => void;
 };
 
-export function AssetsGridItem({
-    asset,
-    selected,
-    onSelect,
-    onOpen,
-}: AssetsGridItemProps) {
+export function AssetsGridItem({ asset }: AssetsGridItemProps) {
     return (
-        <div
-            data-selected={selected}
+        <a
             className="
-                group/grid-asset 
                 cursor-pointer 
                 bg-transparent hover:bg-foreground/4 data-[selected=true]:bg-foreground/8 
                 rounded-md p-1 
                 flex flex-col 
                 outline-none"
-            onClick={() => onSelect(asset)}
-            onFocus={() => onSelect(asset)}
-            onDoubleClick={() => onOpen(asset)}
-            tabIndex={1}
+            draggable={false}
+            href={`asset/${asset.id}`}
         >
             <div className="aspect-square flex justify-center items-center p-1">
                 <AssetMedia
@@ -44,6 +30,6 @@ export function AssetsGridItem({
                     {asset.title}
                 </p>
             </div>
-        </div>
+        </a>
     );
 }

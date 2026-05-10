@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import type { Assets } from "@/api/models";
-import type { AssetsListEvents, AssetsListLayout } from "../list";
+import type { AssetsListLayout } from "../list";
 import { useResizeObserver } from "@/features/shared/utils";
 import { AssetsGridItem } from "./assets-grid-item";
 
@@ -27,11 +27,7 @@ function useGridLayout() {
 }
 
 export class AssetsGrid implements AssetsListLayout {
-    render(
-        list: Assets.Asset[],
-        selectedId: string | null,
-        events: AssetsListEvents
-    ) {
+    render(list: Assets.Asset[]) {
         const { colsCount, layoutReady, targetRef } = useGridLayout();
 
         return (
@@ -45,15 +41,7 @@ export class AssetsGrid implements AssetsListLayout {
                 {layoutReady &&
                     list
                         .filter((a) => a.media.status === "Ready")
-                        .map((a) => (
-                            <AssetsGridItem
-                                asset={a}
-                                key={a.id}
-                                selected={a.id === selectedId}
-                                onSelect={events.onSelectAsset}
-                                onOpen={events.onOpenAsset}
-                            />
-                        ))}
+                        .map((a) => <AssetsGridItem asset={a} key={a.id} />)}
             </div>
         );
     }

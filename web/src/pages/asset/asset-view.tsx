@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import {
-    AssetViewContent,
-    AssetViewDetails,
-    AssetViewLayout,
-    AssetViewMediaContainer,
-} from "./asset-view-layout";
-
 import type { Assets } from "@/api/models";
 
 import { AssetMedia } from "@/features/assets";
@@ -96,8 +89,8 @@ export function AssetViewPage() {
     if (!asset) return null;
 
     return (
-        <AssetViewLayout className="w-full h-screen">
-            <AssetViewContent className="p-0 md:p-4 flex items-center justify-center relative">
+        <div className="flex flex-col md:flex-row w-full h-screen">
+            <div className="md:flex-3 w-full max-h-2/3 md:max-h-full bg-background md:bg-linear-to-b md:from-muted md:to-foreground/10 p-0 md:p-4 flex items-center justify-center relative">
                 <div className="absolute top-0 left-0 p-2 md:p-4 z-4">
                     <Button
                         variant="outline"
@@ -110,8 +103,9 @@ export function AssetViewPage() {
                         <ArrowLeftIcon className="text-foreground w-full" />
                     </Button>
                 </div>
-                <AssetViewMediaContainer
-                    aspectRatio={mediaAspectRatio(asset.media)}
+                <div
+                    className="w-full md:w-9/10 max-h-full h-auto flex justify-center"
+                    style={{ aspectRatio: mediaAspectRatio(asset.media) }}
                 >
                     <div className="box-border">
                         <AssetMedia
@@ -119,9 +113,9 @@ export function AssetViewPage() {
                             media={asset.media}
                         />
                     </div>
-                </AssetViewMediaContainer>
-            </AssetViewContent>
-            <AssetViewDetails className="p-4 gap-1 not-md:flex-col-reverse">
+                </div>
+            </div>
+            <div className="not-md:border-t border-border md:flex-1 flex flex-col p-4 gap-1 not-md:flex-col-reverse">
                 <div className="size-full flex flex-col gap-2">
                     <div className="flex flex-col gap-1">
                         {!editMode && (
@@ -210,7 +204,7 @@ export function AssetViewPage() {
                         </Button>
                     )}
                 </div>
-            </AssetViewDetails>
-        </AssetViewLayout>
+            </div>
+        </div>
     );
 }
