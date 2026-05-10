@@ -51,7 +51,7 @@ async fn process_image_command(img_media: &Media, ctx: &DataContext) -> AppResul
     let (w, h) = img.get_dimension();
     let color = format!("#{}", hex::encode(img.get_color()));
 
-    let thumbnail_image = img.generate_thumbnail(250)?;
+    let thumbnail_image = img.generate_thumbnail(350)?;
     let saved_thumbnail = ctx.store.put(thumbnail_image).await?;
 
     let thumbnail_key = ThumbnailKey(saved_thumbnail.key.inner);

@@ -1,4 +1,4 @@
-use actix_web::{HttpResponse, get, http::header, web};
+use actix_web::{HttpResponse, get, web};
 use ms_content_store::key::StorageKey;
 use ms_database::traits::MediaRepoExt;
 use ms_shared_models::domains::{MediaError, MediaId};
