@@ -1,6 +1,8 @@
 export namespace Media {
     export type MediaStatus = "Pending" | "Processing" | "Ready" | "Failed";
 
+    export type MediaFormat = "original" | "preview";
+
     export type Media = {
         id: string;
         status: MediaStatus;
