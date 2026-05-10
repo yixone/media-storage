@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Assets } from "@/api/models";
 import { useApi } from "@/providers";
 
+import { useAssetNavigation } from "./assets-list-events";
 import { AssetsListScroll } from "./assets-list-scroll";
 import { AssetsGrid } from "../grid";
 
@@ -54,6 +55,7 @@ function useAssetsListData() {
 
 export function AssetsList() {
     const { assets, loadMoreAssets, assetsOut } = useAssetsListData();
+    const { openAsset } = useAssetNavigation();
 
     const listLayout = new AssetsGrid();
 
@@ -62,7 +64,9 @@ export function AssetsList() {
             onEndReached={loadMoreAssets}
             useEndTrigger={!assetsOut.current}
         >
-            {listLayout.render(assets)}
+            {listLayout.render(assets, {
+                onOpenAsset: openAsset,
+            })}
         </AssetsListScroll>
     );
 }

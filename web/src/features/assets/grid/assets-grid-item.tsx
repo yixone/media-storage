@@ -3,19 +3,21 @@ import { AssetMedia } from "../asset-media";
 
 type AssetsGridItemProps = {
     asset: Assets.Asset;
+
+    onOpen: (asset: Assets.Asset) => void;
 };
 
-export function AssetsGridItem({ asset }: AssetsGridItemProps) {
+export function AssetsGridItem({ asset, onOpen }: AssetsGridItemProps) {
     return (
-        <a
+        <div
             className="
                 cursor-pointer 
                 bg-transparent hover:bg-foreground/4 data-[selected=true]:bg-foreground/8 
                 rounded-md p-1 
                 flex flex-col 
                 outline-none"
-            draggable={false}
-            href={`asset/${asset.id}`}
+            onClick={() => onOpen(asset)}
+            tabIndex={1}
         >
             <div className="aspect-square flex justify-center items-center p-1">
                 <AssetMedia
@@ -30,6 +32,6 @@ export function AssetsGridItem({ asset }: AssetsGridItemProps) {
                     {asset.title}
                 </p>
             </div>
-        </a>
+        </div>
     );
 }
