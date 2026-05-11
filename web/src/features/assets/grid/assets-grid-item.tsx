@@ -1,8 +1,8 @@
 import type { Assets } from "@/api/models";
-import { AssetMedia } from "../asset-media";
 import { useAssetItem } from "../list";
 import { Skeleton } from "@/features/shared/ui";
 import { cn } from "@/utils";
+import { MediaContainer, MediaImage } from "@/features/media";
 
 type AssetsGridItemProps = {
     listAsset: Assets.Asset;
@@ -30,12 +30,16 @@ export function AssetsGridItem({ listAsset, onOpen }: AssetsGridItemProps) {
         >
             <div className="aspect-square flex justify-center items-center p-1">
                 {assetReady && (
-                    <AssetMedia
-                        className="
-                        border border-border/75 overflow-hidden rounded-md select-none
-                        group-data-[selected=true]/grid-asset:border-ring"
+                    <MediaContainer
+                        className="border border-border/75 overflow-hidden rounded-md select-none"
                         media={asset.media}
-                    />
+                    >
+                        <MediaImage
+                            loading="lazy"
+                            mediaId={asset.media.id}
+                            format="preview"
+                        />
+                    </MediaContainer>
                 )}
                 {!assetReady && <Skeleton className="size-full" />}
             </div>

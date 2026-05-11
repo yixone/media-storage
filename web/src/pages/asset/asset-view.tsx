@@ -3,8 +3,12 @@ import { useNavigate, useParams } from "react-router";
 
 import type { Assets } from "@/api/models";
 
-import { AssetMedia } from "@/features/assets";
-import { mediaAspectRatio, humanMediaSize } from "@/features/media";
+import {
+    mediaAspectRatio,
+    humanMediaSize,
+    MediaContainer,
+    MediaImage,
+} from "@/features/media";
 import {
     ArrowLeftIcon,
     DeleteIcon,
@@ -128,11 +132,23 @@ export function AssetViewPage() {
                     style={{ aspectRatio: mediaAspectRatio(asset.media) }}
                 >
                     <div className="box-border">
-                        <AssetMedia
+                        <MediaContainer
                             className="size-full md:border border-border/75 overflow-hidden md:rounded-md"
-                            format="original"
                             media={asset.media}
-                        />
+                        >
+                            <MediaImage
+                                mediaId={asset.media.id}
+                                format="preview"
+                                fetchPriority="high"
+                                className="z-1 duration-100"
+                            />
+                            <MediaImage
+                                mediaId={asset.media.id}
+                                format="original"
+                                fetchPriority="auto"
+                                className="z-2 duration-250"
+                            />
+                        </MediaContainer>
                     </div>
                 </div>
             </div>
