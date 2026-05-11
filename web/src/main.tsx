@@ -5,7 +5,7 @@ import { ApiClient } from "@/api";
 
 import "./style.css";
 import { AppRoutes } from "./routing";
-import { ApiProvider } from "./providers";
+import { ApiProvider, AssetsListProvider } from "./providers";
 
 /**
  * Configures application
@@ -15,9 +15,11 @@ function Application() {
 
     return (
         <ApiProvider client={client}>
-            <BrowserRouter>
-                <AppRoutes />
-            </BrowserRouter>
+            <AssetsListProvider listPageSize={15}>
+                <BrowserRouter>
+                    <AppRoutes />
+                </BrowserRouter>
+            </AssetsListProvider>
         </ApiProvider>
     );
 }

@@ -4,6 +4,8 @@ type AssetsListScrollProps = {
     children?: React.ReactNode;
     useEndTrigger: boolean;
 
+    ref: React.Ref<HTMLDivElement>;
+
     onEndReached: () => void;
 };
 
@@ -25,12 +27,13 @@ function useScrollTrigger(triggerCallback: () => void) {
 export function AssetsListScroll({
     children,
     useEndTrigger,
+    ref,
     onEndReached,
 }: AssetsListScrollProps) {
     const { targetRef } = useScrollTrigger(onEndReached);
 
     return (
-        <Scrollable className="h-screen w-full">
+        <Scrollable ref={ref} className="h-screen w-full">
             <div className="relative">
                 {children}
 

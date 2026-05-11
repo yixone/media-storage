@@ -1,68 +1,37 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 
-import type { Assets } from "@/api/models";
-import { useApi } from "@/providers";
+import { useAssetsList } from "@/providers";
 
-import { useAssetNavigation } from "./assets-list-events";
 import { AssetsListScroll } from "./assets-list-scroll";
 import { AssetsGrid } from "../grid";
+import type { Assets } from "@/api/models";
 
-const PAGINATION_LIMIT = 25;
+export function AssetsList() {
+    const navigate = useNavigate();
 
-function useAssetsListData() {
-    const { assetsApiV1 } = useApi();
+    const { assets, nextBatch } = useAssetsList();
+    const scrollRef = useRef<HTMLDivElement | null>(null);
 
-    const [assets, setAssets] = useState<Assets.Asset[]>([]);
+    const listLayout = new AssetsGrid();
 
-    const assetsLoading = useRef(false);
-    const assetsOut = useRef(false);
-
-    const listOffset = useRef(0);
-
-    async function loadAssets(offset: number, limit: number) {
-        const invalidPagination = offset < 0 || limit <= 0;
-        if (assetsLoading.current || assetsOut.current || invalidPagination) {
-            return;
-        }
-
-        assetsLoading.current = true;
-
-        const data = await assetsApiV1.getList(offset, limit);
-        setAssets((a) => [...a, ...data]);
-
-        if (data.length < limit) {
-            assetsOut.current = true;
-        }
-
-        assetsLoading.current = false;
-    }
-
-    async function loadMoreAssets() {
-        await loadAssets(listOffset.current, PAGINATION_LIMIT);
-        listOffset.current += PAGINATION_LIMIT;
+    function openAsset(asset: Assets.Asset) {
+        navigate(`/asset/${asset.id}`);
     }
 
     useEffect(() => {
         (async () => {
-            if (assets.length > 0) return;
-            await loadAssets(0, PAGINATION_LIMIT);
-            listOffset.current += PAGINATION_LIMIT;
+            if (assets.length == 0) {
+                await nextBatch();
+            }
         })();
     }, []);
 
-    return { assets, loadMoreAssets, assetsOut };
-}
-
-export function AssetsList() {
-    const { assets, loadMoreAssets, assetsOut } = useAssetsListData();
-    const { openAsset } = useAssetNavigation();
-
-    const listLayout = new AssetsGrid();
-
     return (
         <AssetsListScroll
-            onEndReached={loadMoreAssets}
-            useEndTrigger={!assetsOut.current}
+            ref={scrollRef}
+            onEndReached={nextBatch}
+            useEndTrigger={true}
         >
             {listLayout.render(assets, {
                 onOpenAsset: openAsset,

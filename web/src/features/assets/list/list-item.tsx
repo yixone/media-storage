@@ -15,7 +15,7 @@ export function useAssetItem(listAsset: Assets.Asset) {
                 setAsset(pooled);
                 return;
             } else {
-                setTimeout(assetPool, 750);
+                setTimeout(assetPool, 1750);
             }
         } catch {
             setAsset((a) => ({
