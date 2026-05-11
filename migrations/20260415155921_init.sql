@@ -1,29 +1,32 @@
 CREATE TABLE assets (
     id              BIGINT          NOT NULL,
-    media           VARCHAR(64)     NOT NULL,
+    media_key       VARCHAR(64)     NOT NULL,
 
     created_at      TIMESTAMPTZ     NOT NULL,
 
-    title           VARCHAR(256),
-    caption         VARCHAR(1024),
+    name            VARCHAR(256),
+    caption         VARCHAR(2048),
 
-    source_url      VARCHAR(512),
+    source_url      VARCHAR(1024),
 
     is_deleted      BOOLEAN         NOT NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (media) REFERENCES media(id) ON DELETE CASCADE
+    FOREIGN KEY (media_key) REFERENCES media(original_key) ON DELETE CASCADE
 );
 
 CREATE TABLE media (
-    id              VARCHAR(64)     NOT NULL,
+    original_key    VARCHAR(64)     NOT NULL,
+    preview_key     VARCHAR(64)     NOT NULL,
 
     created_at      TIMESTAMPTZ     NOT NULL,
 
     blob_size       BIGINT          NOT NULL,
+    preview_size    INT             NOT NULL,
+
     content_type    VARCHAR(128)    NOT NULL,
 
-    color           VARCHAR(7),
+    accent_color    VARCHAR(7),
 
     width           INT,
     height          INT,
