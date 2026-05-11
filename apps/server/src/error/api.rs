@@ -14,19 +14,23 @@ impl ResponseError for AppError {
     fn status_code(&self) -> StatusCode {
         match self {
             AppError::AssetError(e) => match e {
-                ms_shared_models::domains::AssetError::MissingUploadMedia => {
+                shelf_shared_models::domains::AssetError::MissingUploadMedia => {
                     StatusCode::BAD_REQUEST
                 }
-                ms_shared_models::domains::AssetError::InvalidSourceUrl => StatusCode::BAD_REQUEST,
-                ms_shared_models::domains::AssetError::AssetNotFound => StatusCode::NOT_FOUND,
+                shelf_shared_models::domains::AssetError::InvalidSourceUrl => {
+                    StatusCode::BAD_REQUEST
+                }
+                shelf_shared_models::domains::AssetError::AssetNotFound => StatusCode::NOT_FOUND,
             },
             AppError::MediaError(e) => match e {
-                ms_shared_models::domains::MediaError::InvalidMimetype => StatusCode::BAD_REQUEST,
-                ms_shared_models::domains::MediaError::MediaTooLarge => {
+                shelf_shared_models::domains::MediaError::InvalidMimetype => {
+                    StatusCode::BAD_REQUEST
+                }
+                shelf_shared_models::domains::MediaError::MediaTooLarge => {
                     StatusCode::PAYLOAD_TOO_LARGE
                 }
-                ms_shared_models::domains::MediaError::BadMediaKey => StatusCode::BAD_REQUEST,
-                ms_shared_models::domains::MediaError::MediaNotFound => StatusCode::NOT_FOUND,
+                shelf_shared_models::domains::MediaError::BadMediaKey => StatusCode::BAD_REQUEST,
+                shelf_shared_models::domains::MediaError::MediaNotFound => StatusCode::NOT_FOUND,
             },
             _ => StatusCode::INTERNAL_SERVER_ERROR,
         }

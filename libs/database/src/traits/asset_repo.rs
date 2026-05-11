@@ -1,6 +1,6 @@
 use std::slice;
 
-use ms_shared_models::domains::{Asset, AssetId, AssetPatchData};
+use shelf_shared_models::domains::{Asset, AssetId, AssetPatchData};
 
 use crate::{DbResut, pagination::Pagination};
 

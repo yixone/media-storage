@@ -1,6 +1,6 @@
-use ms_blob_host::BlobHost;
-use ms_content_store::{ContentStorage, key::StorageKey};
 use sha2::{Digest, Sha256};
+use shelf_blob_host::BlobHost;
+use shelf_content_store::{ContentStorage, key::StorageKey};
 use tempfile::TempDir;
 
 fn temp_content_store() -> ContentStorage {

@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use ms_blob_host::path::BlobPath;
+use shelf_blob_host::path::BlobPath;
 use uuid::Uuid;
 
 use crate::ContentStorageError;

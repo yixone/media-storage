@@ -1,4 +1,4 @@
-use ms_shared_models::domains::{Media, MediaId, MediaPatchData};
+use shelf_shared_models::domains::{Media, MediaId, MediaPatchData};
 use sqlx::QueryBuilder;
 
 use crate::{DbResut, pagination::Pagination, sqlite::SqliteDatabase, traits::MediaRepoExt};

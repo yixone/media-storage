@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
-use ms_shared_models::domains::{Media, MediaId, MediaStatus};
 use serde::Serialize;
+use shelf_shared_models::domains::{Media, MediaId, MediaStatus};
 
 #[derive(Debug, Serialize)]
 pub struct ApiMedia {

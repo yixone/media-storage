@@ -1,5 +1,5 @@
-use ms_shared_models::domains::{AssetError, MediaError};
 use serde::Serialize;
+use shelf_shared_models::domains::{AssetError, MediaError};
 
 #[macro_use]
 pub mod macros;
@@ -30,7 +30,7 @@ map_error!(MediaError => AppError::MediaError);
 
 // TODO: Fix this mappers
 
-use ms_content_store::ContentStorageError;
+use shelf_content_store::ContentStorageError;
 map_error! {
     ContentStorageError => |e| match e {
         ContentStorageError::BlobTooLarge => AppError::MediaError(MediaError::MediaTooLarge),
@@ -39,10 +39,10 @@ map_error! {
     }
 }
 
-map_error!(ms_blob_host::BlobHostError => InternalError);
+map_error!(shelf_blob_host::BlobHostError => InternalError);
 
-map_error!(ms_database::DatabaseError => InternalError);
-map_error!(ms_media::MediaProcessingError => InternalError);
+map_error!(shelf_database::DatabaseError => InternalError);
+map_error!(shelf_media::MediaProcessingError => InternalError);
 
 map_error!(std::io::Error => InternalError);
 map_error!(actix_multipart::MultipartError => InternalError);

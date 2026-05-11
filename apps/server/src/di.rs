@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
-use ms_content_store::ContentStorage;
-use ms_database::sqlite::SqliteDatabase;
 use tokio::sync::mpsc::Sender;
+
+use shelf_content_store::ContentStorage;
+use shelf_database::sqlite::SqliteDatabase;
 
 use crate::bg::media::MediaWorkerTask;
 

@@ -7,13 +7,13 @@ macro_rules! opt_update_query {
             let mut has_changes = false;
             $(
                 match &$value {
-                    ms_shared_models::patch::PatchField::Update(v) => {
+                    shelf_shared_models::patch::PatchField::Update(v) => {
                         has_changes = true;
 
                         sep.push(concat!($query, "="));
                         sep.push_bind_unseparated(v);
                     },
-                    ms_shared_models::patch::PatchField::Ignore => {},
+                    shelf_shared_models::patch::PatchField::Ignore => {},
 
                 }
             )+

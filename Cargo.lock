@@ -1740,81 +1740,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ms_blob_host"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "bytes",
- "tempfile",
- "tokio",
-]
-
-[[package]]
-name = "ms_content_store"
-version = "0.1.0"
-dependencies = [
- "bytes",
- "futures",
- "hex",
- "ms_blob_host",
- "sha2",
- "tempfile",
- "tokio",
- "tokio-util",
- "uuid",
-]
-
-[[package]]
-name = "ms_database"
-version = "0.1.0"
-dependencies = [
- "ms_shared_models",
- "sqlx",
-]
-
-[[package]]
-name = "ms_media"
-version = "0.1.0"
-dependencies = [
- "bytes",
- "image",
- "tokio",
-]
-
-[[package]]
-name = "ms_server"
-version = "0.1.0"
-dependencies = [
- "actix-cors",
- "actix-multipart",
- "actix-web",
- "chrono",
- "futures",
- "hex",
- "ms_blob_host",
- "ms_content_store",
- "ms_database",
- "ms_media",
- "ms_shared_models",
- "serde",
- "tokio",
- "tokio-util",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "ms_shared_models"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "rand 0.10.1",
- "serde",
- "sqlx",
- "uuid",
-]
-
-[[package]]
 name = "new_debug_unreachable"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2536,6 +2461,81 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6"
 dependencies = [
  "lazy_static",
+]
+
+[[package]]
+name = "shelf_blob_host"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "tempfile",
+ "tokio",
+]
+
+[[package]]
+name = "shelf_content_store"
+version = "0.1.0"
+dependencies = [
+ "bytes",
+ "futures",
+ "hex",
+ "sha2",
+ "shelf_blob_host",
+ "tempfile",
+ "tokio",
+ "tokio-util",
+ "uuid",
+]
+
+[[package]]
+name = "shelf_database"
+version = "0.1.0"
+dependencies = [
+ "shelf_shared_models",
+ "sqlx",
+]
+
+[[package]]
+name = "shelf_media"
+version = "0.1.0"
+dependencies = [
+ "bytes",
+ "image",
+ "tokio",
+]
+
+[[package]]
+name = "shelf_server"
+version = "0.1.0"
+dependencies = [
+ "actix-cors",
+ "actix-multipart",
+ "actix-web",
+ "chrono",
+ "futures",
+ "hex",
+ "serde",
+ "shelf_blob_host",
+ "shelf_content_store",
+ "shelf_database",
+ "shelf_media",
+ "shelf_shared_models",
+ "tokio",
+ "tokio-util",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "shelf_shared_models"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "rand 0.10.1",
+ "serde",
+ "sqlx",
+ "uuid",
 ]
 
 [[package]]

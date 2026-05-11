@@ -1,5 +1,5 @@
 use bytes::Bytes;
-use ms_blob_host::{
+use shelf_blob_host::{
     ext::{BlobHostExt, RemoveBlobResult},
     fs::FsBlobHost,
     path::BlobPath,

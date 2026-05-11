@@ -1,8 +1,8 @@
 use actix_web::{HttpResponse, get, web};
-use ms_content_store::key::StorageKey;
-use ms_database::traits::MediaRepoExt;
-use ms_shared_models::domains::{MediaError, MediaId};
 use serde::Deserialize;
+use shelf_content_store::key::StorageKey;
+use shelf_database::traits::MediaRepoExt;
+use shelf_shared_models::domains::{MediaError, MediaId};
 use tokio_util::io::ReaderStream;
 
 use crate::{di::DataContext, error::AppResult};

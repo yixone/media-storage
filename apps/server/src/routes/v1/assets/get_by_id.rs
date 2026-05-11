@@ -1,6 +1,6 @@
 use actix_web::{HttpResponse, get, web};
-use ms_database::traits::{AssetRepoExt, MediaRepoExt};
-use ms_shared_models::domains::{AssetError, AssetId, MediaError};
+use shelf_database::traits::{AssetRepoExt, MediaRepoExt};
+use shelf_shared_models::domains::{AssetError, AssetId, MediaError};
 
 use crate::{di::DataContext, error::AppResult, models::v1::asset::ApiAsset};
 

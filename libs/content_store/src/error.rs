@@ -1,4 +1,4 @@
-use ms_blob_host::BlobHostError;
+use shelf_blob_host::BlobHostError;
 
 #[derive(Debug)]
 pub enum ContentStorageError {

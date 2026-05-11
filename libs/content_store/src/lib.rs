@@ -3,8 +3,8 @@ pub mod key;
 
 use bytes::Bytes;
 use futures::{Stream, TryStreamExt};
-use ms_blob_host::{BlobHost, ext::RenameBlobResult};
 use sha2::{Digest, Sha256};
+use shelf_blob_host::{BlobHost, ext::RenameBlobResult};
 use tokio::io::AsyncRead;
 use tokio_util::io::{ReaderStream, StreamReader};
 

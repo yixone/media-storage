@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
 use actix_web::{HttpResponse, get, web};
-use ms_database::{
+use serde::Deserialize;
+use shelf_database::{
     pagination::Pagination,
     traits::{AssetRepoExt, MediaRepoExt},
 };
-use ms_shared_models::domains::MediaError;
-use serde::Deserialize;
+use shelf_shared_models::domains::MediaError;
 
 use crate::{
     di::DataContext,

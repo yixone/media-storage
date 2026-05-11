@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use ms_content_store::key::StorageKey;
-use ms_database::{pagination::Pagination, traits::MediaRepoExt};
-use ms_media::image::MediaImage;
-use ms_shared_models::{
+use shelf_content_store::key::StorageKey;
+use shelf_database::{pagination::Pagination, traits::MediaRepoExt};
+use shelf_media::image::MediaImage;
+use shelf_shared_models::{
     domains::{Media, MediaId, MediaPatchData, MediaStatus, ThumbnailKey},
     patch::PatchField,
 };

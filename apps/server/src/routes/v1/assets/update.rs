@@ -1,10 +1,10 @@
 use actix_web::{HttpResponse, patch, web};
-use ms_database::traits::AssetRepoExt;
-use ms_shared_models::{
+use serde::Deserialize;
+use shelf_database::traits::AssetRepoExt;
+use shelf_shared_models::{
     domains::{AssetError, AssetId, AssetPatchData},
     patch::PatchField,
 };
-use serde::Deserialize;
 
 use crate::{di::DataContext, error::AppResult};
 

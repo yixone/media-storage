@@ -1,6 +1,6 @@
 use std::slice;
 
-use ms_shared_models::domains::{Media, MediaId, MediaPatchData};
+use shelf_shared_models::domains::{Media, MediaId, MediaPatchData};
 
 use crate::{DbResut, pagination::Pagination};
 

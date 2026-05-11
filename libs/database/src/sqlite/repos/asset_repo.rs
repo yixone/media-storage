@@ -1,4 +1,4 @@
-use ms_shared_models::domains::{Asset, AssetId, AssetPatchData};
+use shelf_shared_models::domains::{Asset, AssetId, AssetPatchData};
 use sqlx::QueryBuilder;
 
 use crate::{DbResut, pagination::Pagination, sqlite::SqliteDatabase, traits::AssetRepoExt};

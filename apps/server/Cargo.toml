@@ -1,5 +1,5 @@
 [package]
-name = "ms_server"
+name = "shelf_server"
 version = "0.1.0"
 
 repository.workspace = true
@@ -8,11 +8,11 @@ publish.workspace = true
 
 [dependencies]
 # Libs
-ms_blob_host = { workspace = true }
-ms_content_store = { workspace = true }
-ms_database = { workspace = true }
-ms_shared_models = { workspace = true, features = ["serde"] }
-ms_media = { workspace = true }
+shelf_blob_host = { workspace = true }
+shelf_content_store = { workspace = true }
+shelf_database = { workspace = true }
+shelf_shared_models = { workspace = true, features = ["serde"] }
+shelf_media = { workspace = true }
 
 # Actix
 actix-web.workspace = true

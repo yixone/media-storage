@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
-use ms_shared_models::domains::{Asset, AssetId};
 use serde::Serialize;
+use shelf_shared_models::domains::{Asset, AssetId};
 
 use crate::models::v1::media::ApiMedia;
 

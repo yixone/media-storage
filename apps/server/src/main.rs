@@ -2,10 +2,11 @@ use std::sync::Arc;
 
 use actix_cors::Cors;
 use actix_web::{App, HttpServer, web::Data};
-use ms_blob_host::BlobHost;
-use ms_content_store::ContentStorage;
-use ms_database::sqlite::SqliteDatabase;
-use ms_server::{
+
+use shelf_blob_host::BlobHost;
+use shelf_content_store::ContentStorage;
+use shelf_database::sqlite::SqliteDatabase;
+use shelf_server::{
     bg::media::MediaWorker,
     di::{DataContext, MessagesContext},
     error::AppResult,

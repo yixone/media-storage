@@ -15,12 +15,12 @@ edition = "2024"
 publish = false
 
 [workspace.dependencies]
-# Libs (`ms` - media storage)
-ms_blob_host = { path = "libs/blob_host" }
-ms_content_store = { path = "libs/content_store" }
-ms_database = { path = "libs/database" }
-ms_media = { path = "libs/media" }
-ms_shared_models = { path = "libs/shared_models" }
+# Libs
+shelf_blob_host = { path = "libs/blob_host" }
+shelf_content_store = { path = "libs/content_store" }
+shelf_database = { path = "libs/database" }
+shelf_media = { path = "libs/media" }
+shelf_shared_models = { path = "libs/shared_models" }
 
 # Actix
 actix-web = "4.11.0"

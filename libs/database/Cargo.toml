@@ -1,5 +1,5 @@
 [package]
-name = "ms_database"
+name = "shelf_database"
 version = "0.1.0"
 repository.workspace = true
 edition.workspace = true
@@ -7,7 +7,7 @@ publish.workspace = true
 
 [dependencies]
 # Libs
-ms_shared_models = { workspace = true, features = ["sqlx"] }
+shelf_shared_models = { workspace = true, features = ["sqlx"] }
 
 # Database
 sqlx = { version = "0.8.5", features = ["sqlite", "runtime-tokio"] }

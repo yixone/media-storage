@@ -1,5 +1,5 @@
 [package]
-name = "ms_content_store"
+name = "shelf_content_store"
 version = "0.1.0"
 repository.workspace = true
 edition.workspace = true
@@ -9,7 +9,7 @@ publish.workspace = true
 
 [dependencies]
 # Libs
-ms_blob_host.workspace = true
+shelf_blob_host.workspace = true
 
 # Async
 futures.workspace = true

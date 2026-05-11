@@ -2,8 +2,8 @@ use actix_multipart::Multipart;
 use actix_web::{HttpResponse, post, web};
 use chrono::Utc;
 use futures::TryStreamExt;
-use ms_database::traits::{AssetRepoExt, MediaRepoExt};
-use ms_shared_models::domains::{
+use shelf_database::traits::{AssetRepoExt, MediaRepoExt};
+use shelf_shared_models::domains::{
     Asset, AssetError, AssetId, Media, MediaError, MediaId, MediaStatus, ThumbnailKey,
 };
 
