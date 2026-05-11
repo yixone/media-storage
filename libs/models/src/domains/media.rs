@@ -1,14 +1,10 @@
 use chrono::{DateTime, Utc};
 
-use crate::id_type;
+use crate::{ids::id_type, patch::patch_model};
 
 id_type! {
     #[derive(Eq, Hash)]
     MediaKey as String
-}
-
-id_type! {
-    PreviewKey as String
 }
 
 /// Media domain
@@ -18,7 +14,7 @@ pub struct Media {
     /// Media Key. This is the key for the original file in the storage
     pub original_key: MediaKey,
     /// Preview key. This is the key for the file preview in the storage
-    pub preview_key: PreviewKey,
+    pub preview_key: MediaKey,
 
     /// Media creation time
     pub created_at: DateTime<Utc>,
@@ -41,6 +37,23 @@ pub struct Media {
 
     /// The status of media in the media life cycle
     pub status: MediaStatus,
+}
+
+patch_model! {
+    /// DTO for updating Media fields
+    MediaPatch {
+        preview_key: MediaKey,
+        preview_size: i64,
+
+        content_type: String,
+
+        accent_color: Option<String>,
+
+        width: Option<u16>,
+        height: Option<u16>,
+
+        status: MediaStatus
+    }
 }
 
 /// The status of media

@@ -1,6 +1,10 @@
 use chrono::{DateTime, Utc};
 
-use crate::{domains::MediaKey, id_type, ids::tsid::TSID};
+use crate::{
+    domains::MediaKey,
+    ids::{id_type, tsid::TSID},
+    patch::patch_model,
+};
 
 id_type! {
     /// [`TSID`] based asset identifier
@@ -26,18 +30,28 @@ pub struct Asset {
     /// Asset creation time
     pub created_at: DateTime<Utc>,
 
-    /// Name for the asset
-    pub name: Option<String>,
+    /// Title for the asset
+    pub title: Option<String>,
     /// Description for the asset
     pub caption: Option<String>,
 
     /// Asset source URL
     pub source_url: Option<String>,
 
-    /// Is the asset marked as deleted?
-    ///
-    /// If `true` - the asset is displayed only on the removed assets page
-    pub is_deleted: bool,
+    /// Asset deletion time
+    pub deleted_at: Option<DateTime<Utc>>,
+}
+
+patch_model! {
+    /// DTO for updating Asset fields
+    AssetPatch {
+        title: Option<String>,
+        caption: Option<String>,
+
+        source_url: Option<String>,
+
+        deleted_at: Option<DateTime<Utc>>
+    }
 }
 
 derived_error! {

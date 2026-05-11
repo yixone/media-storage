@@ -4,12 +4,12 @@ CREATE TABLE assets (
 
     created_at      TIMESTAMPTZ     NOT NULL,
 
-    name            VARCHAR(256),
+    title           VARCHAR(256),
     caption         VARCHAR(2048),
 
     source_url      VARCHAR(1024),
 
-    is_deleted      BOOLEAN         NOT NULL,
+    deleted_at      TIMESTAMPTZ,
 
     PRIMARY KEY (id),
     FOREIGN KEY (media_key) REFERENCES media(original_key) ON DELETE CASCADE
