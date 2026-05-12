@@ -23,3 +23,15 @@ impl From<sqlx::Error> for DatabaseError {
         }
     }
 }
+
+impl From<sqlx::migrate::MigrateError> for DatabaseError {
+    fn from(err: sqlx::migrate::MigrateError) -> Self {
+        DatabaseError::DriverError(err.into())
+    }
+}
+
+impl From<std::io::Error> for DatabaseError {
+    fn from(err: std::io::Error) -> Self {
+        DatabaseError::IO(err)
+    }
+}
