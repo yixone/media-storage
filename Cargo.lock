@@ -340,6 +340,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "asset-shelf-database"
+version = "0.1.0"
+dependencies = [
+ "asset-shelf-models",
+ "sqlx",
+]
+
+[[package]]
+name = "asset-shelf-models"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "rand 0.10.1",
+ "serde",
+ "sqlx",
+ "uuid",
+]
+
+[[package]]
 name = "async-trait"
 version = "0.1.89"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2461,17 +2480,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6"
 dependencies = [
  "lazy_static",
-]
-
-[[package]]
-name = "shelf-models"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "rand 0.10.1",
- "serde",
- "sqlx",
- "uuid",
 ]
 
 [[package]]

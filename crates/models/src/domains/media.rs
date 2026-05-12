@@ -3,18 +3,23 @@ use chrono::{DateTime, Utc};
 use crate::{ids::id_type, patch::patch_model};
 
 id_type! {
+    /// Media identifier based on the mediafile's hash
     #[derive(Eq, Hash)]
-    MediaKey as String
+    MediaId as String
+}
+
+id_type! {
+    MediaPreviewKey as String
 }
 
 /// Media domain
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "sqlx", derive(sqlx::FromRow))]
 pub struct Media {
-    /// Media Key. This is the key for the original file in the storage
-    pub original_key: MediaKey,
-    /// Preview key. This is the key for the file preview in the storage
-    pub preview_key: MediaKey,
+    /// Media Id
+    pub id: MediaId,
+    /// Preview Key
+    pub preview_key: MediaPreviewKey,
 
     /// Media creation time
     pub created_at: DateTime<Utc>,
@@ -42,7 +47,7 @@ pub struct Media {
 patch_model! {
     /// DTO for updating Media fields
     MediaPatch {
-        preview_key: MediaKey,
+        preview_key: MediaPreviewKey,
         preview_size: i64,
 
         content_type: String,
@@ -75,9 +80,14 @@ derived_error! {
     /// Media Invariant Errors
     pub enum MediaError {
         /// The media file size is too large
-        MediaTooLarge,
+        MediaTooLarge {
+            size: usize,
+            max: usize
+        },
         /// The mimetype of the uploaded media is not supported
         UnsupportedMediaType,
+        /// No media specified for the asset being uploaded
+        MissingUploadMedia,
 
         /// Media not found
         MediaNotFound,

@@ -2,15 +2,17 @@
 resolver = "2"
 members = [
     "apps/server",
+    "crates/database",
+    "crates/models",
     "libs/blob_host",
     "libs/content_store",
     "libs/database",
-    "libs/media", "libs/models",
+    "libs/media",
     "libs/shared_models",
 ]
 
 [workspace.package]
-repository = "https://github.com/yixone/media-storage"
+repository = "https://github.com/yixone/asset-shelf"
 edition = "2024"
 publish = false
 
@@ -21,6 +23,10 @@ shelf_content_store = { path = "libs/content_store" }
 shelf_database = { path = "libs/database" }
 shelf_media = { path = "libs/media" }
 shelf_shared_models = { path = "libs/shared_models" }
+
+# Crates
+asset-shelf-database = { path = "crates/database" }
+asset-shelf-models = { path = "crates/models" }
 
 # Actix
 actix-web = "4.11.0"

@@ -12,11 +12,11 @@ CREATE TABLE assets (
     deleted_at      TIMESTAMPTZ,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (media_key) REFERENCES media(original_key) ON DELETE CASCADE
+    FOREIGN KEY (media_key) REFERENCES media(id) ON DELETE CASCADE
 );
 
 CREATE TABLE media (
-    original_key    VARCHAR(64)     NOT NULL,
+    id              VARCHAR(64)     NOT NULL,
     preview_key     VARCHAR(64)     NOT NULL,
 
     created_at      TIMESTAMPTZ     NOT NULL,

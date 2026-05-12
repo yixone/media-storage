@@ -1,5 +1,5 @@
 [package]
-name = "shelf-models"
+name = "asset-shelf-models"
 version = "0.1.0"
 repository.workspace = true
 edition.workspace = true
@@ -7,7 +7,7 @@ publish.workspace = true
 
 [features]
 serde = ["dep:serde", "uuid/serde", "chrono/serde", "serde/derive"]
-sqlx = ["dep:sqlx", "sqlx/chrono", "sqlx/uuid"]
+sqlx = ["dep:sqlx", "sqlx/chrono", "sqlx/uuid", "sqlx/sqlite"]
 
 [dependencies]
 # Utils/Types

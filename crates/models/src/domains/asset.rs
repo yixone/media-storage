@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 
 use crate::{
-    domains::MediaKey,
+    domains::MediaId,
     ids::{id_type, tsid::TSID},
     patch::patch_model,
 };
@@ -25,7 +25,7 @@ pub struct Asset {
     /// Unique numeric ID of the Asset
     pub id: AssetId,
     /// Key for the Media associated with this Asset
-    pub media_key: MediaKey,
+    pub media_key: MediaId,
 
     /// Asset creation time
     pub created_at: DateTime<Utc>,
