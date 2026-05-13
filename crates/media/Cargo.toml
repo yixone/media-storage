@@ -1,10 +1,9 @@
 [package]
-name = "shelf_media"
+name = "asset-shelf-media"
 version = "0.1.0"
 repository.workspace = true
 edition.workspace = true
 publish.workspace = true
-
 
 [dependencies]
 # Async

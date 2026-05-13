@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/database", "crates/models"]
+members = ["crates/database", "crates/media", "crates/models"]
 
 [workspace.package]
 repository = "https://github.com/yixone/asset-shelf"
@@ -11,6 +11,7 @@ publish = false
 # Crates
 asset-shelf-database = { path = "crates/database" }
 asset-shelf-models = { path = "crates/models" }
+asset-shelf-media = { path = "crates/media" }
 
 # Actix
 actix-web = "4.11.0"
