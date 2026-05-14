@@ -5,7 +5,7 @@ use tokio_util::io::ReaderStream;
 use uuid::Uuid;
 
 use crate::{
-    StorageKey, StorageResult,
+    StorageError, StorageKey, StorageResult,
     blob_host::{
         path::BlobPath,
         traits::{BlobHost, BlobWriter, RenameBlobResult},
@@ -55,7 +55,7 @@ impl<B: BlobHost> ContentStorage<B> {
 
             if size > self.max_size {
                 blob_writer.abort().await?;
-                return Err(crate::StorageError::BlobTooLarge {
+                return Err(StorageError::BlobTooLarge {
                     size,
                     max: self.max_size,
                 });
