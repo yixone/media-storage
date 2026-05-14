@@ -1,15 +1,14 @@
+use asset_shelf_storage::{ContentStorage, StorageKey, blob_host::fs::FsBlobHost};
 use sha2::{Digest, Sha256};
-use shelf_blob_host::BlobHost;
-use shelf_content_store::{ContentStorage, key::StorageKey};
 use tempfile::TempDir;
 
-fn temp_content_store() -> ContentStorage {
+const TEST_BLOB: &[u8] = &[67, 42];
+
+fn temp_content_store() -> ContentStorage<FsBlobHost> {
     let temp = TempDir::new().unwrap();
-    let backend = BlobHost::mount_fs(temp.path()).unwrap();
+    let backend = FsBlobHost::new(temp.path()).unwrap();
     ContentStorage::new(backend, 128 * 1024)
 }
-
-const TEST_BLOB: &[u8] = &[67, 42];
 
 #[tokio::test]
 async fn put_blob_and_return_result() {
@@ -19,7 +18,7 @@ async fn put_blob_and_return_result() {
 
     let res = store.put(TEST_BLOB).await.unwrap();
 
-    assert_eq!(res.key, StorageKey::from_digest(input_sha256));
+    assert_eq!(res.key, StorageKey::from_digest(&input_sha256));
     assert_eq!(res.size, TEST_BLOB.len());
     assert!(res.is_new);
 }

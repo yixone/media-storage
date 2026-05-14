@@ -1,28 +1,29 @@
 use std::str::FromStr;
 
-use shelf_blob_host::path::BlobPath;
-use uuid::Uuid;
+use crate::{StorageError, blob_host::path::BlobPath};
 
-use crate::ContentStorageError;
-
+/// Hash address of the blob in storage
 #[derive(Debug, Clone, PartialEq)]
 pub struct StorageKey {
-    pub inner: String,
+    inner: String,
 }
 
 impl StorageKey {
+    /// Returns [`StorageKey`] from [`str`] without checking
     pub fn from_str_unchecked(str: &str) -> Self {
         StorageKey {
             inner: str.to_string(),
         }
     }
 
-    pub fn from_digest(d: [u8; 32]) -> Self {
+    /// Returns [`StorageKey`] from a 32-byte slice
+    pub fn from_digest(digest: &[u8; 32]) -> Self {
         StorageKey {
-            inner: hex::encode(d),
+            inner: hex::encode(digest),
         }
     }
 
+    /// Returns [`BlobPath`] in storage
     pub fn to_blob_path(&self) -> BlobPath {
         BlobPath {
             inner: format!(
@@ -33,6 +34,11 @@ impl StorageKey {
             ),
         }
     }
+
+    /// Returns the [`StorageKey`] inner as [`str`]
+    pub fn as_str(&self) -> &str {
+        &self.inner
+    }
 }
 
 impl AsRef<StorageKey> for StorageKey {
@@ -42,38 +48,14 @@ impl AsRef<StorageKey> for StorageKey {
 }
 
 impl FromStr for StorageKey {
-    type Err = ContentStorageError;
+    type Err = StorageError;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if s.len() != 64 || !s.chars().all(|c| c.is_ascii_hexdigit()) {
-            return Err(ContentStorageError::InvalidStorageKey);
+            return Err(StorageError::InvalidKey);
         }
 
         Ok(StorageKey {
             inner: s.to_string(),
         })
-    }
-}
-
-pub struct TempKey {
-    pub uuid: Uuid,
-}
-
-impl TempKey {
-    pub fn new() -> Self {
-        TempKey {
-            uuid: Uuid::new_v4(),
-        }
-    }
-
-    pub fn to_blob_path(&self) -> BlobPath {
-        BlobPath {
-            inner: format!("temp/{}", self.uuid.simple()),
-        }
-    }
-}
-
-impl Default for TempKey {
-    fn default() -> Self {
-        Self::new()
     }
 }

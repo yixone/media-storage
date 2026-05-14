@@ -1,9 +1,9 @@
-use bytes::Bytes;
-use shelf_blob_host::{
-    ext::{BlobHostExt, RemoveBlobResult},
+use asset_shelf_storage::blob_host::{
     fs::FsBlobHost,
     path::BlobPath,
+    traits::{BlobHost, BlobWriter, RemoveBlobResult},
 };
+use bytes::Bytes;
 use tempfile::TempDir;
 use tokio::io::AsyncReadExt;
 
