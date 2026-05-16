@@ -1,6 +1,4 @@
-use std::str::FromStr;
-
-use crate::{StorageError, blob_host::path::BlobPath};
+use crate::blob_host::path::BlobPath;
 
 /// Hash address of the blob in storage
 #[derive(Debug, Clone, PartialEq)]
@@ -44,18 +42,5 @@ impl StorageKey {
 impl AsRef<StorageKey> for StorageKey {
     fn as_ref(&self) -> &StorageKey {
         self
-    }
-}
-
-impl FromStr for StorageKey {
-    type Err = StorageError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.len() != 64 || !s.chars().all(|c| c.is_ascii_hexdigit()) {
-            return Err(StorageError::InvalidKey);
-        }
-
-        Ok(StorageKey {
-            inner: s.to_string(),
-        })
     }
 }

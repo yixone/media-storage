@@ -1,10 +1,11 @@
 use asset_shelf_models::domains::{Media, MediaId, MediaPatch};
+use asset_shelf_result::error::AppResult;
 use sqlx::QueryBuilder;
 
-use crate::{DbResult, SqliteDatabase, traits::MediaRepositoryExt};
+use crate::{SqliteDatabase, traits::MediaRepositoryExt};
 
 impl MediaRepositoryExt for SqliteDatabase {
-    async fn insert_media(&self, media: &Media) -> DbResult<()> {
+    async fn insert_media(&self, media: &Media) -> AppResult<()> {
         sqlx::query(
             "
             INSERT INTO media (
@@ -34,7 +35,7 @@ impl MediaRepositoryExt for SqliteDatabase {
         Ok(())
     }
 
-    async fn get_media_by_ids(&self, ids: &[MediaId]) -> DbResult<Vec<Media>> {
+    async fn get_media_by_ids(&self, ids: &[MediaId]) -> AppResult<Vec<Media>> {
         if ids.is_empty() {
             return Ok(Vec::new());
         }
@@ -53,7 +54,7 @@ impl MediaRepositoryExt for SqliteDatabase {
         Ok(media)
     }
 
-    async fn update_media(&self, id: &MediaId, data: &MediaPatch) -> DbResult<bool> {
+    async fn update_media(&self, id: &MediaId, data: &MediaPatch) -> AppResult<bool> {
         let mut qb = QueryBuilder::new(
             "
             UPDATE media 

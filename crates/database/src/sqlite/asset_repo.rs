@@ -1,10 +1,11 @@
 use asset_shelf_models::domains::{Asset, AssetId, AssetPatch};
+use asset_shelf_result::error::AppResult;
 use sqlx::QueryBuilder;
 
-use crate::{DbResult, SqliteDatabase, traits::AssetRepositoryExt};
+use crate::{SqliteDatabase, traits::AssetRepositoryExt};
 
 impl AssetRepositoryExt for SqliteDatabase {
-    async fn insert_asset(&self, asset: &Asset) -> DbResult<()> {
+    async fn insert_asset(&self, asset: &Asset) -> AppResult<()> {
         sqlx::query(
             "
             INSERT INTO assets (
@@ -29,7 +30,7 @@ impl AssetRepositoryExt for SqliteDatabase {
         Ok(())
     }
 
-    async fn get_random_assets(&self, limit: u32) -> DbResult<Vec<Asset>> {
+    async fn get_random_assets(&self, limit: u32) -> AppResult<Vec<Asset>> {
         if limit == 0 {
             return Ok(Vec::new());
         }
@@ -48,7 +49,7 @@ impl AssetRepositoryExt for SqliteDatabase {
         Ok(assets)
     }
 
-    async fn get_assets(&self, limit: u32, offset: u32) -> DbResult<Vec<Asset>> {
+    async fn get_assets(&self, limit: u32, offset: u32) -> AppResult<Vec<Asset>> {
         if limit == 0 {
             return Ok(Vec::new());
         }
@@ -68,7 +69,7 @@ impl AssetRepositoryExt for SqliteDatabase {
         Ok(assets)
     }
 
-    async fn get_assets_by_ids(&self, ids: &[AssetId]) -> DbResult<Vec<Asset>> {
+    async fn get_assets_by_ids(&self, ids: &[AssetId]) -> AppResult<Vec<Asset>> {
         if ids.is_empty() {
             return Ok(Vec::new());
         }
@@ -88,7 +89,7 @@ impl AssetRepositoryExt for SqliteDatabase {
         Ok(assets)
     }
 
-    async fn update_asset(&self, id: &AssetId, data: &AssetPatch) -> DbResult<bool> {
+    async fn update_asset(&self, id: &AssetId, data: &AssetPatch) -> AppResult<bool> {
         let mut qb = QueryBuilder::new(
             "
             UPDATE assets 

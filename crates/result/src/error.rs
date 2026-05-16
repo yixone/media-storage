@@ -8,9 +8,15 @@ pub type AppResult<T> = std::result::Result<T, AppError>;
 #[derive(Debug)]
 pub struct AppError {
     /// Error Kind
-    kind: ErrorKind,
+    pub kind: ErrorKind,
     /// The place where the error occurred
-    location: &'static Location<'static>,
+    pub location: &'static Location<'static>,
+}
+
+impl std::fmt::Display for AppError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?} occurred in {}", self.kind, self.location)
+    }
 }
 
 impl AppError {
@@ -37,20 +43,31 @@ impl AppError {
 
 /// Application error kind
 #[derive(Debug)]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde::Serialize),
+    serde(rename_all = "SCREAMING_SNAKE_CASE", tag = "error", content = "kind")
+)]
 pub enum ErrorKind {
     // Asset related errors
     AssetDeleted,
     MissingAssetMedia,
 
     // Media related errors
-    MediaTooLarge { size: usize, max: usize },
+    MediaTooLarge {
+        size: usize,
+        max: usize,
+    },
     UnsupportedMediaType,
     MissingUploadMedia,
     MissingMediaBlob,
 
     // General errors
     NotFound,
-    Internal { source: BoxDynError },
+    Internal {
+        #[cfg_attr(feature = "serde", serde(skip))]
+        source: BoxDynError,
+    },
 }
 
 impl<E> From<E> for AppError

@@ -8,6 +8,7 @@ publish.workspace = true
 [dependencies]
 # AssetShelf
 asset-shelf-models = { workspace = true, features = ["sqlx"] }
+asset-shelf-result = { workspace = true }
 
 # Database
 sqlx = { version = "0.8.5", features = ["sqlite", "runtime-tokio"] }

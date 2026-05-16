@@ -1,3 +1,4 @@
+use asset_shelf_result::{create_error, error::AppResult};
 use futures::TryStreamExt;
 use sha2::{Digest, Sha256};
 use tokio::io::AsyncRead;
@@ -5,7 +6,7 @@ use tokio_util::io::ReaderStream;
 use uuid::Uuid;
 
 use crate::{
-    StorageError, StorageKey, StorageResult,
+    StorageKey,
     blob_host::{
         path::BlobPath,
         traits::{BlobHost, BlobWriter, RenameBlobResult},
@@ -37,7 +38,7 @@ impl<B: BlobHost> ContentStorage<B> {
     }
 
     /// Puts a blob into storage and returns [`StoragePutResult`]
-    pub async fn put<R>(&self, data: R) -> StorageResult<StoragePutResult>
+    pub async fn put<R>(&self, data: R) -> AppResult<StoragePutResult>
     where
         R: AsyncRead + Unpin,
     {
@@ -55,10 +56,10 @@ impl<B: BlobHost> ContentStorage<B> {
 
             if size > self.max_size {
                 blob_writer.abort().await?;
-                return Err(StorageError::BlobTooLarge {
+                return Err(create_error!(MediaTooLarge {
                     size,
-                    max: self.max_size,
-                });
+                    max: self.max_size
+                }));
             }
 
             hash.update(&chunk);
@@ -83,7 +84,7 @@ impl<B: BlobHost> ContentStorage<B> {
     }
 
     /// Returns a reader for a blob from [`ContentStorage`] by [`StorageKey`]
-    pub async fn get<K>(&self, key: K) -> StorageResult<B::Reader>
+    pub async fn get<K>(&self, key: K) -> AppResult<B::Reader>
     where
         K: AsRef<StorageKey>,
     {

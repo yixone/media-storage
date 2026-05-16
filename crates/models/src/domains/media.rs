@@ -62,7 +62,11 @@ patch_model! {
 /// The status of media
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[cfg_attr(feature = "sqlx", derive(sqlx::Type), sqlx(rename_all = "lowercase"))]
-#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[cfg_attr(
+    feature = "serde",
+    derive(serde::Serialize),
+    serde(rename_all = "SCREAMING_SNAKE_CASE")
+)]
 pub enum MediaStatus {
     /// Awaiting processing
     Pending,

@@ -19,6 +19,7 @@ publish = false
 asset-shelf-database = { path = "crates/database" }
 asset-shelf-media = { path = "crates/media" }
 asset-shelf-models = { path = "crates/models" }
+asset-shelf-result = { path = "crates/result" }
 asset-shelf-storage = { path = "crates/storage" }
 asset-shelf-web-api = { path = "crates/web-api" }
 

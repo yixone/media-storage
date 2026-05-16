@@ -5,13 +5,12 @@ use std::{
     task::{Context, Poll},
 };
 
+use asset_shelf_result::error::AppResult;
 use bytes::Bytes;
 use image::{
     DynamicImage, GenericImageView, ImageFormat, ImageReader, Pixel, imageops::FilterType,
 };
 use tokio::io::{AsyncRead, AsyncReadExt, ReadBuf};
-
-use crate::ImageResult;
 
 /// Decoded image
 #[derive(Debug, Clone)]
@@ -21,7 +20,7 @@ pub struct MediaImage {
 
 impl MediaImage {
     /// Decodes an [`MediaImage`] from AsyncRead
-    pub async fn from_reader<R>(mut reader: R) -> ImageResult<Self>
+    pub async fn from_reader<R>(mut reader: R) -> AppResult<Self>
     where
         R: AsyncRead + Unpin + Send,
     {
@@ -58,7 +57,7 @@ impl MediaImage {
     }
 
     /// Encodes the [`MediaImage`] and returns the reader
-    pub fn reader(self, format: ImageFormat) -> ImageResult<MediaImageReader> {
+    pub fn reader(self, format: ImageFormat) -> AppResult<MediaImageReader> {
         let mut buf = Vec::new();
         self.decoded.write_to(Cursor::new(&mut buf), format)?;
         let chunks = buf

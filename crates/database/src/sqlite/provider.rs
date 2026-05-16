@@ -1,12 +1,11 @@
 use std::path::Path;
 
+use asset_shelf_result::error::AppResult;
 use sqlx::{
     SqlitePool,
     migrate::Migrator,
     sqlite::{SqliteAutoVacuum, SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions},
 };
-
-use crate::DbResult;
 
 static MIGRATOR: Migrator = sqlx::migrate!("../../migrations");
 
@@ -18,7 +17,7 @@ pub struct SqliteDatabase {
 
 impl SqliteDatabase {
     /// Opens an SQLite database from a file and returns [`SqliteDatabase`]
-    pub async fn open(path: impl AsRef<Path>) -> DbResult<Self> {
+    pub async fn open(path: impl AsRef<Path>) -> AppResult<Self> {
         let path = path.as_ref();
         if let Some(parent) = path.parent() {
             std::fs::create_dir_all(parent)?;
@@ -36,7 +35,7 @@ impl SqliteDatabase {
     }
 
     /// Apply migrations to the database
-    pub async fn migrate(&self) -> DbResult<()> {
+    pub async fn migrate(&self) -> AppResult<()> {
         MIGRATOR.run(&self.pool).await?;
         Ok(())
     }

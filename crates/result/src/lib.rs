@@ -1,10 +1,7 @@
 pub mod error;
 pub mod macros;
 
-pub use error::AppError;
+#[cfg(feature = "actix")]
+pub mod actix;
 
-fn t() {
-    let e = std::io::Error::other("FOO");
-    create_error!(source = e);
-    create_error!(MediaTooLarge { size: 15, max: 14 });
-}
+pub use error::AppError;
