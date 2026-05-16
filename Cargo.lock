@@ -124,6 +124,12 @@ dependencies = [
 [[package]]
 name = "asset-shelf-web-api"
 version = "0.1.0"
+dependencies = [
+ "asset-shelf-database",
+ "asset-shelf-models",
+ "serde",
+ "tracing",
+]
 
 [[package]]
 name = "atoi"
@@ -1717,6 +1723,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4666a1a60d8412eab19d94f6d13dcc9cea0a5ef4fdf6a5db306537413c661b1b"
 dependencies = [
  "bitflags",
+]
+
+[[package]]
+name = "result"
+version = "0.1.0"
+dependencies = [
+ "asset-shelf-models",
 ]
 
 [[package]]

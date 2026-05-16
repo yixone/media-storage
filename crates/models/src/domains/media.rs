@@ -1,7 +1,5 @@
 use chrono::{DateTime, Utc};
 
-use crate::{ids::id_type, patch::patch_model};
-
 id_type! {
     /// Media identifier based on the mediafile's hash
     #[derive(Eq, Hash)]
@@ -74,25 +72,4 @@ pub enum MediaStatus {
     Ready,
     /// Processing ended with an error
     Failed,
-}
-
-derived_error! {
-    /// Media Invariant Errors
-    pub enum MediaError {
-        /// The media file size is too large
-        MediaTooLarge {
-            size: usize,
-            max: usize
-        },
-        /// The mimetype of the uploaded media is not supported
-        UnsupportedMediaType,
-        /// No media specified for the asset being uploaded
-        MissingUploadMedia,
-
-        /// Media not found
-        MediaNotFound,
-
-        /// The media is in the database, but not in the storage
-        MissingMediaBlob,
-    }
 }

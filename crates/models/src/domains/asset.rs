@@ -1,10 +1,6 @@
 use chrono::{DateTime, Utc};
 
-use crate::{
-    domains::MediaId,
-    ids::{id_type, tsid::TSID},
-    patch::patch_model,
-};
+use crate::{domains::MediaId, ids::tsid::TSID};
 
 id_type! {
     /// [`TSID`] based asset identifier
@@ -51,21 +47,5 @@ patch_model! {
         source_url: Option<String>,
 
         deleted_at: Option<DateTime<Utc>>
-    }
-}
-
-derived_error! {
-    /// Asset Invariant Errors
-    pub enum AssetError {
-        /// Invalid source_url
-        InvalidSourceUrl,
-
-        /// Asset not found
-        AssetNotFound,
-        /// Attempting to modify an asset marked as deleted
-        AssetDeleted,
-
-        /// There is no media associated with the asset.
-        MissingAssetMedia,
     }
 }

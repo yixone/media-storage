@@ -1,5 +1,8 @@
 #![allow(clippy::new_without_default)]
 
-pub mod domains;
+#[macro_use]
 pub mod ids;
+#[macro_use]
 pub mod patch;
+
+pub mod domains;

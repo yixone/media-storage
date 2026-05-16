@@ -6,3 +6,12 @@ edition.workspace = true
 publish.workspace = true
 
 [dependencies]
+# AssetShelf
+asset-shelf-models = { workspace = true, features = ["serde"] }
+asset-shelf-database.workspace = true
+
+# Serde
+serde = { workspace = true, features = ["derive"] }
+
+# Tracing
+tracing.workspace = true
