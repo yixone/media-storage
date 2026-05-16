@@ -74,4 +74,19 @@ impl MediaRepositoryExt for SqliteDatabase {
 
         Ok(res.rows_affected() == 1)
     }
+
+    async fn get_pending_media(&self, limit: u32) -> AppResult<Vec<Media>> {
+        let media = sqlx::query_as(
+            "
+            SELECT * FROM media
+            WHERE status = 'pending'
+            LIMIT ?
+            ",
+        )
+        .bind(limit)
+        .fetch_all(&self.pool)
+        .await?;
+
+        Ok(media)
+    }
 }

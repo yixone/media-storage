@@ -7,8 +7,9 @@ publish.workspace = true
 
 [dependencies]
 # AssetShelf
-asset-shelf-models = { workspace = true, features = ["serde"] }
 asset-shelf-database.workspace = true
+asset-shelf-media = { workspace = true }
+asset-shelf-models = { workspace = true, features = ["serde"] }
 asset-shelf-result = { workspace = true, features = ["actix", "serde"] }
 asset-shelf-storage = { workspace = true }
 
@@ -24,6 +25,7 @@ tokio-util = { workspace = true, features = ["io"] }
 
 # Utils/Types
 chrono = { workspace = true, features = ["serde"] }
+hex.workspace = true
 
 # Serde
 serde = { workspace = true, features = ["derive"] }

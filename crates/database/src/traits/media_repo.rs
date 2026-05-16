@@ -18,6 +18,9 @@ pub trait MediaRepositoryExt {
     /// Returns a list of [`Media`] by list of [`MediaId`]
     async fn get_media_by_ids(&self, ids: &[MediaId]) -> AppResult<Vec<Media>>;
 
+    /// Returns [`Media`] with a pending status
+    async fn get_pending_media(&self, limit: u32) -> AppResult<Vec<Media>>;
+
     /// Updates [`Media`] fields according to the [`MediaPatch`] model
     async fn update_media(&self, id: &MediaId, data: &MediaPatch) -> AppResult<bool>;
 }

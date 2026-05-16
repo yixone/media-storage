@@ -3,7 +3,7 @@ use crate::blob_host::path::BlobPath;
 /// Hash address of the blob in storage
 #[derive(Debug, Clone, PartialEq)]
 pub struct StorageKey {
-    inner: String,
+    pub inner: String,
 }
 
 impl StorageKey {

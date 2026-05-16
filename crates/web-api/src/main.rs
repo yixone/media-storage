@@ -33,7 +33,7 @@ async fn main() -> AppResult<()> {
     });
 
     let media_worker = MediaWorker::new(data_ctx.clone().into_inner());
-    let media_worker_sender = media_worker.run();
+    let media_worker_sender = media_worker.spawn();
 
     let messages_ctx = Data::new(MessagesContext {
         media_worker_sender,

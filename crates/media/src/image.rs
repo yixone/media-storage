@@ -7,10 +7,10 @@ use std::{
 
 use asset_shelf_result::error::AppResult;
 use bytes::Bytes;
-use image::{
-    DynamicImage, GenericImageView, ImageFormat, ImageReader, Pixel, imageops::FilterType,
-};
+use image::{DynamicImage, GenericImageView, ImageReader, Pixel};
 use tokio::io::{AsyncRead, AsyncReadExt, ReadBuf};
+
+pub use image::{ImageFormat, imageops::FilterType};
 
 /// Decoded image
 #[derive(Debug, Clone)]

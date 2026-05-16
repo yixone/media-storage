@@ -70,6 +70,12 @@ pub enum ErrorKind {
     },
 }
 
+impl ErrorKind {
+    pub fn is_internal(&self) -> bool {
+        matches!(self, ErrorKind::Internal { .. })
+    }
+}
+
 impl<E> From<E> for AppError
 where
     E: std::error::Error + Send + Sync + 'static,
