@@ -2,11 +2,11 @@ use actix_web::web;
 
 pub mod v1;
 
-pub mod about_server;
+pub mod server_info;
 
 /// Configures server endpoints
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(about_server::about_server);
+    cfg.service(server_info::get_server_info);
 
     cfg.configure(v1::config);
 }
