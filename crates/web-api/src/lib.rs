@@ -1,5 +1,7 @@
 pub mod bg;
+pub mod di;
 pub mod models;
+pub mod routes;
 pub mod utils;
 
-pub const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
+pub const SERVER_VERSION: &str = env!("CARGO_PKG_VERSION");

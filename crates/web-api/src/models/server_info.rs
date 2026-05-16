@@ -5,5 +5,8 @@ use serde::Serialize;
 #[derive(Serialize)]
 pub struct ServerInfoResponse {
     /// Server version
-    pub version: String,
+    pub version: &'static str,
+
+    /// Time in seconds since server startup
+    pub runtime: i64,
 }

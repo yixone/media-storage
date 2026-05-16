@@ -1,6 +1,7 @@
+use asset_shelf_result::error::AppResult;
 use tokio::io::AsyncRead;
 
-use crate::{StorageResult, blob_host::path::BlobPath};
+use crate::blob_host::path::BlobPath;
 
 #[derive(Debug, PartialEq)]
 pub enum RenameBlobResult {
@@ -20,26 +21,26 @@ pub trait BlobHost {
     type Reader: AsyncRead + Unpin + Send;
 
     /// Creates a new blob and returns a [`BlobWriter`] for writing to it
-    async fn open_writer(&self, path: &BlobPath) -> StorageResult<Self::Writer>;
+    async fn open_writer(&self, path: &BlobPath) -> AppResult<Self::Writer>;
 
     /// Returns a reader for the blob at the specified path
-    async fn get_reader(&self, path: &BlobPath) -> StorageResult<Self::Reader>;
+    async fn get_reader(&self, path: &BlobPath) -> AppResult<Self::Reader>;
 
     /// Changes the path of a blob
-    async fn rename(&self, from: &BlobPath, to: &BlobPath) -> StorageResult<RenameBlobResult>;
+    async fn rename(&self, from: &BlobPath, to: &BlobPath) -> AppResult<RenameBlobResult>;
 
     /// Removes a blob from the host
-    async fn remove(&self, path: &BlobPath) -> StorageResult<RemoveBlobResult>;
+    async fn remove(&self, path: &BlobPath) -> AppResult<RemoveBlobResult>;
 }
 
 /// Blob writer for chunked upload of blobs to the host
 pub trait BlobWriter: Send + Sync {
     /// Writes a data to the current blob
-    async fn write(&mut self, data: bytes::Bytes) -> StorageResult<()>;
+    async fn write(&mut self, data: bytes::Bytes) -> AppResult<()>;
 
     /// Finalizes the current blob and closes the writing
-    async fn finalize(self) -> StorageResult<()>;
+    async fn finalize(self) -> AppResult<()>;
 
     /// Aborts writing to the current blob and deletes it
-    async fn abort(self) -> StorageResult<()>;
+    async fn abort(self) -> AppResult<()>;
 }

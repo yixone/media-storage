@@ -9,9 +9,25 @@ publish.workspace = true
 # AssetShelf
 asset-shelf-models = { workspace = true, features = ["serde"] }
 asset-shelf-database.workspace = true
+asset-shelf-result = { workspace = true, features = ["actix", "serde"] }
+asset-shelf-storage = { workspace = true }
+
+# Actix
+actix-web.workspace = true
+actix-multipart.workspace = true
+actix-cors.workspace = true
+
+# Async
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+futures = { workspace = true }
+tokio-util = { workspace = true, features = ["io"] }
+
+# Utils/Types
+chrono = { workspace = true, features = ["serde"] }
 
 # Serde
 serde = { workspace = true, features = ["derive"] }
 
 # Tracing
 tracing.workspace = true
+tracing-subscriber.workspace = true
