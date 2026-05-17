@@ -10,6 +10,12 @@ id_type! {
     MediaPreviewKey as String
 }
 
+impl From<MediaId> for MediaPreviewKey {
+    fn from(id: MediaId) -> Self {
+        MediaPreviewKey(id.0)
+    }
+}
+
 /// Media domain
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "sqlx", derive(sqlx::FromRow))]

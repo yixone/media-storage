@@ -3,7 +3,8 @@ use asset_shelf_result::{create_error, error::AppResult};
 use futures::TryStreamExt;
 
 #[derive(Debug)]
-enum MultipartParseError {
+pub(crate) enum MultipartParseError {
+    FormReadingError,
     FieldReadingError,
     StringParsingError,
 }

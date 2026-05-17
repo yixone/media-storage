@@ -13,14 +13,12 @@ pub struct AssetApi {
     pub caption: Option<String>,
     pub source_url: Option<String>,
     pub deleted_at: Option<DateTime<Utc>>,
-    pub is_deleted: bool,
 }
 
 impl AssetApi {
     /// Creates an [`AssetApi`] model from domain models
     pub fn from_domain(a: Asset, m: impl Into<MediaApi>) -> Self {
         let media = m.into();
-        let is_deleted = a.deleted_at.is_some();
 
         AssetApi {
             id: a.id,
@@ -30,7 +28,6 @@ impl AssetApi {
             caption: a.caption,
             source_url: a.source_url,
             deleted_at: a.deleted_at,
-            is_deleted,
         }
     }
 }

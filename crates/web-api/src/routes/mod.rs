@@ -1,8 +1,10 @@
-use actix_web::web;
+use actix_web::{HttpResponse, web};
 
 pub mod v1;
 
 pub mod server_info;
+
+type ApiResult = asset_shelf_result::error::AppResult<HttpResponse>;
 
 /// Configures server endpoints
 pub fn config(cfg: &mut web::ServiceConfig) {

@@ -1,12 +1,14 @@
-use asset_shelf_models::domains::{Media, MediaId, MediaStatus};
+use asset_shelf_models::domains::{Media, MediaStatus};
 use chrono::{DateTime, Utc};
 use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct MediaApi {
-    pub id: MediaId,
+    pub original_url: String,
+    pub preview_url: String,
+
     pub created_at: DateTime<Utc>,
-    pub size: i64,
+    pub original_size: i64,
     pub content_type: String,
     pub color: Option<String>,
     pub width: Option<u16>,
@@ -17,9 +19,10 @@ pub struct MediaApi {
 impl From<Media> for MediaApi {
     fn from(m: Media) -> Self {
         MediaApi {
-            id: m.id,
+            original_url: format!("/v1/media/{}?format=original", m.id.0),
+            preview_url: format!("/v1/media/{}?format=preview", m.id.0),
             created_at: m.created_at,
-            size: m.blob_size,
+            original_size: m.blob_size,
             content_type: m.content_type,
             color: m.accent_color,
             width: m.width,
